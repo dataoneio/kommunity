@@ -25,6 +25,8 @@ export default class App extends Component<Props> {
         <Text style={styles.welcome}>Welcome to React Native!</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
+
+        <Text>hello my name is amoli </Text>
 <<<<<<< HEAD
 	<Text style={styles.welcome}> hey my name is kunal ! </Text>
 =======
