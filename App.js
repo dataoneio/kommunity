@@ -25,14 +25,11 @@ export default class App extends Component<Props> {
         <Text style={styles.welcome}>Welcome to React Native!</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
-<<<<<<< HEAD
 	<Text style={styles.welcome}> hey my name is kunal ! </Text>
-=======
->>>>>>> 33cebccd538db151e61e6f90b4a592b553fa1954
       </View>
     );
   }
-}
+} 
 
 const styles = StyleSheet.create({
   container: {
