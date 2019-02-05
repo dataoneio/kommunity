@@ -1,40 +1,46 @@
-import { createAppContainer,createStackNavigator } from 'react-navigation';
-// you can also import from @react-navigation/native
+import { createBottomTabNavigator, createAppContainer } from "react-navigation";
+import {Ionicon, Icon} from 'react-native-vector-icons/Ionicons';
 import Home from "./files/Home";
-import UserNotification from "./files/UserNotification";
 import AddEvent from "./files/AddEvent";
-import profile from "./files/Profile";
-//import { colors } from 'react-native-elements';
-const AppNavigator = createStackNavigator(
+import Profile from "./files/Profile";
+import UserNotification from "./files/UserNotification";
+    import React, { Component } from 'react';
+
+const TabNavigator = createBottomTabNavigator(
     {
-        Home: { screen: Home },
-        News: { screen: UserNotification },
-        Add: { screen: AddEvent },
-        profile: { screen: profile }
-      },
-      {
-        initialRouteName: "Home",
-        backgroundcolor:'#0d0d0d',
-        headerTintColor:'#0d0d0d',
-        colors:'#0d0d0d',
- 
-        headerMode: 'screen',
+      Home: { screen: Home,
         navigationOptions: {
-          headerStyle: {
-            backgroundColor: "#0d0d0d",
-            colors: "0d0d0d  "
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold"
-          },
-          headerBackTitle: null
-        }
+            abBarLabel: 'Test',
+            TabBarIcon: () => { return <Icon name="person-pin-circle" size={25} color={"white"} />; }
+        
+        }},
+      Profile: { screen: Profile },
+      AddEvent: { screen: AddEvent },
+      Notification: { screen: UserNotification },   
+
+
+      
+    },
+    {
+      initialRouteName: "Home",
+      tabBarOptions: {
+        showIcon: true,
+        labelStyle: {
+          fontSize: 18,
+          backgroundColor:"yellow",
+        
+        },
+        tabStyle: {
+          width: 100,
+          backgroundColor:"red"
+        },
+        style: {
+          backgroundColor: 'blue',
+        },
       }
- );
- 
- const AppContainer = createAppContainer(AppNavigator);
- 
- // Now AppContainer is the main component for React to render
- 
- export default AppContainer;
+    }
+  );
+  
+  const AppContainer = createAppContainer(TabNavigator);
+  export default AppContainer;
+  
