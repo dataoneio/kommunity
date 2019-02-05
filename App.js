@@ -12,6 +12,7 @@ import { Platform, StyleSheet, Text, View } from "react-native";
 import AppContainer from "./AppContainer";
 
 export default class App extends Component {
+  
   render() {
     return (
       
