@@ -151,12 +151,13 @@ export default class AddEvent extends React.Component {
           Comment: ""
         });
       this.props.navigation.navigate("Home");
+      this.setState({
+        title: "",
+        descInput: ""
+      });
     }
 
-    this.setState({
-      title: "",
-      descInput: ""
-    });
+    
   }
   render() {
     let data = [

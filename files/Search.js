@@ -49,14 +49,9 @@ export default class Search extends React.Component {
           description: result[3].toString(),
           // uid: data.key,
           title: result[6].toString(),
-<<<<<<< HEAD
-          url1: result[4].toString()
-        });
-=======
         url1:result[4].toString()});
 
         
->>>>>>> 9374598f280a3166aa196b4d5eb53181ccb3bf29
 
         //  console.log("date-" + result[2].toString());
         // console.log("desc--" + result[3].toString());
@@ -74,6 +69,10 @@ export default class Search extends React.Component {
     this.setState({ searchInput: searchval }, () => this.searchByPost());
   };
 
+  clearSearch()
+  {
+      this.setState({searchInput:""});
+  }
   searchByPost() {
     var arr2 = this.state.initialVals;
     var result = arr2.filter(search => {
@@ -133,10 +132,11 @@ export default class Search extends React.Component {
               onChangeText={this.handleChangeText}
               autoFocus={true}
               returnKeyType="search"
+              value={this.state.searchInput}
             />
           </View>
           <View>
-            <TouchableOpacity title="back">
+            <TouchableOpacity title="delete" onPress={this.clearSearch.bind(this)}>
               <Icon name="delete" size={30} color="#676261" />
             </TouchableOpacity>
           </View>
@@ -146,26 +146,6 @@ export default class Search extends React.Component {
             horizontal={true}
             style={{ backgroundColor: "red", padding: 10 }}
           >
-<<<<<<< HEAD
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-            <Text>hello</Text>
-          </ScrollView>
-          <View style={{ paddingBottom: 250 }}>
-=======
-
           <Text>hello</Text>
           <Text>hello</Text>
           <Text>hello</Text>
@@ -186,7 +166,6 @@ export default class Search extends React.Component {
           
           </ScrollView>
           <View style={{ paddingBottom:250}}>
->>>>>>> 9374598f280a3166aa196b4d5eb53181ccb3bf29
             <ScrollView>
               <View
                 style={{
@@ -231,8 +210,4 @@ const styles = StyleSheet.create({
     color: "#333333",
     marginBottom: 5
   }
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> 9374598f280a3166aa196b4d5eb53181ccb3bf29
