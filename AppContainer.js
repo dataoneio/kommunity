@@ -5,6 +5,7 @@ import Home from "./files/Home";
 import AddEvent from "./files/AddEvent";
 import Profile from "./files/Profile";
 import UserNotification from "./files/UserNotification";
+import Search from "./files/Search";
 import React, { Component } from "react";
 
 const TabNavigator = createBottomTabNavigator(
@@ -19,14 +20,18 @@ const TabNavigator = createBottomTabNavigator(
        
      }
    },
-   Notification: { screen: UserNotification,
+   Search: {
+    screen: Search,
     navigationOptions: {
       tabBarIcon: () => (
-        <Icon name="notifications" size={30} style={{ color: "gray" }} />
+        <Icon name="search" size={30} style={{ color: "gray" }} />
       ),
-      showIcon: true
+      showIcon: true,
+      tabBarVisible:false
       
-    } },
+    }
+  },
+   
    
    AddEvent: { screen: AddEvent,
     navigationOptions: {
@@ -38,6 +43,14 @@ const TabNavigator = createBottomTabNavigator(
       
     }
   },
+  Notification: { screen: UserNotification,
+    navigationOptions: {
+      tabBarIcon: () => (
+        <Icon name="notifications" size={30} style={{ color: "gray" }} />
+      ),
+      showIcon: true
+      
+    } },
   Profile: { screen: Profile,
     navigationOptions: {
       tabBarIcon: () => (
