@@ -5,7 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button
+  Button, ScrollView
 } from "react-native";
 import { Icon } from "react-native-elements";
 //import { Button } from "native-base";
@@ -34,6 +34,8 @@ export default class Home extends React.Component {
 
   getDataFromFirebase() {
     let arr1 = [];
+    var d=new Date();
+    console.log("date==="+d);
     firebase
       .database()
       .ref("app/Event details")
@@ -53,11 +55,13 @@ export default class Home extends React.Component {
                 date: result[2].toString(),
                 description: result[3].toString(),
                 uid: data.key,
-                title: result[6].toString()});
+                title: result[6].toString(),
+                url1:result[4].toString()});
             
         console.log("date-" + result[2].toString());
         console.log("desc--" + result[3].toString());
         console.log("title-" + result[6].toString());
+        console.log("url:"+result[4].toString());
 
         this.setState({ feeds: arr1});
         console.log("aaawwww" + JSON.stringify(arr1));
@@ -92,7 +96,9 @@ export default class Home extends React.Component {
       )
     })
     return (
-      <View>
+      <View style={{paddingBottom:10}}>
+
+      
       <View style={styles.header}>
         <Text style={styles.home}>Community Social Network</Text>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -103,10 +109,16 @@ export default class Home extends React.Component {
             <Icon name="search" color="black" size={30} />
           </TouchableOpacity>
         </View>
-        
+    
       </View>
-      <Text>data</Text>
-        <View>{feed}</View>
+      <ScrollView >
+      <View style={{paddingBottom:50}}>
+
+      <View>{feed}</View>
+      </View>
+
+      </ScrollView>
+
       </View>
     );
   }
