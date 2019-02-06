@@ -82,6 +82,7 @@ export default class Home extends React.Component {
                 borderColor: "#d9d9d9",
                 backgroundColor: "#e6e6e6"
               }}
+
             >
             <Feed
                 key={key}
@@ -113,8 +114,8 @@ export default class Home extends React.Component {
       </View>
       <ScrollView >
       <View style={{paddingBottom:50}}>
-
-      <View>{feed}</View>
+      
+      <View style={{flexWrap:"wrap-reverse", flexDirection:"column-reverse"}}>{feed}</View>
       </View>
 
       </ScrollView>

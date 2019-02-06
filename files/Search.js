@@ -49,8 +49,14 @@ export default class Search extends React.Component {
           description: result[3].toString(),
           // uid: data.key,
           title: result[6].toString(),
+<<<<<<< HEAD
           url1: result[4].toString()
         });
+=======
+        url1:result[4].toString()});
+
+        
+>>>>>>> 9374598f280a3166aa196b4d5eb53181ccb3bf29
 
         //  console.log("date-" + result[2].toString());
         // console.log("desc--" + result[3].toString());
@@ -140,6 +146,7 @@ export default class Search extends React.Component {
             horizontal={true}
             style={{ backgroundColor: "red", padding: 10 }}
           >
+<<<<<<< HEAD
             <Text>hello</Text>
             <Text>hello</Text>
             <Text>hello</Text>
@@ -157,6 +164,29 @@ export default class Search extends React.Component {
             <Text>hello</Text>
           </ScrollView>
           <View style={{ paddingBottom: 250 }}>
+=======
+
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          <Text>hello</Text>
+          
+          
+          
+          </ScrollView>
+          <View style={{ paddingBottom:250}}>
+>>>>>>> 9374598f280a3166aa196b4d5eb53181ccb3bf29
             <ScrollView>
               <View
                 style={{
@@ -201,4 +231,8 @@ const styles = StyleSheet.create({
     color: "#333333",
     marginBottom: 5
   }
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 9374598f280a3166aa196b4d5eb53181ccb3bf29
