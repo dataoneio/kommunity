@@ -10,7 +10,6 @@ import {
   ScrollView,
   Dimensions,
   Image
-  
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { TextInput } from "react-native-paper";
@@ -30,7 +29,7 @@ export default class AddEvent extends React.Component {
       descInput: "",
       date: "",
       category: "",
-      imageurl:"",
+      imageurl: ""
     };
   }
   selectPhotoTapped() {
@@ -122,8 +121,6 @@ export default class AddEvent extends React.Component {
     // console.log(" sudid=--------"+imageRef.getDownloadURL());
   };
 
-
-
   addEvent() {
     console.log("added in database");
     console.log("category---" + this.state.category);
@@ -156,8 +153,10 @@ export default class AddEvent extends React.Component {
         descInput: ""
       });
     }
-
-    
+  }
+  goback(){
+    const { navigate } = this.props.navigation;
+ navigate("Home");
   }
   render() {
     let data = [
@@ -187,7 +186,13 @@ export default class AddEvent extends React.Component {
       <View style={{ flex: 1 }}>
         <ScrollView>
           <View>
+            
             <View style={styles.header}>
+              <View>
+              <TouchableOpacity title="" onPress={this.goback.bind(this)}>
+                <Icon name="arrow-back" color="white" size={30} />
+              </TouchableOpacity>
+              </View>
               <Text style={styles.home}>Add Post</Text>
               <View
                 style={{
@@ -196,7 +201,7 @@ export default class AddEvent extends React.Component {
                 }}
               >
                 <TouchableOpacity title="" onPress={this.addEvent.bind(this)}>
-                  <Icon name="done" color="black" size={30} />
+                  <Icon name="done" color="white" size={30} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -227,26 +232,23 @@ export default class AddEvent extends React.Component {
                 placeholderTextColor="#676261"
               />
             </View>
-            <View>
-            <Image
-                    style={styles.ImageContainer}
-                    source={{ uri: this.state.imageurl }}
-                  />
-
+            <View style={{justifyContent:'space-around'}}>
+              <Image
+                style={styles.ImageContainer}
+                source={{ uri: this.state.imageurl }}
+              />
             </View>
           </View>
-     
         </ScrollView>
-        <View style={{ flexDirection: "row" }}>
-         <TouchableOpacity
-           title="image"
-           style={{ padding: 10 }}
-           onPress={this.selectPhotoTapped.bind(this)}
-         >
-           <Icon name="image" size={30} color="#676261" />
-         </TouchableOpacity>
-       </View>
-       
+        <View style={{ flexDirection: "row", backgroundColor: "#243545" }}>
+          <TouchableOpacity
+            title="image"
+            style={{ padding: 10 }}
+            onPress={this.selectPhotoTapped.bind(this)}
+          >
+            <Icon name="image" size={30} color="white" />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -259,19 +261,28 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCFF"
   },
-  ImageContainer:{
-    width: 250,
-    height: 250,
-    paddingLeft: 20,
-    paddingBottom: 10,
-    paddingTop: 10,
+  ImageContainer: {
+    position: "relative",
+    top: 40,
+    //left: 70,
+    // borderRadius: 10,
+    width: (win.width * 2) / 3,
+    height: (win.height/2.5),
+    // paddingTop: 10,
+    padding: 0,
+
+    borderColor: "transparent" /*  */,
+    borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white"
+    backgroundColor: "transparent",
+    left: win.width / 6,
+    paddingBottom: 100
+    //color:"white"
 
   },
   header: {
-    backgroundColor: "#ffcc00",
+    backgroundColor: "#243545",
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,
@@ -281,9 +292,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   home: {
+    fontFamily: "lucida grande",
     justifyContent: "center",
     fontWeight: "bold",
-    fontSize: 18
+    fontSize: 18,
+    color: "white"
   },
   welcome: {
     fontSize: 20,

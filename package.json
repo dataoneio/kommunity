@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
   },
   "dependencies": {
     "firebase": "^5.8.2",
     "native-base": "^2.11.0",
     "react": "16.6.3",
+    "react-content-loader": "^4.0.1",
     "react-native": "0.58.3",
     "react-native-autogrow-textinput": "^5.2.0",
     "react-native-elements": "^1.0.0",
@@ -18,6 +20,8 @@
     "react-native-image-picker": "^0.28.0",
     "react-native-material-dropdown": "git+https://github.com/harshitjee/react-native-material-dropdown.git",
     "react-native-paper": "^2.10.1",
+    "react-native-popup-menu": "^0.15.0",
+    "react-native-responsive-screen": "^1.2.0",
     "react-native-vector-icons": "^6.2.0",
     "react-navigation": "^3.1.2",
     "react-navigation-material-bottom-tabs": "^1.0.0"

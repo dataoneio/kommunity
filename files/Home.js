@@ -5,37 +5,52 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button, ScrollView
+  Button,
+  ScrollView,
+  ActivityIndicator
 } from "react-native";
 import { Icon } from "react-native-elements";
 //import { Button } from "native-base";
 import firebase from "../Firebase";
-import Feed from "./Feed"
+import Feed from "./Feed";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger
+} from "react-native-popup-menu";
+import ContentLoader, { Facebook } from 'react-content-loader'
+
+const MyLoader = () => <ContentLoader />
+const MyFacebookLoader = () => <Facebook />
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       ftitle: "",
       fdescription: "",
       fdate: "",
-      feeds: []
+      feeds: [],
+      initialVals: [],
+      searchResult: [],
+      searchInput: "",
+      onFilter: true,
+      isLoading: true
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     console.log("will mount");
     this.getDataFromFirebase();
-
   }
-  componentDidMount()
-  {
-   // this.getDataFromFirebase();
-
-  }
+  // componentDidMount() {
+  //   // this.getDataFromFirebase();
+  // }
 
   getDataFromFirebase() {
     let arr1 = [];
-    var d=new Date();
-    console.log("date==="+d);
+    var d = new Date();
+    console.log("date===" + d);
     firebase
       .database()
       .ref("app/Event details")
@@ -50,76 +65,182 @@ export default class Home extends React.Component {
         }
         console.log("key--" + key1);
         console.log("---" + result.length);
-        
-              arr1.push({
-                date: result[2].toString(),
-                description: result[3].toString(),
-                uid: data.key,
-                title: result[6].toString(),
-                url1:result[4].toString()});
-            
+
+        arr1.push({
+          date: result[2].toString(),
+          category: result[0].toString(),
+
+          description: result[3].toString(),
+          uid: data.key,
+          title: result[6].toString(),
+          url1: result[4].toString()
+        });
+
         console.log("date-" + result[2].toString());
         console.log("desc--" + result[3].toString());
         console.log("title-" + result[6].toString());
-        console.log("url:"+result[4].toString());
-
-        this.setState({ feeds: arr1});
+        console.log("url:" + result[4].toString());
+        this.setState({ initialVals: arr1 });
+        this.setState({ feeds: arr1 });
+        this.setState({ isLoading: false });
         console.log("aaawwww" + JSON.stringify(arr1));
-
+        console.log(
+          "aaaooooooooooooooooooooooo" + JSON.stringify(this.state.initialVals)
+        );
         console.log("aaa" + JSON.stringify(this.state.feeds));
       });
   }
+  onpress = txt => {
+    this.setState({
+      onFilter: false
+    });
+    if (txt == "All") {
+      console.log("allPosted........................");
+      this.setState({ searchResult: this.state.initialVals });
+    } else {
+      console.log("oooo" + txt);
+      this.setState({ searchInput: txt }, () => this.searchByPost());
+    }
+  };
+  searchByPost() {
+    console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz" + this.state.searchInput);
+    var arr2 = this.state.initialVals;
+    console.log("lolololololololol" + JSON.stringify(arr2));
+    var result = arr2.filter(search => {
+      let v1 = search.description.toUpperCase();
+      let v2 = search.title.toUpperCase();
+      let v3 = search.category.toUpperCase();
+      let s1 = this.state.searchInput.toUpperCase();
+      if (v3.includes(s1)) {
+        return v1;
+      }
+    });
+    this.setState({ searchResult: result });
+    console.log("result" + JSON.stringify(result));
+  }
+
   render() {
+    if (this.state.isLoading) {
+      console.log("true");
+       <MyFacebookLoader />;
+    }
 
-    let feed= this.state.feeds.map((val,key)=>{
-      return(
+    let search =
+      this.state.onFilter === true
+        ? this.state.initialVals
+        : this.state.searchResult;
+    let searchval = search.map((val, key) => {
+      return (
         <View key={key} style={{ padding: 5 }}>
-        <View
-              style={{
-                padding: 1,
-                borderRadius: 5,
-                borderWidth: 2,
-                borderColor: "#d9d9d9",
-                backgroundColor: "#e6e6e6"
-              }}
-
-            >
+          <View
+            style={{
+              padding: 1,
+              borderRadius: 5,
+              borderBottomWidth: 0.5,
+              borderBottomColor: "white",
+              backgroundColor: "#1B2936"
+            }}
+          >
             <Feed
-                key={key}
-                keyval={key}
-                val={val}
-                //deleteMethod={() => this.deleteNote(val.uid, key)}
-                //editMethod={() => this.editNote(val.uid, val.note, val.url1,val.utitleval)}
-                //imageMethod={() => this.imageNote(val.uid, val.url1, key)}
-              /></View>
-
+              key={key}
+              keyval={key}
+              val={val}
+              //deleteMethod={() => this.deleteNote(val.uid, key)}
+              //editMethod={() => this.editNote(val.uid, val.note, val.url1,val.utitleval)}
+              //imageMethod={() => this.imageNote(val.uid, val.url1, key)}
+            />
+          </View>
         </View>
-      )
-    })
+      );
+    });
+
     return (
-      <View style={{paddingBottom:10}}>
+      <View style={{ paddingBottom: 10 }}>
+        <View style={styles.header}>
+          <Text style={styles.home}>Community Social Network</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            {/* <TouchableOpacity title="">
+            <Icon name="list" color="#3394C6" size={30} />
+          </TouchableOpacity> */}
 
-      
-      <View style={styles.header}>
-        <Text style={styles.home}>Community Social Network</Text>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <TouchableOpacity title="">
-            <Icon name="list" color="black" size={30} />
-          </TouchableOpacity>
-          <TouchableOpacity title="">
-            <Icon name="search" color="black" size={30} />
-          </TouchableOpacity>
+            <View>
+              <Menu>
+                <MenuTrigger>
+                  <Icon name="list" color="#cccccc" size={30} />
+                </MenuTrigger>
+                <MenuOptions
+                  style={{ backgroundColor: "#243545" }}
+                  optionsContainerStyle={{
+                    marginTop: 30,
+                    borderColor: "#233443",
+                    borderWidth: 10
+                  }}
+                >
+                  <ScrollView
+                    style={{ maxHeight: 120 }}
+                    showsVerticalScrollIndicator={true}
+                    indicatorStyle={{ color: "red", backgroundColor: "yellow" }}
+                  >
+                    <MenuOption
+                      onSelect={this.onpress.bind(this, "All")}
+                      // text="Party"
+                    >
+                      <Text style={{ color: "white" }}>ALL</Text>
+                    </MenuOption>
+                    <MenuOption
+                      onSelect={this.onpress.bind(this, "Party")}
+                      // text="Party"
+                    >
+                      <Text style={{ color: "white" }}>Party</Text>
+                    </MenuOption>
+                    <MenuOption onSelect={this.onpress.bind(this, "Meet-up")}>
+                      <Text style={{ color: "white" }}>Meet-up</Text>
+                    </MenuOption>
+                    <MenuOption
+                      onSelect={this.onpress.bind(this, "Announcement")}
+                      // //disabled={true}
+                      // text="Announcement"
+                    >
+                      <Text style={{ color: "white" }}>Announcement</Text>
+                    </MenuOption>
+
+                    <MenuOption onSelect={this.onpress.bind(this, "Business")}>
+                      <Text style={{ color: "white" }}>Business</Text>
+                    </MenuOption>
+                    <MenuOption onSelect={this.onpress.bind(this, "Education")}>
+                      <Text style={{ color: "white" }}>Education</Text>
+                    </MenuOption>
+                    <MenuOption
+                      onSelect={this.onpress.bind(this, "Birthday/Anniversary")}
+                    >
+                      <Text style={{ color: "white" }}>
+                        Birthday/Anniversary
+                      </Text>
+                    </MenuOption>
+                  </ScrollView>
+                </MenuOptions>
+              </Menu>
+            </View>
+            {/* <TouchableOpacity title="">
+              <Icon name="search" color="#cccccc" size={30} />
+            </TouchableOpacity> */}
+          </View>
         </View>
-    
-      </View>
-      <ScrollView >
-      <View style={{paddingBottom:50}}>
-      
-      <View style={{flexWrap:"wrap-reverse", flexDirection:"column-reverse"}}>{feed}</View>
-      </View>
-
-      </ScrollView>
-
+        <ScrollView>
+          <View style={{ paddingBottom: 50 }}>
+            <View
+              style={{
+                flexWrap: "wrap-reverse",
+                flexDirection: "column-reverse",
+                backgroundColor: "#1B2936"
+              }}
+            >
+              {searchval}
+            </View>
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -127,7 +248,7 @@ export default class Home extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#ffcc00",
+    backgroundColor: "#243545",
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,
@@ -137,9 +258,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   home: {
+    fontFamily: "lucida grande",
     justifyContent: "center",
     fontWeight: "bold",
-    fontSize: 18
+    fontSize: 20,
+    color: "white"
   },
   container: {
     flex: 1,

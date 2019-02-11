@@ -4,13 +4,13 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
   //Button,
-  //Image,Dimensions
+  Dimensions
 } from "react-native";
 //import { Icon } from "react-native-elements";
-//import {widthPercentageToDP, heightPercentageToDP} from 'react-native-responsive-screen';
-// const win= Dimensions.get('window');
+import {widthPercentageToDP, heightPercentageToDP} from 'react-native-responsive-screen';
+ const win= Dimensions.get('window');
 export default class Note extends Component {
   render() {
     if (this.props.val.url1 == "") {
@@ -55,14 +55,14 @@ export default class Note extends Component {
             <Image
               source={{ uri: this.props.val.url1 }}
               style={{
-                width: 250,
+                width: widthPercentageToDP('90%'),
                 height: 250,
                 paddingLeft: 20,
                 paddingBottom: 10,
                 paddingTop: 10,
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "white"
+                backgroundColor: "transparent"
               }}
             />
           </View>
@@ -85,8 +85,7 @@ const styles = StyleSheet.create({
     position: "relative",
     padding: 0,
     paddingBottom: 10,
-
-    backgroundColor: "#1f1f1f"
+    backgroundColor: "#1B2936"
     //borderBottomWidth: 2,
     //borderBottomColor: "#ededed"
   },

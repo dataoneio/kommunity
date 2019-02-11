@@ -96,9 +96,9 @@ export default class Search extends React.Component {
             style={{
               padding: 1,
               borderRadius: 5,
-              borderWidth: 2,
-              borderColor: "#d9d9d9",
-              backgroundColor: "#e6e6e6"
+              borderBottomWidth:0.5,
+              borderBottomColor:"white",
+              backgroundColor: "#1B2936"
             }}
           >
             <Feed
@@ -122,13 +122,16 @@ export default class Search extends React.Component {
               title="back"
               onPress={() => this.props.navigation.navigate("Home")}
             >
-              <Icon name="arrow-back" size={30} color="#676261" />
+              <Icon name="arrow-back" size={30} color="#cccccc" />
             </TouchableOpacity>
             <TextInput
               style={{
-                paddingRight: 10
+                paddingRight: 10,
+                color:"white"
               }}
-              placeholder="enter to search"
+              placeholder="Enter to search"
+              placeholderTextColor="#A4AAC1"
+              
               onChangeText={this.handleChangeText}
               autoFocus={true}
               returnKeyType="search"
@@ -137,40 +140,28 @@ export default class Search extends React.Component {
           </View>
           <View>
             <TouchableOpacity title="delete" onPress={this.clearSearch.bind(this)}>
-              <Icon name="delete" size={30} color="#676261" />
+              <Icon name="delete" size={30} color="#cccccc" />
             </TouchableOpacity>
           </View>
         </View>
         <View>
-          <ScrollView
+          {/* <ScrollView
             horizontal={true}
-            style={{ backgroundColor: "red", padding: 10 }}
+            style={{ backgroundColor: "transparent", padding: 10 }}
           >
           <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
-          <Text>hello</Text>
+      
           
           
           
-          </ScrollView>
-          <View style={{ paddingBottom:250}}>
+          </ScrollView> */}
+          <View style={{ paddingBottom:10}}>
             <ScrollView>
               <View
                 style={{
                   flexWrap: "wrap-reverse",
-                  flexDirection: "column-reverse"
+                  flexDirection: "column-reverse",
+                  backgroundColor:"#1B2936"
                 }}
               >
                 {searchval}
@@ -185,12 +176,12 @@ export default class Search extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#ffcc00",
+    backgroundColor: "#243545",
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,
     borderBottomColor: "white",
-    padding: 10,
+    padding: 5,
     flexDirection: "row",
     justifyContent: "space-between"
   },

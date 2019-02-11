@@ -14,7 +14,7 @@ const TabNavigator = createBottomTabNavigator(
      screen: Home,
      navigationOptions: {
        tabBarIcon: () => (
-         <Icon name="home" size={30} style={{ color: "gray" }} />
+         <Icon name="home" size={30} color="#cccccc" style={{ color: "#243545" }} />
        ),
        showIcon: true
        
@@ -24,7 +24,7 @@ const TabNavigator = createBottomTabNavigator(
     screen: Search,
     navigationOptions: {
       tabBarIcon: () => (
-        <Icon name="search" size={30} style={{ color: "gray" }} />
+        <Icon name="search" size={30} color="#cccccc" style={{ color: "red" }} />
       ),
       showIcon: true,
       tabBarVisible:false
@@ -36,7 +36,7 @@ const TabNavigator = createBottomTabNavigator(
    AddEvent: { screen: AddEvent,
     navigationOptions: {
       tabBarIcon: () => (
-        <Icon name="add-box" size={30} style={{ color: "gray" }} />
+        <Icon name="add-box" size={30} color="#cccccc" style={{ color: "gray" }} />
       ),
       showIcon: true,
       tabBarVisible: false
@@ -46,7 +46,7 @@ const TabNavigator = createBottomTabNavigator(
   Notification: { screen: UserNotification,
     navigationOptions: {
       tabBarIcon: () => (
-        <Icon name="notifications" size={30} style={{ color: "gray" }} />
+        <Icon name="notifications" size={30} color="#cccccc" style={{ color: "white" }} />
       ),
       showIcon: true
       
@@ -54,7 +54,7 @@ const TabNavigator = createBottomTabNavigator(
   Profile: { screen: Profile,
     navigationOptions: {
       tabBarIcon: () => (
-        <Icon name="info" size={30} style={{ color: "gray" }} />
+        <Icon name="info" size={30} color="#cccccc" style={{ color: "gray" }} />
       ),
       showIcon: true
       
@@ -64,10 +64,14 @@ const TabNavigator = createBottomTabNavigator(
    initialRouteName: "Home",
    tabBarOptions: {
      labelStyle: {
-       fontSize: 14
+       fontSize: 14,
+
        //lineHeight: 20,
        //fontFamily: "CircularStd-Book"
      },
+     style: {
+       backgroundColor:"#243545"
+     }
      //tintColor: "black",
      
    }
