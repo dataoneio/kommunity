@@ -13,8 +13,8 @@ const TabNavigator = createBottomTabNavigator(
    Home: {
      screen: Home,
      navigationOptions: {
-       tabBarIcon: () => (
-         <Icon name="home" size={30} color="#cccccc" style={{ color: "#243545" }} />
+       tabBarIcon: (tintColor, focused, active) => (
+         <Icon name="home" size={30} color={focused ? '#288DCF' : '#cccccc'}/>
        ),
        showIcon: true
        
@@ -23,8 +23,8 @@ const TabNavigator = createBottomTabNavigator(
    Search: {
     screen: Search,
     navigationOptions: {
-      tabBarIcon: () => (
-        <Icon name="search" size={30} color="#cccccc" style={{ color: "red" }} />
+      tabBarIcon: (tintColor, focused) => (
+        <Icon name="search" size={30} color={focused ? '#288DCF' : '#cccccc'} />
       ),
       showIcon: true,
       tabBarVisible:false
@@ -35,8 +35,8 @@ const TabNavigator = createBottomTabNavigator(
    
    AddEvent: { screen: AddEvent,
     navigationOptions: {
-      tabBarIcon: () => (
-        <Icon name="add-box" size={30} color="#cccccc" style={{ color: "gray" }} />
+      tabBarIcon: (tintColor, focused) => (
+        <Icon name="add-box" size={30} color={focused ? '#288DCF' : '#cccccc'}/>
       ),
       showIcon: true,
       tabBarVisible: false
@@ -45,30 +45,34 @@ const TabNavigator = createBottomTabNavigator(
   },
   Notification: { screen: UserNotification,
     navigationOptions: {
-      tabBarIcon: () => (
-        <Icon name="notifications" size={30} color="#cccccc" style={{ color: "white" }} />
+     
+      tabBarIcon: ({tintColor, focused}) => (
+        <Icon name="notifications" size={30} color={focused ? '#288DCF' : '#cccccc'} />
       ),
       showIcon: true
       
     } },
   Profile: { screen: Profile,
     navigationOptions: {
-      tabBarIcon: () => (
-        <Icon name="info" size={30} color="#cccccc" style={{ color: "gray" }} />
+      tabBarIcon: (tintColor, focused) => (
+        <Icon name="info" size={30} color={focused ? '#288DCF' : '#cccccc'} />
       ),
       showIcon: true
       
     } },
  },
  {
-   initialRouteName: "Home",
+   initialRouteName: "Home", 
    tabBarOptions: {
      labelStyle: {
        fontSize: 14,
+      
+
 
        //lineHeight: 20,
        //fontFamily: "CircularStd-Book"
      },
+     activeTintColor:"#288DCF",
      style: {
        backgroundColor:"#243545"
      }

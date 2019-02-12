@@ -120,6 +120,7 @@ export default class Search extends React.Component {
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
               title="back"
+              style={{paddingTop: 7}}
               onPress={() => this.props.navigation.navigate("Home")}
             >
               <Icon name="arrow-back" size={30} color="#cccccc" />
@@ -140,7 +141,7 @@ export default class Search extends React.Component {
           </View>
           <View>
             <TouchableOpacity title="delete" onPress={this.clearSearch.bind(this)}>
-              <Icon name="delete" size={30} color="#cccccc" />
+              <Icon name="close" type="material-community" size={30} color="#cccccc" style={{paddingTop:7}}/>
             </TouchableOpacity>
           </View>
         </View>

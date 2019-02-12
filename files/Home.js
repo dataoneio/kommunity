@@ -73,7 +73,9 @@ export default class Home extends React.Component {
           description: result[3].toString(),
           uid: data.key,
           title: result[6].toString(),
-          url1: result[4].toString()
+          url1: result[4].toString(),
+          userId:result[7].toString(),
+
         });
 
         console.log("date-" + result[2].toString());
