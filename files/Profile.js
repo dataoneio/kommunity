@@ -41,7 +41,7 @@ export default class Profile extends React.Component {
       businessStatus: false,
       BusinessName: "",
       BusinessMobileNo: "",
-      BusinessCategory:"",
+      BusinessCategory: "",
       Type: ""
     };
   }
@@ -157,9 +157,8 @@ export default class Profile extends React.Component {
   goback1() {
     const { navigate } = this.props.navigation;
     navigate("Profile");
-    this.setState({businessStatus:false})
+    this.setState({ businessStatus: false });
   }
-
 
   validate() {
     let text = this.state.txtvalue;
@@ -189,6 +188,18 @@ export default class Profile extends React.Component {
   //     return regex.test(char);
   // }
 
+  updateBusinessdetails() {
+    firebase
+      .database()
+      .ref("app/User/ID1/Business_details")
+      .update({
+        Contact_Number: this.state.BusinessMobileNo,
+        Name: this.state.BusinessName,
+        Category: this.state.BusinessCategory,
+        Type: this.state.Type
+      });
+    this.props.navigation.navigate("Home");
+  }
   getData() {
     firebase
       .database()
@@ -213,6 +224,17 @@ export default class Profile extends React.Component {
         // console.log("iiii--" + this.state.Name);
         // console.log("---------" + this.state.txtvalue);
         // console;
+      });
+    firebase
+      .database()
+      .ref("app/User/ID1/Business_details")
+      .once("value", data => {
+        var bval = data.toJSON();
+        this.setState({ BusinessCategory: bval.Category });
+        this.setState({ BusinessName: bval.Name });
+        this.setState({ BusinessMobileNo: bval.Contact_Number });
+        this.setState({ Type: bval.Type });
+        console.log("hehheheheheh----" + this.state.BusinessMobileNo);
       });
   }
 
@@ -310,50 +332,58 @@ export default class Profile extends React.Component {
                 justifyContent: "space-between"
               }}
             >
-              <TouchableOpacity title="" onPress={this.updateData.bind(this)}>
+              <TouchableOpacity
+                title=""
+                onPress={this.updateBusinessdetails.bind(this)}
+              >
                 <Icon name="done" color="white" size={30} />
               </TouchableOpacity>
             </View>
           </View>
-
-          <View style={{ padding: 10 }}>
-            <TextInput
-              placeholder="Business Name"
-              placeholderTextColor="#676261"
-              onChangeText={BusinessName => this.setState({ BusinessName })}
-              value={this.state.BusinessName}
-              style={{ backgroundColor: "transparent" }}
-            />
-          </View>
-          <View style={{ padding: 10 }}>
-            <TextInput
-              ref="mobileNo"
-              keyboardType="numeric"
-              style={{ backgroundColor: "transparent", width: "100%" }}
-              placeholder="Business mobile number"
-              onChangeText={BusinessMobileNo =>
-                this.setState({ BusinessMobileNo })
-              }
-              value={this.state.BusinessMobileNo.toString()}
-            />
-          </View>
-          <View style={{ padding: 10 }}>
-            <Dropdown
-              label="Business Category"
-              labelColor="#676261"
-              data={data7}
-              onChangeText={BusinessCategory => this.setState({ BusinessCategory })}
-              value={this.state.BusinessCategory}
-            />
-          </View>
-          <View style={{ padding: 10 }}>
-            <TextInput
-              placeholder="Business type "
-              onChangeText={Type => this.setState({ Type })}
-              value={this.state.Type}
-              style={{ backgroundColor: "transparent" }}
-            />
-          </View>
+          <ScrollView style={{padding:10}}>
+            <View>
+            <View style={{ padding: 10 }}>
+              <TextInput
+                placeholder="Business Name"
+                placeholderTextColor="#676261"
+                onChangeText={BusinessName => this.setState({ BusinessName })}
+                value={this.state.BusinessName}
+                style={{ backgroundColor: "transparent" }}
+              />
+            </View>
+            <View style={{ padding: 10 }}>
+              <TextInput
+                ref="mobileNo"
+                keyboardType="numeric"
+                style={{ backgroundColor: "transparent", width: "100%" }}
+                placeholder="Business mobile number"
+                onChangeText={BusinessMobileNo =>
+                  this.setState({ BusinessMobileNo })
+                }
+                value={this.state.BusinessMobileNo.toString()}
+              />
+            </View>
+            <View style={{ padding: 10 }}>
+              <Dropdown
+                label="Business Category"
+                labelColor="#676261"
+                data={data7}
+                onChangeText={BusinessCategory =>
+                  this.setState({ BusinessCategory })
+                }
+                value={this.state.BusinessCategory}
+              />
+            </View>
+            <View style={{ padding: 10, paddingBottom: 50 }}>
+              <TextInput
+                placeholder="Business type "
+                onChangeText={Type => this.setState({ Type })}
+                value={this.state.Type}
+                style={{ backgroundColor: "transparent" }}
+              />
+            </View>
+            </View>
+          </ScrollView>
         </View>
       );
     }
