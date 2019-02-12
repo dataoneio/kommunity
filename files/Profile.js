@@ -188,7 +188,9 @@ export default class Profile extends React.Component {
         this.setState({ profession: value.Profession });
         this.setState({ mobileNo: value.Contact_Number });
         console.log("----" + value.Profession);
-        console.log("-----gegeggeg" + this.state.Gender);
+        console.log("-----gegeggeg"+this.state.Gender);
+        this.setState({Gender:value.Gender});
+        this.setState({BloodGroup:value.Blood_Group});
         // console.log("eeeeee-" + value.Profile_photo);
         // console.log("image---" + this.state.imageurl);
         // console.log("iiii--" + this.state.Name);
