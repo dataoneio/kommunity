@@ -21,59 +21,28 @@ import firebase from "../Firebase";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
+//import { timingSafeEqual } from "crypto";
 const Blob = RNFetchBlob.polyfill.Blob;
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { country: "", region: "", txtvalue: "", imageurl: "" };
+    this.state = {
+      country: "",
+      region: "",
+      txtvalue: "",
+      imageurl: "",
+      profession: "",
+      mobileNo: "",
+      BloodGroup: "",
+      Gender: ""
+    };
+  }
+  componentDidMount() {
+    this.getData();
   }
 
-  getDataFromFirebase() {
-    let arr1 = [];
-    var d = new Date();
-    console.log("date===" + d);
-    firebase
-      .database()
-      .ref("app/User")
-      .on("child_added", data => {
-        var result = [];
-        var key1 = [];
-        key1.push(data.key);
-        let arr = data.toJSON();
-        console.log("---" + JSON.stringify(arr));
-        for (var i in arr) {
-          result.push(arr[i]);
-        }
-        console.log("key--" + key1);
-        console.log("---" + result.length);
-
-        arr1.push({
-          date: result[2].toString(),
-          category: result[0].toString(),
-
-          description: result[3].toString(),
-          uid: data.key,
-          title: result[6].toString(),
-          url1: result[4].toString(),
-          userId: result[7].toString()
-        });
-
-        console.log("date-" + result[2].toString());
-        console.log("desc--" + result[3].toString());
-        console.log("title-" + result[6].toString());
-        console.log("url:" + result[4].toString());
-        this.setState({ initialVals: arr1 });
-        this.setState({ feeds: arr1 });
-        this.setState({ isLoading: false });
-        console.log("aaawwww" + JSON.stringify(arr1));
-        console.log(
-          "aaaooooooooooooooooooooooo" + JSON.stringify(this.state.initialVals)
-        );
-        console.log("aaa" + JSON.stringify(this.state.feeds));
-      });
-  }
   selectPhotoTapped() {
     const options = {
       quality: 1.0,
@@ -133,9 +102,9 @@ export default class Profile extends React.Component {
         .then(url => {
           //console.log("----"+url);
 
-          this.setState({ uurl: url });
-          console.log(" -------  " + this.state.uurl),
-            console.log("uid1:---" + this.state.uid1);
+          this.setState({ imageurl: url });
+          // console.log(" -------  " + this.state.uurl),
+          // console.log("uid1:---" + this.state.uid1);
           // firebase
           //   .database()
           //   .ref("user/" + this.state.uid1)
@@ -189,8 +158,72 @@ export default class Profile extends React.Component {
       this.setState({ email: text });
       // alert("Email format is correct")
       console.log("Email is Correct");
-      this.goback();
+      // this.goback();
     }
+  }
+
+  hasNumber(num) {
+    var regex = /\d/g;
+    return regex.test(num);
+  }
+  // hasSpecialChar(char)
+  // {
+  //   var regex = /^[^!-\/:-@\[-`{-~]+$/;
+  //     return regex.test(char);
+  // }
+
+  getData() {
+    firebase
+      .database()
+      .ref("app/User/ID1")
+      .once("value", data => {
+        var value = data.toJSON();
+        console.log("----" + value.Profession);
+
+        // console.log("------" + value.Contact_Number);
+        console.log("heheheh----" + JSON.stringify(value));
+        this.setState({ Name: value.Name });
+        this.setState({ txtvalue: value.Email });
+        this.setState({ imageurl: value.Profile_photo });
+        this.setState({ profession: value.Profession });
+        this.setState({ mobileNo: value.Contact_Number });
+        console.log("----" + value.Profession);
+        console.log("-----gegeggeg" + this.state.Gender);
+        // console.log("eeeeee-" + value.Profile_photo);
+        // console.log("image---" + this.state.imageurl);
+        // console.log("iiii--" + this.state.Name);
+        // console.log("---------" + this.state.txtvalue);
+        // console;
+      });
+  }
+
+  updateData() {
+    let name = this.state.Name;
+    this.validate();
+    if (this.state.Name.trim().length == 0) {
+      alert("name cant be empty");
+    }
+    if (this.hasNumber(name)) {
+      alert("name cannot contain numeric/special char");
+    }
+
+    if (this.state.Gender === undefined) {
+      alert("gender required");
+    }
+    if (this.state.BloodGroup === undefined) {
+      alert(" BoodGrp required");
+    }
+    firebase
+      .database()
+      .ref("app/User/ID1")
+      .update({
+        Name: this.state.Name,
+        Email: this.state.txtvalue,
+        Profile_photo: this.state.imageurl,
+        Profession: this.state.profession,
+        Gender: this.state.Gender,
+        Blood_Group: this.state.BloodGroup
+      });
   }
   render() {
     const { country, region } = this.state;
@@ -233,97 +266,113 @@ export default class Profile extends React.Component {
     ];
     return (
       <View>
-        <View style={styles.header}>
-          <View>
-            <TouchableOpacity title="" onPress={this.goback.bind(this)}>
-              <Icon name="arrow-back" color="white" size={30} />
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.home}>Edit profile</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}
-          >
-            <TouchableOpacity title="" onPress={this.validate.bind(this)}>
-              <Icon name="done" color="white" size={30} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={{ alignSelf: "center", paddingTop: 20 }}>
-          <View style={{ justifyContent: "center" }}>
-            <Image
-              style={styles.ImageContainer1}
-              source={{
-                uri: this.state.imageurl
-              }}
-            />
+       <View style={styles.header}>
+         <View>
+           <TouchableOpacity title="" onPress={this.goback.bind(this)}>
+             <Icon name="arrow-back" color="white" size={30} />
+           </TouchableOpacity>
+         </View>
+         <Text style={styles.home}>Edit profile</Text>
+         <View
+           style={{
+             flexDirection: "row",
+             justifyContent: "space-between"
+           }}
+         >
+           <TouchableOpacity title="" onPress={this.validate.bind(this)}>
+             <Icon name="done" color="white" size={30} />
+           </TouchableOpacity>
+         </View>
 
-            <TouchableOpacity
-              style={{ alignSelf: "center" }}
-              onPress={this.selectPhotoTapped.bind(this)}
-            >
-              <Text style={{ fontFamily: "lucida grande" }}> Edit Photo </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <ScrollView>
+       </View>
+
+        <ScrollView style={{ padding: 10 }}>
           <View>
-            <TextInput
-              placeholder="Name"
-              placeholderTextColor="#676261"
-              // onChangeText={title => this.setState({ Name })}
-              //value={this.state.Name}
-              style={{ backgroundColor: "transparent" }}
-            />
-            {/* <TextInput
+          <View style={{ alignSelf: "center", paddingTop: 20 }}>
+             <View style={{ justifyContent: "center" }}>
+               <Image
+                 style={styles.ImageContainer1}
+                 source={{
+                   uri: this.state.imageurl
+                 }}
+               />
+
+               <TouchableOpacity
+                 style={{ alignSelf: "center" }}
+                 onPress={this.selectPhotoTapped.bind(this)}
+               >
+                 <Text style={{ fontFamily: "lucida grande" }}>
+                   {" "}
+                   Edit Photo{" "}
+                 </Text>
+               </TouchableOpacity>
+             </View>
+           </View>
+
+            <View>
+              <View style={{ padding: 10 }}>
+                <TextInput
+                  placeholder="Name"
+                  placeholderTextColor="#676261"
+                  onChangeText={Name => this.setState({ Name })}
+                  value={this.state.Name}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              {/* <TextInput
             placeholder="Email"
             placeholderTextColor="#676261"
             // onChangeText={Email => this.setState({Email})}
             // value={this.state.Email}
             style={{ backgroundColor: "transparent" }}
           /> */}
-            <TextInput
-              placeholder="Email ID"
-              onChangeText={txtvalue => this.setState({ txtvalue })}
-              value={this.state.txtvalue}
-              style={{ backgroundColor: "transparent" }}
-            />
-            <View style={{ padding: 10 }}>
-              <Dropdown
-                label="Gender"
-                labelColor="#676261"
-                data={data}
-                onChangeText={Gender => this.setState({ Gender })}
-                // value={"None"}
-              />
-            </View>
-            <View style={{ padding: 10 }}>
-              <Dropdown
-                label="Bloodgroup"
-                labelColor="#676261"
-                data={data1}
-                onChangeText={Blood_Group => this.setState({ Blood_Group })}
-                // value={"None"}
-              />
-            </View>
+              <View style={{ padding: 10 }}>
+                <TextInput
+                  placeholder="Email ID"
+                  onChangeText={txtvalue => this.setState({ txtvalue })}
+                  value={this.state.txtvalue}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              <View style={{ padding: 10 }}>
+                <Dropdown
+                  label="Gender"
+                  labelColor="#676261"
+                  data={data}
+                  onChangeText={Gender => this.setState({ Gender })}
+                  value={this.state.Gender}
+                />
+              </View>
 
-            <TextInput
-              placeholder="Profession"
-              placeholderTextColor="#676261"
-              // onChangeText={title => this.setState({ Name })}
-              //value={this.state.Name}
-              style={{ backgroundColor: "transparent" }}
-            />
-
-            <TextInput
-              ref="mobileNo"
-              keyboardType="numeric"
-              style={{ backgroundColor: "transparent", width: "100%" }}
-              placeholder="Enter mobile number"
-              // onChangeText={value => this.handleChange("mobileNo", num)}
-            />
+              <View style={{ padding: 10 }}>
+                <TextInput
+                  placeholder="Profession"
+                  placeholderTextColor="#676261"
+                  onChangeText={profession => this.setState({ profession })}
+                  value={this.state.profession}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              <View style={{ padding: 10 }}>
+                <Dropdown
+                  label="Bloodgroup"
+                  labelColor="#676261"
+                  data={data1}
+                  onChangeText={Blood_Group => this.setState({ Blood_Group })}
+                  value={this.state.BloodGroup}
+                />
+              </View>
+              <View style={{ paddingBottom: 100 }}>
+                <TextInput
+                  ref="mobileNo"
+                  keyboardType="numeric"
+                  style={{ backgroundColor: "transparent", width: "100%" }}
+                  placeholder="Enter mobile number"
+                  onChangeText={mobileNo => this.setState({ mobileNo })}
+                  value={this.state.mobileNo.toString()}
+                />
+              </View>
+            </View>
           </View>
         </ScrollView>
       </View>
