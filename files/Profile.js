@@ -151,13 +151,14 @@ export default class Profile extends React.Component {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (reg.test(text) === false) {
       console.log("Email is Not Correct");
-      alert("Email format is incorrect");
+    //  alert("Email format is incorrect");
       //this.setState({email:text})
       return false;
     } else {
       this.setState({ email: text });
       // alert("Email format is correct")
       console.log("Email is Correct");
+      return true;
       // this.goback();
     }
   }
@@ -201,20 +202,25 @@ export default class Profile extends React.Component {
 
   updateData() {
     let name = this.state.Name;
-    this.validate();
-    if (this.state.Name.trim().length == 0) {
+    if(!this.validate())
+    {
+      alert("Email format is incorrect");
+    }
+   
+    else if (this.state.Name.trim().length == 0) {
       alert("name cant be empty");
     }
-    if (this.hasNumber(name)) {
+    else if (this.hasNumber(name)) {
       alert("name cannot contain numeric/special char");
     }
 
-    if (this.state.Gender === undefined) {
+    else if (this.state.Gender === undefined) {
       alert("gender required");
     }
-    if (this.state.BloodGroup === undefined) {
+    else if (this.state.BloodGroup === undefined) {
       alert(" BoodGrp required");
     }
+    else{
     firebase
       .database()
       .ref("app/User/ID1")
@@ -226,7 +232,9 @@ export default class Profile extends React.Component {
         Gender: this.state.Gender,
         Blood_Group: this.state.BloodGroup
       });
+      this.goback();
   }
+}
   render() {
     const { country, region } = this.state;
     let data = [
@@ -281,7 +289,7 @@ export default class Profile extends React.Component {
              justifyContent: "space-between"
            }}
          >
-           <TouchableOpacity title="" onPress={this.validate.bind(this)}>
+           <TouchableOpacity title="" onPress={this.updateData.bind(this)}>
              <Icon name="done" color="white" size={30} />
            </TouchableOpacity>
          </View>
