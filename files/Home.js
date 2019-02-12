@@ -19,10 +19,10 @@ import {
   MenuOption,
   MenuTrigger
 } from "react-native-popup-menu";
-import ContentLoader, { Facebook } from 'react-content-loader'
-
-const MyLoader = () => <ContentLoader />
-const MyFacebookLoader = () => <Facebook />
+import ContentLoader from "react-native-content-loader";
+import { Circle, Rect } from "react-native-svg";
+// const MyLoader = () => <ContentLoader />
+// const MyFacebookLoader = () => <Facebook />
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -123,8 +123,23 @@ export default class Home extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      console.log("true");
-       <MyFacebookLoader />;
+      return(
+      <View style={{paddingLeft:20}}>
+      <ContentLoader height={300}>
+        <Circle cx="30" cy="30" r="30" />
+        <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+        <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+        <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
+      </ContentLoader>
+      <ContentLoader height={300}>
+        <Circle cx="30" cy="30" r="30" />
+        <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+        <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+        <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
+      </ContentLoader>
+
+      </View>
+    );
     }
 
     let search =

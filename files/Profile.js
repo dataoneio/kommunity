@@ -13,7 +13,8 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Image
+  Image,
+  Button
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import firebase from "../Firebase";
@@ -36,7 +37,12 @@ export default class Profile extends React.Component {
       profession: "",
       mobileNo: "",
       BloodGroup: "",
-      Gender: ""
+      Gender: "",
+      businessStatus: false,
+      BusinessName: "",
+      BusinessMobileNo: "",
+      BusinessCategory:"",
+      Type: ""
     };
   }
   componentDidMount() {
@@ -131,6 +137,9 @@ export default class Profile extends React.Component {
     });
     // console.log(" sudid=--------"+imageRef.getDownloadURL());
   };
+  businessDetails() {
+    this.setState({ businessStatus: true });
+  }
 
   selectCountry(val) {
     this.setState({ country: val });
@@ -145,13 +154,20 @@ export default class Profile extends React.Component {
     navigate("Home");
   }
 
+  goback1() {
+    const { navigate } = this.props.navigation;
+    navigate("Profile");
+    this.setState({businessStatus:false})
+  }
+
+
   validate() {
     let text = this.state.txtvalue;
     console.log("olololololololo" + text);
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (reg.test(text) === false) {
       console.log("Email is Not Correct");
-    //  alert("Email format is incorrect");
+      //  alert("Email format is incorrect");
       //this.setState({email:text})
       return false;
     } else {
@@ -189,9 +205,9 @@ export default class Profile extends React.Component {
         this.setState({ profession: value.Profession });
         this.setState({ mobileNo: value.Contact_Number });
         console.log("----" + value.Profession);
-        console.log("-----gegeggeg"+this.state.Gender);
-        this.setState({Gender:value.Gender});
-        this.setState({BloodGroup:value.Blood_Group});
+        console.log("-----gegeggeg" + this.state.Gender);
+        this.setState({ Gender: value.Gender });
+        this.setState({ BloodGroup: value.Blood_Group });
         // console.log("eeeeee-" + value.Profile_photo);
         // console.log("image---" + this.state.imageurl);
         // console.log("iiii--" + this.state.Name);
@@ -202,39 +218,31 @@ export default class Profile extends React.Component {
 
   updateData() {
     let name = this.state.Name;
-    if(!this.validate())
-    {
+    if (!this.validate()) {
       alert("Email format is incorrect");
-    }
-   
-    else if (this.state.Name.trim().length == 0) {
+    } else if (this.state.Name.trim().length == 0) {
       alert("name cant be empty");
-    }
-    else if (this.hasNumber(name)) {
+    } else if (this.hasNumber(name)) {
       alert("name cannot contain numeric/special char");
-    }
-
-    else if (this.state.Gender === undefined) {
+    } else if (this.state.Gender === undefined) {
       alert("gender required");
-    }
-    else if (this.state.BloodGroup === undefined) {
+    } else if (this.state.BloodGroup === undefined) {
       alert(" BoodGrp required");
-    }
-    else{
-    firebase
-      .database()
-      .ref("app/User/ID1")
-      .update({
-        Name: this.state.Name,
-        Email: this.state.txtvalue,
-        Profile_photo: this.state.imageurl,
-        Profession: this.state.profession,
-        Gender: this.state.Gender,
-        Blood_Group: this.state.BloodGroup
-      });
+    } else {
+      firebase
+        .database()
+        .ref("app/User/ID1")
+        .update({
+          Name: this.state.Name,
+          Email: this.state.txtvalue,
+          Profile_photo: this.state.imageurl,
+          Profession: this.state.profession,
+          Gender: this.state.Gender,
+          Blood_Group: this.state.BloodGroup
+        });
       this.goback();
+    }
   }
-}
   render() {
     const { country, region } = this.state;
     let data = [
@@ -274,50 +282,125 @@ export default class Profile extends React.Component {
         value: "AB-"
       }
     ];
+    let data7 = [
+      {
+        value: "Wholesale"
+      },
+      {
+        value: "Retail"
+      },
+      {
+        value: "Production"
+      }
+    ];
+    if (this.state.businessStatus) {
+      console.log("Businessstatus" + this.state.businessStatus);
+      return (
+        <View>
+          <View style={styles.header}>
+            <View>
+              <TouchableOpacity title="" onPress={this.goback1.bind(this)}>
+                <Icon name="arrow-back" color="white" size={30} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.home}>Business Details</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            >
+              <TouchableOpacity title="" onPress={this.updateData.bind(this)}>
+                <Icon name="done" color="white" size={30} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={{ padding: 10 }}>
+            <TextInput
+              placeholder="Business Name"
+              placeholderTextColor="#676261"
+              onChangeText={BusinessName => this.setState({ BusinessName })}
+              value={this.state.BusinessName}
+              style={{ backgroundColor: "transparent" }}
+            />
+          </View>
+          <View style={{ padding: 10 }}>
+            <TextInput
+              ref="mobileNo"
+              keyboardType="numeric"
+              style={{ backgroundColor: "transparent", width: "100%" }}
+              placeholder="Business mobile number"
+              onChangeText={BusinessMobileNo =>
+                this.setState({ BusinessMobileNo })
+              }
+              value={this.state.BusinessMobileNo.toString()}
+            />
+          </View>
+          <View style={{ padding: 10 }}>
+            <Dropdown
+              label="Business Category"
+              labelColor="#676261"
+              data={data7}
+              onChangeText={BusinessCategory => this.setState({ BusinessCategory })}
+              value={this.state.BusinessCategory}
+            />
+          </View>
+          <View style={{ padding: 10 }}>
+            <TextInput
+              placeholder="Business type "
+              onChangeText={Type => this.setState({ Type })}
+              value={this.state.Type}
+              style={{ backgroundColor: "transparent" }}
+            />
+          </View>
+        </View>
+      );
+    }
+
     return (
       <View>
-       <View style={styles.header}>
-         <View>
-           <TouchableOpacity title="" onPress={this.goback.bind(this)}>
-             <Icon name="arrow-back" color="white" size={30} />
-           </TouchableOpacity>
-         </View>
-         <Text style={styles.home}>Edit profile</Text>
-         <View
-           style={{
-             flexDirection: "row",
-             justifyContent: "space-between"
-           }}
-         >
-           <TouchableOpacity title="" onPress={this.updateData.bind(this)}>
-             <Icon name="done" color="white" size={30} />
-           </TouchableOpacity>
-         </View>
-
-       </View>
+        <View style={styles.header}>
+          <View>
+            <TouchableOpacity title="" onPress={this.goback.bind(this)}>
+              <Icon name="arrow-back" color="white" size={30} />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.home}>Edit profile</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }}
+          >
+            <TouchableOpacity title="" onPress={this.updateData.bind(this)}>
+              <Icon name="done" color="white" size={30} />
+            </TouchableOpacity>
+          </View>
+        </View>
 
         <ScrollView style={{ padding: 10 }}>
           <View>
-          <View style={{ alignSelf: "center", paddingTop: 20 }}>
-             <View style={{ justifyContent: "center" }}>
-               <Image
-                 style={styles.ImageContainer1}
-                 source={{
-                   uri: this.state.imageurl
-                 }}
-               />
+            <View style={{ alignSelf: "center", paddingTop: 20 }}>
+              <View style={{ justifyContent: "center" }}>
+                <Image
+                  style={styles.ImageContainer1}
+                  source={{
+                    uri: this.state.imageurl
+                  }}
+                />
 
-               <TouchableOpacity
-                 style={{ alignSelf: "center" }}
-                 onPress={this.selectPhotoTapped.bind(this)}
-               >
-                 <Text style={{ fontFamily: "lucida grande" }}>
-                   {" "}
-                   Edit Photo{" "}
-                 </Text>
-               </TouchableOpacity>
-             </View>
-           </View>
+                <TouchableOpacity
+                  style={{ alignSelf: "center" }}
+                  onPress={this.selectPhotoTapped.bind(this)}
+                >
+                  <Text style={{ fontFamily: "lucida grande" }}>
+                    {" "}
+                    Edit Photo{" "}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
 
             <View>
               <View style={{ padding: 10 }}>
@@ -372,7 +455,7 @@ export default class Profile extends React.Component {
                   value={this.state.BloodGroup}
                 />
               </View>
-              <View style={{ paddingBottom: 100 }}>
+              <View>
                 <TextInput
                   ref="mobileNo"
                   keyboardType="numeric"
@@ -380,6 +463,14 @@ export default class Profile extends React.Component {
                   placeholder="Enter mobile number"
                   onChangeText={mobileNo => this.setState({ mobileNo })}
                   value={this.state.mobileNo.toString()}
+                />
+              </View>
+              <View style={{ paddingBottom: 100 }}>
+                <Button
+                  onPress={this.businessDetails.bind(this)}
+                  title="Business Details"
+                  color="#676261"
+                  //accessibilityLabel="Learn more about this purple button"
                 />
               </View>
             </View>
