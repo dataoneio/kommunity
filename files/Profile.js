@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+
+import Image from "react-native-image-progress";
+import * as Progress from "react-native-progress";
+
 import { Icon } from "react-native-elements";
 import { Dropdown } from "react-native-material-dropdown";
 import {
@@ -13,7 +17,6 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Image,
   Button
 } from "react-native";
 import { TextInput } from "react-native-paper";
@@ -189,16 +192,21 @@ export default class Profile extends React.Component {
   // }
 
   updateBusinessdetails() {
-    firebase
-      .database()
-      .ref("app/User/ID1/Business_details")
-      .update({
-        Contact_Number: this.state.BusinessMobileNo,
-        Name: this.state.BusinessName,
-        Category: this.state.BusinessCategory,
-        Type: this.state.Type
-      });
-    this.props.navigation.navigate("Home");
+    let text1 = this.state.BusinessMobileNo;
+    if (!this.mobilevalidate(text1)) {
+      alert("mobile is incorrect");
+    } else {
+      firebase
+        .database()
+        .ref("app/User/ID1/Business_details")
+        .update({
+          Contact_Number: this.state.BusinessMobileNo,
+          Name: this.state.BusinessName,
+          Category: this.state.BusinessCategory,
+          Type: this.state.Type
+        });
+      this.props.navigation.navigate("Home");
+    }
   }
   getData() {
     firebase
@@ -239,9 +247,12 @@ export default class Profile extends React.Component {
   }
 
   updateData() {
+    let text = this.state.mobileNo;
     let name = this.state.Name;
     if (!this.validate()) {
       alert("Email format is incorrect");
+    } else if (!this.mobilevalidate(text)) {
+      alert("mobile no is incorrect");
     } else if (this.state.Name.trim().length == 0) {
       alert("name cant be empty");
     } else if (this.hasNumber(name)) {
@@ -260,9 +271,18 @@ export default class Profile extends React.Component {
           Profile_photo: this.state.imageurl,
           Profession: this.state.profession,
           Gender: this.state.Gender,
-          Blood_Group: this.state.BloodGroup
+          Blood_Group: this.state.BloodGroup,
+          Contact_Number: this.state.mobileNo
         });
       this.goback();
+    }
+  }
+  mobilevalidate(text) {
+    const reg = /^[0]?[123456789]\d{9}$/;
+    if (reg.test(text) === false) {
+      return false;
+    } else {
+      return true;
     }
   }
   render() {
@@ -340,48 +360,48 @@ export default class Profile extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-          <ScrollView style={{padding:10}}>
+          <ScrollView style={{ padding: 10 }}>
             <View>
-            <View style={{ padding: 10 }}>
-              <TextInput
-                placeholder="Business Name"
-                placeholderTextColor="#676261"
-                onChangeText={BusinessName => this.setState({ BusinessName })}
-                value={this.state.BusinessName}
-                style={{ backgroundColor: "transparent" }}
-              />
-            </View>
-            <View style={{ padding: 10 }}>
-              <TextInput
-                ref="mobileNo"
-                keyboardType="numeric"
-                style={{ backgroundColor: "transparent", width: "100%" }}
-                placeholder="Business mobile number"
-                onChangeText={BusinessMobileNo =>
-                  this.setState({ BusinessMobileNo })
-                }
-                value={this.state.BusinessMobileNo.toString()}
-              />
-            </View>
-            <View style={{ padding: 10 }}>
-              <Dropdown
-                label="Business Category"
-                labelColor="#676261"
-                data={data7}
-                onChangeText={BusinessCategory =>
-                  this.setState({ BusinessCategory })
-                }
-                value={this.state.BusinessCategory}
-              />
-            </View>
-            <View style={{ padding: 10, paddingBottom: 50 }}>
-              <TextInput
-                placeholder="Business type "
-                onChangeText={Type => this.setState({ Type })}
-                value={this.state.Type}
-                style={{ backgroundColor: "transparent" }}
-              />
-            </View>
+              <View style={{ padding: 10 }}>
+                <TextInput
+                  placeholder="Business Name"
+                  placeholderTextColor="#676261"
+                  onChangeText={BusinessName => this.setState({ BusinessName })}
+                  value={this.state.BusinessName}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              <View style={{ padding: 10 }}>
+                <TextInput
+                  ref="mobileNo"
+                  keyboardType="phone-pad"
+                  style={{ backgroundColor: "transparent", width: "100%" }}
+                  placeholder="Business mobile number"
+                  onChangeText={BusinessMobileNo =>
+                    this.setState({ BusinessMobileNo })
+                  }
+                  value={this.state.BusinessMobileNo.toString()}
+                />
+              </View>
+              <View style={{ padding: 10 }}>
+                <Dropdown
+                  label="Business Category"
+                  labelColor="#676261"
+                  data={data7}
+                  onChangeText={BusinessCategory =>
+                    this.setState({ BusinessCategory })
+                  }
+                  value={this.state.BusinessCategory}
+                />
+              </View>
+              <View style={{ padding: 10, paddingBottom: 50 }}>
+                <TextInput
+                  placeholder="Business type "
+                  onChangeText={Type => this.setState({ Type })}
+                  value={this.state.Type}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
             </View>
           </ScrollView>
         </View>
@@ -413,13 +433,16 @@ export default class Profile extends React.Component {
           <View>
             <View style={{ alignSelf: "center", paddingTop: 20 }}>
               <View style={{ justifyContent: "center" }}>
-                <Image
-                  style={styles.ImageContainer1}
-                  source={{
-                    uri: this.state.imageurl
-                  }}
-                />
-
+                
+                  <Image
+                    borderRadius= {50}
+                    style={styles.ImageContainer1}
+                    source={{
+                      uri: this.state.imageurl
+                    }}
+                    indicator={Progress.Circle}
+                  />
+                
                 <TouchableOpacity
                   style={{ alignSelf: "center" }}
                   onPress={this.selectPhotoTapped.bind(this)}
@@ -527,7 +550,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     backgroundColor: "#fff",
-    borderRadius: 100
+    borderRadius: 100,
+    overflow: 'hidden'
   },
   header: {
     backgroundColor: "#243545",
