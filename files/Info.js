@@ -70,7 +70,10 @@ export default class Info extends React.Component {
   }
   handlenavigation() {
     const { navigate } = this.props.navigation;
-    navigate("Profile");
+    navigate("Profile", {
+      returnData: this.returnData.bind(this),
+      returnData1: this.returnData1.bind(this)
+    });
   }
   goback1() {
     const { navigate } = this.props.navigation;
@@ -83,7 +86,25 @@ export default class Info extends React.Component {
   //   var regex = /^[^!-\/:-@\[-`{-~]+$/;
   //     return regex.test(char);
   // }
-
+  returnData(Name, Email, Photo, phone, gender, bg, profession) {
+    this.setState({
+      Name: Name,
+      txtvalue: Email,
+      imageurl: Photo,
+      mobileNo: phone,
+      Gender: gender,
+      BloodGroup: bg,
+      profession: profession
+    });
+  }
+  returnData1(name, mobile, type, Category) {
+    this.setState({
+      BusinessName: name,
+      BusinessMobileNo: mobile,
+      Type: type,
+      BusinessCategory: Category
+    });
+  }
   getData() {
     firebase
       .database()

@@ -154,7 +154,7 @@ export default class Profile extends React.Component {
 
   goback() {
     const { navigate } = this.props.navigation;
-    navigate("Home");
+    navigate("Info");
   }
 
   goback1() {
@@ -205,7 +205,13 @@ export default class Profile extends React.Component {
           Category: this.state.BusinessCategory,
           Type: this.state.Type
         });
-      this.props.navigation.navigate("Home");
+      this.props.navigation.state.params.returnData1(
+        this.state.BusinessName,
+        this.state.BusinessMobileNo,
+        this.state.Type,
+        this.state.BusinessCategory
+      );
+      this.props.navigation.navigate("Info");
     }
   }
   getData() {
@@ -274,6 +280,15 @@ export default class Profile extends React.Component {
           Blood_Group: this.state.BloodGroup,
           Contact_Number: this.state.mobileNo
         });
+      this.props.navigation.state.params.returnData(
+        this.state.Name,
+        this.state.txtvalue,
+        this.state.imageurl,
+        this.state.mobileNo,
+        this.state.Gender,
+        this.state.BloodGroup,
+        this.state.profession
+      );
       this.goback();
     }
   }
@@ -433,16 +448,15 @@ export default class Profile extends React.Component {
           <View>
             <View style={{ alignSelf: "center", paddingTop: 20 }}>
               <View style={{ justifyContent: "center" }}>
-                
-                  <Image
-                    borderRadius= {50}
-                    style={styles.ImageContainer1}
-                    source={{
-                      uri: this.state.imageurl
-                    }}
-                    indicator={Progress.Circle}
-                  />
-                
+                <Image
+                  borderRadius={50}
+                  style={styles.ImageContainer1}
+                  source={{
+                    uri: this.state.imageurl
+                  }}
+                  indicator={Progress.Circle}
+                />
+
                 <TouchableOpacity
                   style={{ alignSelf: "center" }}
                   onPress={this.selectPhotoTapped.bind(this)}
@@ -504,7 +518,7 @@ export default class Profile extends React.Component {
                   label="Bloodgroup"
                   labelColor="#676261"
                   data={data1}
-                  onChangeText={Blood_Group => this.setState({ Blood_Group })}
+                  onChangeText={BloodGroup => this.setState({ BloodGroup })}
                   value={this.state.BloodGroup}
                 />
               </View>
@@ -551,7 +565,7 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: "#fff",
     borderRadius: 100,
-    overflow: 'hidden'
+    overflow: "hidden"
   },
   header: {
     backgroundColor: "#243545",
