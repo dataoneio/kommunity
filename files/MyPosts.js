@@ -85,7 +85,7 @@ export default class MyPosts extends React.Component {
           uid: data.key,
           title: result[6].toString(),
           url1: result[4].toString(),
-          userId: result[7].toString()
+          userId: "hello"
         });
 
         console.log("date-" + result[2].toString());
@@ -243,12 +243,15 @@ export default class MyPosts extends React.Component {
         </View>
         <View
           style={{
+            paddingBottom:500,
             flexWrap: "wrap-reverse",
             flexDirection: "column-reverse",
-            backgroundColor: "#1B2936",
+            backgroundColor: "#1B2936"
           }}
         >
-          <ScrollView style={{backgroundColor:"#1B2936", paddingBottom: 100 }} >{searchval}</ScrollView>
+          <ScrollView style={{ backgroundColor: "1B2936" }}>
+            {searchval}
+          </ScrollView>
         </View>
       </View>
     );

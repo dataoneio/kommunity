@@ -49,9 +49,8 @@ export default class Search extends React.Component {
           description: result[3].toString(),
           // uid: data.key,
           title: result[6].toString(),
-        url1:result[4].toString()});
-
-        
+          url1: result[4].toString()
+        });
 
         //  console.log("date-" + result[2].toString());
         // console.log("desc--" + result[3].toString());
@@ -69,9 +68,8 @@ export default class Search extends React.Component {
     this.setState({ searchInput: searchval }, () => this.searchByPost());
   };
 
-  clearSearch()
-  {
-      this.setState({searchInput:""});
+  clearSearch() {
+    this.setState({ searchInput: "" });
   }
   searchByPost() {
     var arr2 = this.state.initialVals;
@@ -96,8 +94,8 @@ export default class Search extends React.Component {
             style={{
               padding: 1,
               borderRadius: 5,
-              borderBottomWidth:0.5,
-              borderBottomColor:"white",
+              borderBottomWidth: 0.5,
+              borderBottomColor: "white",
               backgroundColor: "#1B2936"
             }}
           >
@@ -115,12 +113,12 @@ export default class Search extends React.Component {
     });
 
     return (
-      <View>
+      <View style={{flex:1}}>
         <View style={styles.header}>
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
               title="back"
-              style={{paddingTop: 7}}
+              style={{ paddingTop: 7 }}
               onPress={() => this.props.navigation.navigate("Home")}
             >
               <Icon name="arrow-back" size={30} color="#cccccc" />
@@ -128,11 +126,10 @@ export default class Search extends React.Component {
             <TextInput
               style={{
                 paddingRight: 10,
-                color:"white"
+                color: "white"
               }}
               placeholder="Enter to search"
               placeholderTextColor="#A4AAC1"
-              
               onChangeText={this.handleChangeText}
               autoFocus={true}
               returnKeyType="search"
@@ -140,35 +137,38 @@ export default class Search extends React.Component {
             />
           </View>
           <View>
-            <TouchableOpacity title="delete" onPress={this.clearSearch.bind(this)}>
-              <Icon name="close" type="material-community" size={30} color="#cccccc" style={{paddingTop:7}}/>
+            <TouchableOpacity
+              title="delete"
+              onPress={this.clearSearch.bind(this)}
+            >
+              <Icon
+                name="close"
+                type="material-community"
+                size={30}
+                color="#cccccc"
+                style={{ paddingTop: 7 }}
+              />
             </TouchableOpacity>
           </View>
         </View>
-        <View>
-          {/* <ScrollView
-            horizontal={true}
-            style={{ backgroundColor: "transparent", padding: 10 }}
-          >
-          <Text>hello</Text>
-      
-          
-          
-          
-          </ScrollView> */}
-          <View style={{ paddingBottom:10}}>
-            <ScrollView>
-              <View
-                style={{
-                  flexWrap: "wrap-reverse",
-                  flexDirection: "column-reverse",
-                  backgroundColor:"#1B2936"
-                }}
-              >
-                {searchval}
-              </View>
-            </ScrollView>
-          </View>
+        <View style={{flex: 1}}>
+        
+         
+           <ScrollView style={{ backgroundColor: "#1B2936" }}>
+         
+            <View
+              style={{
+               
+                flexWrap: "wrap-reverse",
+                flexDirection: "column-reverse",
+                backgroundColor: "#1B2936"
+              }}
+            >
+              {searchval}
+            </View>
+         
+        </ScrollView>
+         
         </View>
       </View>
     );

@@ -74,7 +74,7 @@ export default class Home extends React.Component {
           uid: data.key,
           title: result[6].toString(),
           url1: result[4].toString(),
-          userId:"ED1"
+          userId: "ED1"
         });
 
         console.log("date-" + result[2].toString());
@@ -120,15 +120,20 @@ export default class Home extends React.Component {
     console.log("result" + JSON.stringify(result));
   }
 
-  viewDetail(uid,title,desc,imgurl) {
+  viewDetail(uid, title, desc, imgurl) {
     console.log("yoho------");
-    this.props.navigation.navigate("ViewFeed", { id: uid ,Title:title,description:desc,url:imgurl});
+    this.props.navigation.navigate("ViewFeed", {
+      id: uid,
+      Title: title,
+      description: desc,
+      url: imgurl
+    });
   }
 
   render() {
     if (this.state.isLoading) {
       return (
-        <View style={{ paddingLeft: 20 ,paddingTop:30}}>
+        <View style={{ paddingLeft: 20, paddingTop: 30 }}>
           <ContentLoader height={300}>
             <Circle cx="30" cy="30" r="30" />
             <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
@@ -166,7 +171,8 @@ export default class Home extends React.Component {
               keyval={key}
               val={val}
               //deleteMethod={() => this.deleteNote(val.uid, key)}
-              viewDetailsMethod={() => this.viewDetail(val.uid,val.title,val.description,val.url1)
+              viewDetailsMethod={() =>
+                this.viewDetail(val.uid, val.title, val.description, val.url1)
               }
               //imageMethod={() => this.imageNote(val.uid, val.url1, key)}
             />
@@ -176,7 +182,7 @@ export default class Home extends React.Component {
     });
 
     return (
-      <View style={{ paddingBottom: 10 ,backgroundColor:"#1B2936"}}>
+      <View style={{ paddingBottom: 10, backgroundColor: "#1B2936", flex:1 }}>
         <View style={styles.header}>
           <Text style={styles.home}>Community Social Network</Text>
           <View
@@ -249,10 +255,11 @@ export default class Home extends React.Component {
             </TouchableOpacity> */}
           </View>
         </View>
-        <ScrollView>
-          <View style={{ paddingBottom: 50 }}>
+        <ScrollView style={{ backgroundColor: "#1B2936" }}>
+          <View style={{  paddingBottom:50 }}>
             <View
               style={{
+               
                 flexWrap: "wrap-reverse",
                 flexDirection: "column-reverse",
                 backgroundColor: "#1B2936"
