@@ -14,12 +14,18 @@ import {
   heightPercentageToDP
 } from "react-native-responsive-screen";
 const win = Dimensions.get("window");
-export default class Note extends Component {
+export default class Feed extends Component {
+  called()
+  {
+    console.log("dsdjshudushuhusd")
+  }
   render() {
     if (this.props.val.url1 == "") {
       return (
         <View key={this.props.keyval} style={styles.note}>
           <View>
+          <TouchableOpacity onPress={this.props.viewDetailsMethod}>
+
             <View
               style={{ flexDirection: "row", justifyContent: "flex-start" }}
             >
@@ -27,7 +33,7 @@ export default class Note extends Component {
                 style={styles.ImageContainer1}
                 source={{ uri:"https://cdn-images-1.medium.com/max/1600/0*WK_vAxJo4O7Kdq3j.png"}}
               />
-              <TouchableOpacity style={{ paddingLeft: 20 }}>
+              <View style={{ paddingLeft: 20 }}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -49,7 +55,7 @@ export default class Note extends Component {
                   </View>
                 </View>
                 <Text style={styles.noteText1}>{this.props.val.title}</Text>
-              </TouchableOpacity>
+              </View>
 
               {/* <TouchableOpacity
            onPress={this.props.deleteMethod}
@@ -58,11 +64,11 @@ export default class Note extends Component {
            <Icon name="delete" color="#a36955" />
          </TouchableOpacity> */}
             </View>
-            <TouchableOpacity>
+            <View>
               <Text style={styles.noteText2} multiline={false}>
                 {this.props.val.description}
               </Text>
-            </TouchableOpacity>
+            </View>
             <View style={{ alignItems: "center" }}>
               {/* <TouchableOpacity
        onPress={this.props.deleteMethod}
@@ -71,6 +77,8 @@ export default class Note extends Component {
        <Icon name="delete" color="#a36955" />
      </TouchableOpacity> */}
             </View>
+            </TouchableOpacity>
+
           </View>
         </View>
       );
@@ -78,6 +86,7 @@ export default class Note extends Component {
       return (
         <View key={this.props.keyval} style={styles.note}>
           <View>
+            <TouchableOpacity onPress={this.props.viewDetailsMethod}>
             <View
               style={{ flexDirection: "row", justifyContent: "flex-start" }}
             >
@@ -85,7 +94,7 @@ export default class Note extends Component {
                 style={styles.ImageContainer1}
                 source={{ uri: this.props.val.url1 }}
               />
-              <TouchableOpacity style={{ paddingLeft: 20 }}>
+              <View style={{ paddingLeft: 20 }}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -107,7 +116,7 @@ export default class Note extends Component {
                   </View>
                 </View>
                 <Text style={styles.noteText1}>{this.props.val.title}</Text>
-              </TouchableOpacity>
+              </View>
 
               {/* <TouchableOpacity
            onPress={this.props.deleteMethod}
@@ -116,11 +125,11 @@ export default class Note extends Component {
            <Icon name="delete" color="#a36955" />
          </TouchableOpacity> */}
             </View>
-            <TouchableOpacity>
-              <Text style={styles.noteText2} multiline={false}>
+            <View>
+              <Text style={styles.noteText2} multiline={true} numberOfLines={1}>
                 {this.props.val.description}
               </Text>
-            </TouchableOpacity>
+            </View>
             <View style={{ alignItems: "center" }}>
               <Image
                 source={{ uri: this.props.val.url1 }}
@@ -144,7 +153,9 @@ export default class Note extends Component {
            <Icon name="edit" />
          </TouchableOpacity> */}
             </View>
+            </TouchableOpacity>
           </View>
+          
         </View>
       );
     }

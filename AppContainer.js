@@ -4,7 +4,7 @@ import {
   createStackNavigator
 } from "react-navigation";
 import { Icon } from "react-native-elements";
-
+import ViewFeed from "./files/ViewFeed";
 import MyPosts from "./files/MyPosts";
 import Home from "./files/Home";
 import AddEvent from "./files/AddEvent";
@@ -23,7 +23,9 @@ const StackNavigator = createStackNavigator(
     MyPosts: {
       screen: MyPosts
     },
-    
+    ViewFeed: {
+      screen: ViewFeed
+    }
   },
   {
     headerMode: "none",
@@ -92,7 +94,8 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: (tintColor, focused) => (
           <Icon name="info" size={30} color={focused ? "#288DCF" : "#cccccc"} />
         ),
-        showIcon: true
+        showIcon: true,
+        tabBarVisible: false
       }
     }
   },

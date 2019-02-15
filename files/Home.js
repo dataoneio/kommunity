@@ -74,8 +74,7 @@ export default class Home extends React.Component {
           uid: data.key,
           title: result[6].toString(),
           url1: result[4].toString(),
-          userId:result[7].toString(),
-
+          userId:"ED1"
         });
 
         console.log("date-" + result[2].toString());
@@ -121,25 +120,29 @@ export default class Home extends React.Component {
     console.log("result" + JSON.stringify(result));
   }
 
+  viewDetail(uid,title,desc,imgurl) {
+    console.log("yoho------");
+    this.props.navigation.navigate("ViewFeed", { id: uid ,Title:title,description:desc,url:imgurl});
+  }
+
   render() {
     if (this.state.isLoading) {
-      return(
-      <View style={{paddingLeft:20}}>
-      <ContentLoader height={300}>
-        <Circle cx="30" cy="30" r="30" />
-        <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-        <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-        <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
-      </ContentLoader>
-      <ContentLoader height={300}>
-        <Circle cx="30" cy="30" r="30" />
-        <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-        <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-        <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
-      </ContentLoader>
-
-      </View>
-    );
+      return (
+        <View style={{ paddingLeft: 20 ,paddingTop:30}}>
+          <ContentLoader height={300}>
+            <Circle cx="30" cy="30" r="30" />
+            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+            <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
+          </ContentLoader>
+          <ContentLoader height={300}>
+            <Circle cx="30" cy="30" r="30" />
+            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+            <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
+          </ContentLoader>
+        </View>
+      );
     }
 
     let search =
@@ -163,7 +166,8 @@ export default class Home extends React.Component {
               keyval={key}
               val={val}
               //deleteMethod={() => this.deleteNote(val.uid, key)}
-              //editMethod={() => this.editNote(val.uid, val.note, val.url1,val.utitleval)}
+              viewDetailsMethod={() => this.viewDetail(val.uid,val.title,val.description,val.url1)
+              }
               //imageMethod={() => this.imageNote(val.uid, val.url1, key)}
             />
           </View>
@@ -172,7 +176,7 @@ export default class Home extends React.Component {
     });
 
     return (
-      <View style={{ paddingBottom: 10 }}>
+      <View style={{ paddingBottom: 10 ,backgroundColor:"#1B2936"}}>
         <View style={styles.header}>
           <Text style={styles.home}>Community Social Network</Text>
           <View

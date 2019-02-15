@@ -138,7 +138,7 @@ export default class AddEvent extends React.Component {
         .database()
         .ref("app/Event details")
         .push({
-          Description: this.state.descInput,
+          Description: this.state.descInput.trim(),
           Title: this.state.title,
           Date:
             d1.getDate() + "/" + (d1.getMonth() + 1) + "/" + d1.getFullYear(),
