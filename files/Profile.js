@@ -5,11 +5,7 @@ import * as Progress from "react-native-progress";
 
 import { Icon } from "react-native-elements";
 import { Dropdown } from "react-native-material-dropdown";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData
-} from "react-country-region-selector";
+
 import {
   Platform,
   StyleSheet,
@@ -25,7 +21,6 @@ import firebase from "../Firebase";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
-//import { timingSafeEqual } from "crypto";
 const Blob = RNFetchBlob.polyfill.Blob;
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
@@ -33,8 +28,12 @@ export default class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      countryArray: [],
+      stateArray: [],
+      cityArray: [],
+      city: [],
       country: "",
-      region: "",
+      states: "",
       txtvalue: "",
       imageurl: "",
       profession: "",
@@ -45,7 +44,8 @@ export default class Profile extends React.Component {
       BusinessName: "",
       BusinessMobileNo: "",
       BusinessCategory: "",
-      Type: ""
+      Type: "",
+      key1: ""
     };
   }
   componentDidMount() {
@@ -142,14 +142,6 @@ export default class Profile extends React.Component {
   };
   businessDetails() {
     this.setState({ businessStatus: true });
-  }
-
-  selectCountry(val) {
-    this.setState({ country: val });
-  }
-
-  selectRegion(val) {
-    this.setState({ region: val });
   }
 
   goback() {
@@ -250,6 +242,100 @@ export default class Profile extends React.Component {
         this.setState({ Type: bval.Type });
         console.log("hehheheheheh----" + this.state.BusinessMobileNo);
       });
+    var arry1 = [];
+    firebase
+      .database()
+      .ref("app/country")
+      .on("child_added", data => {
+        console.log(data.key);
+        console.log(
+          "aaaaaaaaaaaaaaaaaadddddddddddddaaaaa" +
+            JSON.stringify(data.toJSON().name)
+        );
+        arry1.push({
+          nameid: data.key,
+          value: data.toJSON().name
+        });
+
+        this.setState({ countryArray: arry1 });
+        // console.log("ehehehehhe---" + arry1);
+        //   console.log(data.key);
+      });
+  }
+
+  handleChangeText = countryy => {
+    this.setState({ country: countryy, states: "", city: "" }, () =>
+      this.findstate()
+    );
+
+    //   console.log("-i-i-i----" + this.state.searchtest);
+    // this.findelement1();
+  };
+
+  handleChangeText1 = statess => {
+    this.setState({ states: statess, city:""}, () => this.findcity());
+    //   console.log("-i-i-i----" + this.state.searchtest);
+    // this.findelement1();
+  };
+  handleChangeText2 = city1 => {
+    this.setState({ city: city1 });
+    //   console.log("-i-i-i----" + this.state.searchtest);
+    // this.findelement1();
+  };
+
+  findstate() {
+    // var result = arr2.filter(search => {
+    //   let v1 = search.description.toUpperCase();
+    //   let v2 = search.title.toUpperCase();
+    //   let v3 = search.category.toUpperCase();
+    //   let s1 = this.state.searchInput.toUpperCase();
+    //   if (v1.includes(s1) || v2.includes(s1) || v3.includes(s1)) {
+    //     return v1;
+    //   }
+    // });
+
+    this.state.countryArray.filter(search => {
+      if (search.value == this.state.country) {
+        this.setState({ key1: search.nameid }, () => {
+          console.log("sjsjk---" + this.state.key1);
+          var arr2 = [];
+          firebase
+            .database()
+            .ref("app/country/" + this.state.key1 + "/states")
+            .on("child_added", data => {
+              console.log("-----ssss-" + JSON.stringify(data.key));
+              arr2.push({
+                value: data.key
+              });
+
+              this.setState({ stateArray: arr2 });
+              // console.log("ooooooooooooooooooo"+ this.state.stateArray)
+            });
+        });
+      }
+    });
+  }
+
+  findcity() {
+    this.state.stateArray.filter(search => {
+      if (search.value == this.state.states) {
+        // console.log("sjsjk---" + this.state.key1);
+        var arr3 = [];
+        firebase
+          .database()
+          .ref(
+            "app/country/" + this.state.key1 + "/states/" + this.state.states
+          )
+          .on("child_added", data => {
+            console.log("CITYYYYYYYYYYYYY" + JSON.stringify(data.val()));
+            arr3.push({
+              value: data.val()
+            });
+
+            this.setState({ cityArray: arr3 });
+          });
+      }
+    });
   }
 
   updateData() {
@@ -301,7 +387,7 @@ export default class Profile extends React.Component {
     }
   }
   render() {
-    const { country, region } = this.state;
+  
     let data = [
       {
         value: "Female"
@@ -379,6 +465,7 @@ export default class Profile extends React.Component {
             <View>
               <View style={{ padding: 10 }}>
                 <TextInput
+                  label="Business Name"
                   placeholder="Business Name"
                   placeholderTextColor="#676261"
                   onChangeText={BusinessName => this.setState({ BusinessName })}
@@ -388,6 +475,7 @@ export default class Profile extends React.Component {
               </View>
               <View style={{ padding: 10 }}>
                 <TextInput
+                label="Business mobile number"
                   ref="mobileNo"
                   keyboardType="phone-pad"
                   style={{ backgroundColor: "transparent", width: "100%" }}
@@ -411,7 +499,8 @@ export default class Profile extends React.Component {
               </View>
               <View style={{ padding: 10, paddingBottom: 50 }}>
                 <TextInput
-                  placeholder="Business type "
+                label="Business type"
+                  placeholder="Business type"
                   onChangeText={Type => this.setState({ Type })}
                   value={this.state.Type}
                   style={{ backgroundColor: "transparent" }}
@@ -472,6 +561,7 @@ export default class Profile extends React.Component {
             <View>
               <View style={{ padding: 10 }}>
                 <TextInput
+                label="Name"
                   placeholder="Name"
                   placeholderTextColor="#676261"
                   onChangeText={Name => this.setState({ Name })}
@@ -488,6 +578,7 @@ export default class Profile extends React.Component {
           /> */}
               <View style={{ padding: 10 }}>
                 <TextInput
+                label="Email ID"
                   placeholder="Email ID"
                   onChangeText={txtvalue => this.setState({ txtvalue })}
                   value={this.state.txtvalue}
@@ -505,7 +596,38 @@ export default class Profile extends React.Component {
               </View>
 
               <View style={{ padding: 10 }}>
+                <Dropdown
+                  label="country"
+                  labelColor="#676261"
+                  data={this.state.countryArray}
+                  onChangeText={this.handleChangeText.bind(this)}
+                  value={this.state.country}
+                />
+              </View>
+
+              <View style={{ padding: 10 }}>
+                <Dropdown
+                  label="state"
+                  labelColor="#676261"
+                  data={this.state.stateArray}
+                  onChangeText={this.handleChangeText1.bind(this)}
+                  value={this.state.states}
+                />
+              </View>
+
+              <View style={{ padding: 10 }}>
+                <Dropdown
+                  label="city"
+                  labelColor="#676261"
+                  data={this.state.cityArray}
+                  onChangeText={this.handleChangeText2.bind(this)}
+                  value={this.state.city}
+                />
+              </View>
+
+              <View style={{ padding: 10 }}>
                 <TextInput
+                label="Profession"
                   placeholder="Profession"
                   placeholderTextColor="#676261"
                   onChangeText={profession => this.setState({ profession })}
@@ -524,10 +646,11 @@ export default class Profile extends React.Component {
               </View>
               <View>
                 <TextInput
+                label="Mobile number"
                   ref="mobileNo"
                   keyboardType="numeric"
                   style={{ backgroundColor: "transparent", width: "100%" }}
-                  placeholder="Enter mobile number"
+                  placeholder="Mobile number"
                   onChangeText={mobileNo => this.setState({ mobileNo })}
                   value={this.state.mobileNo.toString()}
                 />
