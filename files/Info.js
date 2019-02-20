@@ -47,7 +47,10 @@ export default class Info extends React.Component {
       BusinessCategory: "",
       Type: "",
       city: "",
-      states: ""
+      states: "",
+      addr_line1: "",
+      businessAddr_line1: "",
+      businessAddr_line2: ""
     };
   }
   componentDidMount() {
@@ -90,7 +93,8 @@ export default class Info extends React.Component {
     profession,
     country,
     states,
-    city
+    city,
+    Address_line1
   ) {
     this.setState({
       Name: Name,
@@ -102,15 +106,18 @@ export default class Info extends React.Component {
       profession: profession,
       country: country,
       states: states,
-      city: city
+      city: city,
+      addr_line1: Address_line1
     });
   }
-  returnData1(name, mobile, type, Category) {
+  returnData1(name, mobile, type, Category, Address_line1, Address_line2) {
     this.setState({
       BusinessName: name,
       BusinessMobileNo: mobile,
       Type: type,
-      BusinessCategory: Category
+      BusinessCategory: Category,
+      businessAddr_line1: Address_line1,
+      businessAddr_line2:Address_line2
     });
   }
   getData() {
@@ -135,6 +142,7 @@ export default class Info extends React.Component {
         this.setState({ country: value.Country });
         this.setState({ states: value.State });
         this.setState({ city: value.City });
+        this.setState({ addr_line1: value.Address_line1 });
         // console.log("eeeeee-" + value.Profile_photo);
         // console.log("image---" + this.state.imageurl);
         // console.log("iiii--" + this.state.Name);
@@ -150,6 +158,10 @@ export default class Info extends React.Component {
         this.setState({ BusinessName: bval.Name });
         this.setState({ BusinessMobileNo: bval.Contact_Number });
         this.setState({ Type: bval.Type });
+        this.setState({businessAddr_line1:bval.Address_line1});
+        this.setState({businessAddr_line2:bval.Address_line2});
+
+
         console.log("hehheheheheh----" + this.state.BusinessMobileNo);
       });
   }
@@ -221,7 +233,7 @@ export default class Info extends React.Component {
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
-              <View style={{ padding: 10, paddingBottom: 50 }}>
+              <View style={{ padding: 10, paddingBottom:10 }}>
                 <Dropdown
                   disabled={true}
                   label="Business Category"
@@ -230,6 +242,28 @@ export default class Info extends React.Component {
                     this.setState({ BusinessCategory })
                   }
                   value={this.state.BusinessCategory}
+                />
+              </View>
+              <View style={{ padding:5 }}>
+                <TextInput
+                  label="Business address line 1"
+                  editable={false}
+                  disabled={true}
+                  placeholder="Business Address"
+                  onChangeText={businessAddr_line1 => this.setState({businessAddr_line1  })}
+                  value={this.state.businessAddr_line1}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              <View style={{ padding:5}}>
+                <TextInput
+                  label="Business address line 2"
+                  editable={false}
+                  disabled={true}
+                  placeholder="Business Address"
+                  onChangeText={businessAddr_line2 => this.setState({businessAddr_line2  })}
+                  value={this.state.businessAddr_line2}
+                  style={{ backgroundColor: "transparent" }}
                 />
               </View>
             </View>
@@ -382,6 +416,19 @@ export default class Info extends React.Component {
                   labelColor="#676261"
                   onChangeText={Blood_Group => this.setState({ Blood_Group })}
                   value={this.state.BloodGroup}
+                />
+              </View>
+              <View>
+                <TextInput
+                  label="address line 1"
+                  // ref="mobileNo"
+                  // keyboardType="numeric"
+                  editable={false}
+                  disabled={true}
+                  style={{ backgroundColor: "transparent", width: "100%" }}
+                  placeholder="Address line 1"
+                  onChangeText={addr_line1 => this.setState({ addr_line1 })}
+                  value={this.state.addr_line1}
                 />
               </View>
               <View style={{ padding: 10 }}>

@@ -45,7 +45,10 @@ export default class Profile extends React.Component {
       BusinessMobileNo: "",
       BusinessCategory: "",
       Type: "",
-      key1: ""
+      key1: "",
+      addr_line1: "",
+      businessAddr_line1: "",
+      businessAddr_line2: ""
     };
   }
   componentDidMount() {
@@ -195,13 +198,17 @@ export default class Profile extends React.Component {
           Contact_Number: this.state.BusinessMobileNo,
           Name: this.state.BusinessName,
           Category: this.state.BusinessCategory,
-          Type: this.state.Type
+          Type: this.state.Type,
+          Address_line1: this.state.businessAddr_line1,
+          Address_line2: this.state.businessAddr_line2
         });
       this.props.navigation.state.params.returnData1(
         this.state.BusinessName,
         this.state.BusinessMobileNo,
         this.state.Type,
-        this.state.BusinessCategory
+        this.state.BusinessCategory,
+        this.state.businessAddr_line2,
+        this.state.businessAddr_line1
       );
       this.props.navigation.navigate("Info");
     }
@@ -225,9 +232,10 @@ export default class Profile extends React.Component {
         console.log("-----gegeggeg" + this.state.Gender);
         this.setState({ Gender: value.Gender });
         this.setState({ BloodGroup: value.Blood_Group });
-        this.setState({country: value.Country})
-        this.setState({states: value.State})
-        this.setState({city: value.City})
+        this.setState({ country: value.Country });
+        this.setState({ states: value.State });
+        this.setState({ city: value.City });
+        this.setState({ addr_line1: value.Address_line1 });
         // console.log("eeeeee-" + value.Profile_photo);
         // console.log("image---" + this.state.imageurl);
         // console.log("iiii--" + this.state.Name);
@@ -243,6 +251,9 @@ export default class Profile extends React.Component {
         this.setState({ BusinessName: bval.Name });
         this.setState({ BusinessMobileNo: bval.Contact_Number });
         this.setState({ Type: bval.Type });
+        this.setState({ businessAddr_line1: bval.Address_line1 });
+        this.setState({ businessAddr_line2: bval.Address_line2 });
+
         console.log("hehheheheheh----" + this.state.BusinessMobileNo);
       });
     var arry1 = [];
@@ -276,7 +287,7 @@ export default class Profile extends React.Component {
   };
 
   handleChangeText1 = statess => {
-    this.setState({ states: statess, city:""}, () => this.findcity());
+    this.setState({ states: statess, city: "" }, () => this.findcity());
     //   console.log("-i-i-i----" + this.state.searchtest);
     // this.findelement1();
   };
@@ -368,10 +379,10 @@ export default class Profile extends React.Component {
           Gender: this.state.Gender,
           Blood_Group: this.state.BloodGroup,
           Contact_Number: this.state.mobileNo,
-          Country:this.state.country ,
-          City:this.state.city,
-          State:this.state.states
-
+          Country: this.state.country,
+          City: this.state.city,
+          State: this.state.states,
+          Address_line1: this.state.addr_line1
         });
       this.props.navigation.state.params.returnData(
         this.state.Name,
@@ -384,6 +395,7 @@ export default class Profile extends React.Component {
         this.state.country,
         this.state.states,
         this.state.city,
+        this.state.addr_line1
       );
       this.goback();
     }
@@ -397,7 +409,6 @@ export default class Profile extends React.Component {
     }
   }
   render() {
-  
     let data = [
       {
         value: "Female"
@@ -473,7 +484,7 @@ export default class Profile extends React.Component {
           </View>
           <ScrollView style={{ padding: 10 }}>
             <View>
-              <View style={{ padding: 10 }}>
+              <View>
                 <TextInput
                   label="Business Name"
                   placeholder="Business Name"
@@ -483,9 +494,9 @@ export default class Profile extends React.Component {
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
-              <View style={{ padding: 10 }}>
+              <View>
                 <TextInput
-                label="Business mobile number"
+                  label="Business mobile number"
                   ref="mobileNo"
                   keyboardType="phone-pad"
                   style={{ backgroundColor: "transparent", width: "100%" }}
@@ -496,7 +507,7 @@ export default class Profile extends React.Component {
                   value={this.state.BusinessMobileNo.toString()}
                 />
               </View>
-              <View style={{ padding: 10 }}>
+              <View style={{padding:10}}>
                 <Dropdown
                   label="Business Category"
                   labelColor="#676261"
@@ -507,12 +518,34 @@ export default class Profile extends React.Component {
                   value={this.state.BusinessCategory}
                 />
               </View>
-              <View style={{ padding: 10, paddingBottom: 50 }}>
+              <View style={{ paddingBottom: 10}}>
                 <TextInput
-                label="Business type"
+                  label="Business type"
                   placeholder="Business type"
                   onChangeText={Type => this.setState({ Type })}
                   value={this.state.Type}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              <View>
+                <TextInput
+                  label="Business address line 1"
+                  placeholder="Business Address"
+                  onChangeText={businessAddr_line1 =>
+                    this.setState({ businessAddr_line1 })
+                  }
+                  value={this.state.businessAddr_line1}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              <View>
+                <TextInput
+                  label="Business address line 2"
+                  placeholder="Business Address"
+                  onChangeText={businessAddr_line2 =>
+                    this.setState({ businessAddr_line2 })
+                  }
+                  value={this.state.businessAddr_line2}
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
@@ -569,9 +602,9 @@ export default class Profile extends React.Component {
             </View>
 
             <View>
-              <View style={{ padding: 10 }}>
+              <View>
                 <TextInput
-                label="Name"
+                  label="Name"
                   placeholder="Name"
                   placeholderTextColor="#676261"
                   onChangeText={Name => this.setState({ Name })}
@@ -579,20 +612,35 @@ export default class Profile extends React.Component {
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
-              {/* <TextInput
-            placeholder="Email"
-            placeholderTextColor="#676261"
-            // onChangeText={Email => this.setState({Email})}
-            // value={this.state.Email}
-            style={{ backgroundColor: "transparent" }}
-          /> */}
-              <View style={{ padding: 10 }}>
+
+              <View>
                 <TextInput
-                label="Email ID"
+                  label="Email ID"
                   placeholder="Email ID"
                   onChangeText={txtvalue => this.setState({ txtvalue })}
                   value={this.state.txtvalue}
                   style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              <View>
+                <TextInput
+                  label="Profession"
+                  placeholder="Profession"
+                  placeholderTextColor="#676261"
+                  onChangeText={profession => this.setState({ profession })}
+                  value={this.state.profession}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              </View>
+              <View>
+                <TextInput
+                  label="Mobile number"
+                  ref="mobileNo"
+                  keyboardType="numeric"
+                  style={{ backgroundColor: "transparent", width: "100%" }}
+                  placeholder="Mobile number"
+                  onChangeText={mobileNo => this.setState({ mobileNo })}
+                  value={this.state.mobileNo.toString()}
                 />
               </View>
               <View style={{ padding: 10 }}>
@@ -605,6 +653,15 @@ export default class Profile extends React.Component {
                 />
               </View>
 
+              <View>
+                <TextInput
+                  label="address line 1"
+                  style={{ backgroundColor: "transparent", width: "100%" }}
+                  placeholder="Address line 1"
+                  onChangeText={addr_line1 => this.setState({ addr_line1 })}
+                  value={this.state.addr_line1}
+                />
+              </View>
               <View style={{ padding: 10 }}>
                 <Dropdown
                   label="country"
@@ -636,16 +693,6 @@ export default class Profile extends React.Component {
               </View>
 
               <View style={{ padding: 10 }}>
-                <TextInput
-                label="Profession"
-                  placeholder="Profession"
-                  placeholderTextColor="#676261"
-                  onChangeText={profession => this.setState({ profession })}
-                  value={this.state.profession}
-                  style={{ backgroundColor: "transparent" }}
-                />
-              </View>
-              <View style={{ padding: 10 }}>
                 <Dropdown
                   label="Bloodgroup"
                   labelColor="#676261"
@@ -654,17 +701,7 @@ export default class Profile extends React.Component {
                   value={this.state.BloodGroup}
                 />
               </View>
-              <View>
-                <TextInput
-                label="Mobile number"
-                  ref="mobileNo"
-                  keyboardType="numeric"
-                  style={{ backgroundColor: "transparent", width: "100%" }}
-                  placeholder="Mobile number"
-                  onChangeText={mobileNo => this.setState({ mobileNo })}
-                  value={this.state.mobileNo.toString()}
-                />
-              </View>
+
               <View style={{ paddingBottom: 100 }}>
                 <Button
                   onPress={this.businessDetails.bind(this)}
