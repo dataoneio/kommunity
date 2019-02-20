@@ -225,6 +225,9 @@ export default class Profile extends React.Component {
         console.log("-----gegeggeg" + this.state.Gender);
         this.setState({ Gender: value.Gender });
         this.setState({ BloodGroup: value.Blood_Group });
+        this.setState({country: value.Country})
+        this.setState({states: value.State})
+        this.setState({city: value.City})
         // console.log("eeeeee-" + value.Profile_photo);
         // console.log("image---" + this.state.imageurl);
         // console.log("iiii--" + this.state.Name);
@@ -364,7 +367,11 @@ export default class Profile extends React.Component {
           Profession: this.state.profession,
           Gender: this.state.Gender,
           Blood_Group: this.state.BloodGroup,
-          Contact_Number: this.state.mobileNo
+          Contact_Number: this.state.mobileNo,
+          Country:this.state.country ,
+          City:this.state.city,
+          State:this.state.states
+
         });
       this.props.navigation.state.params.returnData(
         this.state.Name,
@@ -373,7 +380,10 @@ export default class Profile extends React.Component {
         this.state.mobileNo,
         this.state.Gender,
         this.state.BloodGroup,
-        this.state.profession
+        this.state.profession,
+        this.state.country,
+        this.state.states,
+        this.state.city,
       );
       this.goback();
     }

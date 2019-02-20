@@ -45,7 +45,9 @@ export default class Info extends React.Component {
       BusinessName: "",
       BusinessMobileNo: "",
       BusinessCategory: "",
-      Type: ""
+      Type: "",
+      city: "",
+      states: ""
     };
   }
   componentDidMount() {
@@ -54,14 +56,6 @@ export default class Info extends React.Component {
 
   businessDetails() {
     this.setState({ businessStatus: true });
-  }
-
-  selectCountry(val) {
-    this.setState({ country: val });
-  }
-
-  selectRegion(val) {
-    this.setState({ region: val });
   }
 
   goback() {
@@ -86,7 +80,18 @@ export default class Info extends React.Component {
   //   var regex = /^[^!-\/:-@\[-`{-~]+$/;
   //     return regex.test(char);
   // }
-  returnData(Name, Email, Photo, phone, gender, bg, profession) {
+  returnData(
+    Name,
+    Email,
+    Photo,
+    phone,
+    gender,
+    bg,
+    profession,
+    country,
+    states,
+    city
+  ) {
     this.setState({
       Name: Name,
       txtvalue: Email,
@@ -94,7 +99,10 @@ export default class Info extends React.Component {
       mobileNo: phone,
       Gender: gender,
       BloodGroup: bg,
-      profession: profession
+      profession: profession,
+      country: country,
+      states: states,
+      city: city
     });
   }
   returnData1(name, mobile, type, Category) {
@@ -124,6 +132,9 @@ export default class Info extends React.Component {
         console.log("-----gegeggeg" + this.state.Gender);
         this.setState({ Gender: value.Gender });
         this.setState({ BloodGroup: value.Blood_Group });
+        this.setState({ country: value.Country });
+        this.setState({ states: value.State });
+        this.setState({ city: value.City });
         // console.log("eeeeee-" + value.Profile_photo);
         // console.log("image---" + this.state.imageurl);
         // console.log("iiii--" + this.state.Name);
@@ -371,6 +382,38 @@ export default class Info extends React.Component {
                   labelColor="#676261"
                   onChangeText={Blood_Group => this.setState({ Blood_Group })}
                   value={this.state.BloodGroup}
+                />
+              </View>
+              <View style={{ padding: 10 }}>
+                <Dropdown
+                  disabled={true}
+                  label="country"
+                  labelColor="#676261"
+                  // data={this.state.countryArray}
+                  // onChangeText={this.handleChangeText.bind(this)}
+                  value={this.state.country}
+                />
+              </View>
+
+              <View style={{ padding: 10 }}>
+                <Dropdown
+                  disabled={true}
+                  label="state"
+                  labelColor="#676261"
+                  // data={this.state.stateArray}
+                  // onChangeText={this.handleChangeText1.bind(this)}
+                  value={this.state.states}
+                />
+              </View>
+
+              <View style={{ padding: 10 }}>
+                <Dropdown
+                  disabled={true}
+                  label="city"
+                  labelColor="#676261"
+                  // data={this.state.cityArray}
+                  //onChangeText={this.handleChangeText2.bind(this)}
+                  value={this.state.city}
                 />
               </View>
               <View style={{ paddingBottom: 100 }}>

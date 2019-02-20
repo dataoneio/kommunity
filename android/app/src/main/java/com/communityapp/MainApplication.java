@@ -1,7 +1,7 @@
 package com.communityapp;
 
 import android.app.Application;
-
+import com.tkporter.sendsms.SendSMSPackage;
 import com.facebook.react.ReactApplication;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.horcrux.svg.SvgPackage;
@@ -36,7 +36,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFSPackage(),
             new RNFetchBlobPackage(),
             new AutoGrowTextInputPackage(),
-            new VectorIconsPackage()
+            new VectorIconsPackage(),
+            SendSMSPackage.getInstance()
       );
     }
 
