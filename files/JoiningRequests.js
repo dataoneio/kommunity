@@ -23,21 +23,20 @@ export default class JoiningRequests extends Component {
   }
   render() {
     return (
-      <View style={{ backgroundColor: "white" }}>
+      <View style={{ backgroundColor: "#f2f2f2" }}>
         <View
           style={{
             flexDirection: "row"
             // justifyContent: "space-evenly"
           }}
         >
-          <View style={{paddingRight:0, width:"75%"}}>
+          <View style={{ left: win.width / 100, width: "75%" }}>
             <Text
               style={{
-
                 fontFamily: "lucida grande",
                 paddingLeft: 5,
-               // paddingRight:10,
-                fontSize: 16,
+                // paddingRight:10,
+                fontSize: 20,
                 color: "black",
                 fontWeight: "bold",
                 borderColor: "white"
@@ -47,28 +46,35 @@ export default class JoiningRequests extends Component {
               join your app
             </Text>
           </View>
-          <View style={{flexDirection:"row", paddingLeft:40}}>
+          <View
+            style={{
+              flexDirection: "row",
+              left: 0,
+              justifyContent: "space-evenly"
+            }}
+          >
             <View>
               <TouchableOpacity
                 title="accept"
                 onPress={this.handlepress.bind(this)}
               >
-                <Icon name="done" color="green" size={35} />
+                <Icon name="done" color="green" size={40} />
               </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-              title="reject"
-              onPress={this.handlepress1.bind(this)}
-            >
-              <Icon
-                name="close"
-                type="material-community"
-                size={35}
-                color="red"
-                style={{ paddingTop: 7 }}
-              />
-            </TouchableOpacity>
+            <View style={{paddingLeft:10}}>
+              <TouchableOpacity
+                title="reject"
+                onPress={this.handlepress1.bind(this)}
+              >
+                <Icon
+                  name="close"
+                  type="material-community"
+                  size={40}
+                  color="#cc0000"
+                  style={{ paddingTop: 7 }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>

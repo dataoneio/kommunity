@@ -13,17 +13,36 @@ import UserNotification from "./files/UserNotification";
 import Search from "./files/Search";
 import React, { Component } from "react";
 import Info from "./files/Info";
-import Login from "./files/Login"
-import Request from "./files/Request"
+import Login from "./files/Login";
+import Request from "./files/Request";
 const StackNavigator = createStackNavigator(
   {
     Profile: {
       screen: Profile
-    },
-
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator2 = createStackNavigator(
+  {
     MyPosts: {
       screen: MyPosts
-    },
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator3 = createStackNavigator(
+  {
     ViewFeed: {
       screen: ViewFeed
     }
@@ -35,20 +54,17 @@ const StackNavigator = createStackNavigator(
     }
   }
 );
-
-
-
 const StackNavigator1 = createStackNavigator(
   {
     Login: Login,
-    Request: Request,
+    Request: Request
   },
   {
     headerMode: "none",
     navigationOptions: {
       headerVisible: false
     },
-  initialRouteName: 'Login'
+    initialRouteName: "Login"
   }
 );
 
@@ -58,11 +74,7 @@ const TabNavigator = createBottomTabNavigator(
       screen: Home,
       navigationOptions: {
         tabBarIcon: (tintColor, focused, active) => (
-          <Icon
-          name="notifications"
-          size={30}
-          color={focused ? "#288DCF" : "#cccccc"}
-        />
+          <Icon name="home" size={30} color={focused ? "#288DCF" : "#cccccc"} />
         ),
         showIcon: true
       }
@@ -139,9 +151,12 @@ const TabNavigator = createBottomTabNavigator(
 );
 const RootNavigator = createStackNavigator(
   {
-    p1:StackNavigator1,
+    p1: StackNavigator1,
+
     p2: TabNavigator,
-    P3: StackNavigator
+    P3: StackNavigator,
+    p4: StackNavigator2,
+    p5: StackNavigator3
   },
   {
     headerMode: "none",

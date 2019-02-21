@@ -1,6 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+  Image
+} from "react-native";
 import firebase from "../Firebase";
+import { Icon } from "react-native-elements";
+import { TextInput } from "react-native-paper";
 
 export default class Request extends React.Component {
   componentDidMount() {
@@ -47,61 +56,82 @@ export default class Request extends React.Component {
   }
 
   render() {
-      console.log("render")
+    console.log("render");
     return (
-      <View style={styles.container}>
-        <Text>
-          Phone number not found in database. Please, fill the information below
-          to request access.
-        </Text>
-        <Text />
-        <Text />
+      <View>
+        <View style={styles.header}>
+          <Text style={styles.home}>Request for Joining</Text>
+          <View>
+            <TouchableOpacity
+              title="request"
+              onPress={this.saveRequest.bind(this)}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <View>
+                  <Text
+                    style={{
+                      color: "white",
+                      paddingRight: 10,
+                      padding: 4,
+                      paddingLeft:15,
+                      fontSize: 20,
+                      borderLeftWidth: 2,
+                      borderLeftColor: "white"
+                    }}
+                  >
+                    Send
+                  </Text>
+                </View>
+                {/* <View>
+                  <Icon name="done" color="white" size={25} />
+                </View> */}
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{ paddingTop: 50 }}>
+          <Image
+            source={require("../snap.png")}
+            style={{
+              height: 200,
+              width: 200,
+              alignSelf: "center"
+            }}
+          />
+        </View>
+        <View style={{ padding: 20 }}>
+          <TextInput
+            style={{ backgroundColor: "transparent" }}
+            label="Mobile No"
+            placeholder="Enter Mobile No:"
+            //autoCapitalize="sentences"
 
-        <Text>Mobile No:</Text>
-        {this.state.errorMessage && (
-          <Text style={{ color: "red" }}>{this.state.errorMessage}</Text>
-        )}
-        <TextInput
-          placeholder="Enter Mobile No:"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={phone => this.setState({ phone })}
-          value={this.state.phone}
-          editable={false}
-          disable={true}
-        />
-
-        <Text>Name:</Text>
-        {this.state.errorMessage && (
-          <Text style={{ color: "red" }}>{this.state.errorMessage}</Text>
-        )}
-        <TextInput
-          placeholder="Enter full name:"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={name => this.setState({ name })}
-          value={this.state.name}
-        />
-
-        <Text>Email:</Text>
-        {this.state.errorMessage && (
-          <Text style={{ color: "red" }}>{this.state.errorMessage}</Text>
-        )}
-        <TextInput
-          placeholder="Enter Email address:"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={email => this.setState({ email })}
-          value={this.state.email}
-        />
-
-        <Text />
-        <Button title="Request" onPress={this.saveRequest.bind(this)} />
-        <Text />
-        <Button
-          title="Already have an account?"
-          onPress={() => this.props.navigation.navigate("Login")}
-        />
+            onChangeText={phone => this.setState({ phone })}
+            value={this.state.phone}
+            editable={false}
+            disable={true}
+          />
+        </View>
+        <View style={{ padding: 20 }}>
+          <TextInput
+            style={{ backgroundColor: "transparent" }}
+            label="Name"
+            placeholder="Name"
+            autoCapitalize="words"
+            onChangeText={name => this.setState({ name })}
+            value={this.state.name}
+          />
+        </View>
+        <View style={{ padding: 20 }}>
+          <TextInput
+            style={{ backgroundColor: "transparent" }}
+            label="Email Id"
+            placeholder="Email address"
+            autoCapitalize="none"
+            onChangeText={email => this.setState({ email })}
+            value={this.state.email}
+          />
+        </View>
       </View>
     );
   }
@@ -113,11 +143,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  textInput: {
-    height: 40,
-    width: "90%",
-    borderColor: "gray",
-    borderWidth: 1,
-    marginTop: 8
+
+  header: {
+    backgroundColor: "#243545",
+    //alignItems: "center",
+    //justifyContent: "center",
+    borderBottomWidth: 2,
+    borderBottomColor: "white",
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  home: {
+    fontFamily: "lucida grande",
+    justifyContent: "center",
+    fontWeight: "bold",
+    fontSize: 22,
+    color: "white"
   }
 });

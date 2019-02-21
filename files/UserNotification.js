@@ -111,7 +111,7 @@ export default class UserNotification extends React.Component {
     alert("navigated");
   }
   goback() {
-    alert("go back");
+    this.props.navigation.goBack();
   }
   getDataFromFirebase() {
     let arr1 = [];
@@ -149,8 +149,8 @@ export default class UserNotification extends React.Component {
         <View key={key} style={{ padding: 5 }}>
           <View
             style={{
-              padding: 0
-
+              paddingBottom: 20,
+              padding: 5
               // borderRadius: 5,
               // borderBottomWidth: 0.5,
               // borderBottomColor: "white",
@@ -172,26 +172,26 @@ export default class UserNotification extends React.Component {
     });
 
     return (
-      <View>
+      <View style={{flex:1, backgroundColor:"yellow"}}>
         <View style={styles.header}>
           <View>
             <TouchableOpacity title="" onPress={this.goback.bind(this)}>
               <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.home}>Info</Text>
+          <Text style={styles.home}>User Requests</Text>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between"
             }}
           >
-            <TouchableOpacity
+            {/* <TouchableOpacity
               title=""
               onPress={this.handlenavigation.bind(this)}
             >
               <Icon name="edit" color="white" size={25} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         {/* <View>
@@ -199,15 +199,17 @@ export default class UserNotification extends React.Component {
             press me
           </Button>
         </View> */}
-        <View
-          style={{
-            flexWrap: "wrap-reverse",
-            flexDirection: "column-reverse",
-            backgroundColor: "transparent"
-          }}
-        >
-          {requestval}
-        </View>
+        <ScrollView style={{backgroundColor:"#f2f2f2"}}>
+          <View
+            style={{
+              flexWrap: "wrap-reverse",
+              flexDirection: "column-reverse",
+              backgroundColor: "#f2f2f2"
+            }}
+          >
+            {requestval}
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -229,7 +231,7 @@ const styles = StyleSheet.create({
     fontFamily: "lucida grande",
     justifyContent: "center",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 22,
     color: "white"
   },
   header: {
