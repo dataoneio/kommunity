@@ -19,7 +19,7 @@ export default class JoiningRequests extends Component {
     this.props.acceptingfunction();
   }
   handlepress1() {
-    alert("lmao");
+    this.props.rejectingfunction();
   }
   render() {
     return (

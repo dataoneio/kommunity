@@ -13,7 +13,8 @@ import UserNotification from "./files/UserNotification";
 import Search from "./files/Search";
 import React, { Component } from "react";
 import Info from "./files/Info";
-
+import Login from "./files/Login"
+import Request from "./files/Request"
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -35,13 +36,33 @@ const StackNavigator = createStackNavigator(
   }
 );
 
+
+
+const StackNavigator1 = createStackNavigator(
+  {
+    Login: Login,
+    Request: Request,
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    },
+  initialRouteName: 'Login'
+  }
+);
+
 const TabNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: Home,
       navigationOptions: {
         tabBarIcon: (tintColor, focused, active) => (
-          <Icon name="home" size={30} color={focused ? "#288DCF" : "#cccccc"} />
+          <Icon
+          name="notifications"
+          size={30}
+          color={focused ? "#288DCF" : "#cccccc"}
+        />
         ),
         showIcon: true
       }
@@ -118,8 +139,9 @@ const TabNavigator = createBottomTabNavigator(
 );
 const RootNavigator = createStackNavigator(
   {
-    p1: TabNavigator,
-    P2: StackNavigator
+    p1:StackNavigator1,
+    p2: TabNavigator,
+    P3: StackNavigator
   },
   {
     headerMode: "none",

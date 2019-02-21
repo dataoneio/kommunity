@@ -37,10 +37,10 @@ export default class UserNotification extends React.Component {
     console.log("will mount");
     this.getDataFromFirebase();
   }
-  onPress1(Number) {
+  onPress1(Number, name, data, key) {
     SendSMS.send(
       {
-        body: "testing for community app",
+        body: "You have been accepted as a member of our community",
         recipients: [Number],
         successTypes: ["sent", "queued"],
         allowAndroidSendWithoutReadPermission: true
@@ -56,7 +56,56 @@ export default class UserNotification extends React.Component {
         );
       }
     );
-    
+
+    firebase
+      .database()
+      .ref("app/User/")
+      .push({
+        Name: name,
+        Email: "",
+        Profile_photo: "",
+        Profession: "",
+        Gender: "",
+        Blood_Group: "",
+        Contact_Number: Number,
+        Country: "",
+        City: "",
+        State: "",
+        Address_line1: ""
+      });
+
+    firebase
+      .database()
+      .ref("app/Joining_Requests/" + data)
+      .remove();
+    this.state.requests.splice(key, 1);
+    this.setState({ requests: this.state.requests });
+  }
+  onPress2(Number, data, key) {
+    SendSMS.send(
+      {
+        body: "You have been rejected to be a member of our community",
+        recipients: [Number],
+        successTypes: ["sent", "queued"],
+        allowAndroidSendWithoutReadPermission: true
+      },
+      (completed, cancelled, error) => {
+        console.log(
+          "SMS Callback: completed: " +
+            completed +
+            " cancelled: " +
+            cancelled +
+            "error: " +
+            error
+        );
+      }
+    );
+    firebase
+      .database()
+      .ref("app/Joining_Requests/" + data)
+      .remove();
+    this.state.requests.splice(key, 1);
+    this.setState({ requests: this.state.requests });
   }
   handlenavigation() {
     alert("navigated");
@@ -85,7 +134,8 @@ export default class UserNotification extends React.Component {
 
         arr1.push({
           Number: result[0].toString(),
-          Name: result[1].toString()
+          Name: result[1].toString(),
+          Uid: data.key
         });
         this.setState({ requests: arr1 });
         console.log("Number" + result[0].toString());
@@ -99,8 +149,8 @@ export default class UserNotification extends React.Component {
         <View key={key} style={{ padding: 5 }}>
           <View
             style={{
-              padding: 0,
-            
+              padding: 0
+
               // borderRadius: 5,
               // borderBottomWidth: 0.5,
               // borderBottomColor: "white",
@@ -111,7 +161,10 @@ export default class UserNotification extends React.Component {
               key={key}
               keyval={key}
               val={val}
-              acceptingfunction={() => this.onPress1(val.Number)}
+              acceptingfunction={() =>
+                this.onPress1(val.Number, val.Name, val.Uid, key)
+              }
+              rejectingfunction={() => this.onPress2(val.Number, val.Uid, key)}
             />
           </View>
         </View>
