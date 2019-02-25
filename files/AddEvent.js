@@ -22,6 +22,24 @@ window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 const win = Dimensions.get("window");
 export default class AddEvent extends React.Component {
+  componentDidMount() {
+    const { screenProps } = this.props;
+    console.log("gegegegeg" + screenProps.user.number);
+    console.log("gegegegeg" + screenProps.user.id);
+
+    firebase
+      .database()
+      .ref("app/User")
+      .orderByChild("Contact_Number")
+      .equalTo(screenProps.user.number)
+      .on("child_added", data => {
+        val1 = JSON.stringify(data.val());
+        if (data.exists()) {
+          console.log("dddddddddddd----" + JSON.stringify(data.key));
+          this.setState({ UserId: data.key });
+        }
+      });
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +47,9 @@ export default class AddEvent extends React.Component {
       descInput: "",
       date: "",
       category: "",
-      imageurl: ""
+      imageurl: "",
+      testing: "",
+      UserId: ""
     };
   }
   selectPhotoTapped() {
@@ -145,7 +165,8 @@ export default class AddEvent extends React.Component {
           Post_View: "false",
           Category: this.state.category,
           Image: this.state.imageurl,
-          Comment: ""
+          Comment: "",
+          UserId: this.state.UserId
         });
       this.props.navigation.navigate("Home");
       this.setState({
@@ -154,11 +175,12 @@ export default class AddEvent extends React.Component {
       });
     }
   }
-  goback(){
+  goback() {
     const { navigate } = this.props.navigation;
- navigate("Home");
+    navigate("Home");
   }
   render() {
+    var { screenProps } = this.props;
     let data = [
       {
         value: "None  "
@@ -179,19 +201,18 @@ export default class AddEvent extends React.Component {
         value: "Education"
       },
       {
-        value: "Bussiness"
+        value: "Business"
       }
     ];
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
           <View>
-            
             <View style={styles.header}>
               <View>
-              <TouchableOpacity title="" onPress={this.goback.bind(this)}>
-                <Icon name="arrow-back" color="white" size={30} />
-              </TouchableOpacity>
+                <TouchableOpacity title="" onPress={this.goback.bind(this)}>
+                  <Icon name="arrow-back" color="white" size={30} />
+                </TouchableOpacity>
               </View>
               <Text style={styles.home}>Add Post</Text>
               <View
@@ -207,6 +228,7 @@ export default class AddEvent extends React.Component {
             </View>
             <View style={{ padding: 10 }}>
               <TextInput
+                label="Title"
                 placeholder="Title"
                 placeholderTextColor="#676261"
                 onChangeText={title => this.setState({ title })}
@@ -223,16 +245,21 @@ export default class AddEvent extends React.Component {
                 // value={"None"}
               />
             </View>
-            <View style={{ padding: 10 }}>
+            <View style={{ padding: 10, paddingTop: 20 }}>
               <AutoGrowingTextInput
-                style={{ borderColor: "#676261", borderWidth: 2 }}
+                label="Description"
+                style={{
+                  borderBottomColor: "#908a89",
+                  borderBottomWidth: 0.5,
+                  fontSize: 16
+                }}
                 onChangeText={descInput => this.setState({ descInput })}
                 placeholder={"Your Message"}
                 value={this.state.descInput}
-                placeholderTextColor="#676261"
+                placeholderTextColor="#908a89"
               />
             </View>
-            <View style={{justifyContent:'space-around'}}>
+            <View style={{ justifyContent: "space-around" }}>
               <Image
                 style={styles.ImageContainer}
                 source={{ uri: this.state.imageurl }}
@@ -267,7 +294,7 @@ const styles = StyleSheet.create({
     //left: 70,
     // borderRadius: 10,
     width: (win.width * 2) / 3,
-    height: (win.height/2.5),
+    height: win.height / 2.5,
     // paddingTop: 10,
     padding: 0,
 
@@ -279,7 +306,6 @@ const styles = StyleSheet.create({
     left: win.width / 6,
     paddingBottom: 100
     //color:"white"
-
   },
   header: {
     backgroundColor: "#243545",

@@ -13,72 +13,78 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
+import firebase from "../Firebase";
 const win = Dimensions.get("window");
 export default class Feed extends Component {
-  called()
-  {
-    console.log("dsdjshudushuhusd")
+  constructor(props) {
+    super(props);
+    this.state = {
+      UserImage: ""
+    };
   }
+  componentDidMount() {
+    this.getUserName();
+  }
+  getUserName() {
+    firebase
+      .database()
+      .ref("app/User/" + this.props.val.userId)
+      .on("value", data => {
+        this.setState({ username: data.toJSON().Name });
+        this.setState({ UserImage: data.toJSON().Profile_photo });
+      });
+  }
+
   render() {
     if (this.props.val.url1 == "") {
       return (
         <View key={this.props.keyval} style={styles.note}>
           <View>
-          <TouchableOpacity onPress={this.props.viewDetailsMethod}>
-
             <View
               style={{ flexDirection: "row", justifyContent: "flex-start" }}
             >
-              <Image
-                style={styles.ImageContainer1}
-                source={{ uri:"https://cdn-images-1.medium.com/max/1600/0*WK_vAxJo4O7Kdq3j.png"}}
-              />
-              <View style={{ paddingLeft: 20 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-evenly"
+              <TouchableOpacity onPress={this.props.testing}>
+                <Image
+                  style={styles.ImageContainer1}
+                  source={{
+                    uri: this.state.UserImage
                   }}
-                >
-                  <Text
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.props.viewDetailsMethod}>
+                <View style={{ paddingLeft: 20 }}>
+                  <View
                     style={{
-                      paddingLeft: 10,
-                      fontSize: 16,
-                      color: "#ededed",
-                      fontWeight: "bold"
+                      flexDirection: "row",
+                      justifyContent: "space-evenly"
                     }}
                   >
-                    {this.props.val.userId}
-                  </Text>
-                  <View>
-                    <Text style={styles.noteText}>{this.props.val.date}</Text>
-                  </View>
-                </View>
-                <Text style={styles.noteText1}>{this.props.val.title}</Text>
-              </View>
+                    <Text
+                      style={{
+                        fontFamily: "lucida grande",
 
-              {/* <TouchableOpacity
-           onPress={this.props.deleteMethod}
-           style={styles.noteDeletee}
-         >
-           <Icon name="delete" color="#a36955" />
-         </TouchableOpacity> */}
+                        paddingLeft: 10,
+                        fontSize: 16,
+                        color: "#ededed",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      {this.state.username}
+                    </Text>
+                    <View>
+                      <Text style={styles.noteText}>{this.props.val.date}</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.noteText1}>{this.props.val.title}</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <View>
               <Text style={styles.noteText2} multiline={false}>
                 {this.props.val.description}
               </Text>
             </View>
-            <View style={{ alignItems: "center" }}>
-              {/* <TouchableOpacity
-       onPress={this.props.deleteMethod}
-       style={styles.noteDeletee}
-     >
-       <Icon name="delete" color="#a36955" />
-     </TouchableOpacity> */}
-            </View>
-            </TouchableOpacity>
-
+            <View style={{ alignItems: "center" }} />
           </View>
         </View>
       );
@@ -87,75 +93,82 @@ export default class Feed extends Component {
         <View key={this.props.keyval} style={styles.note}>
           <View>
             <TouchableOpacity onPress={this.props.viewDetailsMethod}>
-            <View
-              style={{ flexDirection: "row", justifyContent: "flex-start" }}
-            >
-              <Image
-                style={styles.ImageContainer1}
-                source={{ uri: this.props.val.url1 }}
-              />
-              <View style={{ paddingLeft: 20 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-evenly"
-                  }}
-                >
-                  <Text
+              <View
+                style={{ flexDirection: "row", justifyContent: "flex-start" }}
+              >
+                <TouchableOpacity onPress={this.props.testing}>
+                  <Image
+                    style={styles.ImageContainer1}
+                    source={{ uri: this.state.UserImage }}
+                  />
+                </TouchableOpacity>
+                <View style={{ paddingLeft: 20 }}>
+                  <View
                     style={{
-                      paddingLeft: 10,
-                      fontSize: 16,
-                      color: "#ededed",
-                      fontWeight: "bold"
+                      flexDirection: "row",
+                      justifyContent: "space-evenly"
                     }}
                   >
-                    {this.props.val.userId}
-                  </Text>
-                  <View>
-                    <Text style={styles.noteText}>{this.props.val.date}</Text>
-                  </View>
-                </View>
-                <Text style={styles.noteText1}>{this.props.val.title}</Text>
-              </View>
+                    <Text
+                      style={{
+                        fontFamily: "lucida grande",
 
-              {/* <TouchableOpacity
+                        paddingLeft: 10,
+                        fontSize: 16,
+                        color: "#ededed",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      {this.state.username}
+                    </Text>
+                    <View>
+                      <Text style={styles.noteText}>{this.props.val.date}</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.noteText1}>{this.props.val.title}</Text>
+                </View>
+
+                {/* <TouchableOpacity
            onPress={this.props.deleteMethod}
            style={styles.noteDeletee}
          >
            <Icon name="delete" color="#a36955" />
          </TouchableOpacity> */}
-            </View>
-            <View>
-              <Text style={styles.noteText2} multiline={true} numberOfLines={1}>
-                {this.props.val.description}
-              </Text>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Image
-                source={{ uri: this.props.val.url1 }}
-                style={{
-                  width: widthPercentageToDP("90%"),
-                  height: 250,
-                  paddingLeft: 20,
-                  paddingBottom: 10,
-                  paddingTop: 10,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "transparent"
-                }}
-              />
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              {/* <TouchableOpacity
+              </View>
+              <View>
+                <Text
+                  style={styles.noteText2}
+                  multiline={true}
+                  numberOfLines={1}
+                >
+                  {this.props.val.description}
+                </Text>
+              </View>
+              <View style={{ alignItems: "center" }}>
+                <Image
+                  source={{ uri: this.props.val.url1 }}
+                  style={{
+                    width: widthPercentageToDP("90%"),
+                    height: 250,
+                    paddingLeft: 20,
+                    paddingBottom: 10,
+                    paddingTop: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "transparent"
+                  }}
+                />
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                {/* <TouchableOpacity
            onPress={this.props.editMethod}
            style={styles.noteDeletee1}
          >
            <Icon name="edit" />
          </TouchableOpacity> */}
-            </View>
+              </View>
             </TouchableOpacity>
           </View>
-          
         </View>
       );
     }
@@ -183,6 +196,8 @@ const styles = StyleSheet.create({
   },
 
   noteText1: {
+    fontFamily: "lucida grande",
+
     paddingTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
@@ -195,6 +210,8 @@ const styles = StyleSheet.create({
     //borderLeftColor: "black"
   },
   noteText2: {
+    fontFamily: "lucida grande",
+
     paddingTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
@@ -207,6 +224,8 @@ const styles = StyleSheet.create({
     //borderLeftColor: "black"
   },
   noteText: {
+    fontFamily: "lucida grande",
+
     paddingLeft: 170,
     paddingRight: 30,
     color: "#8b8b8b"

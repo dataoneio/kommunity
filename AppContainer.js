@@ -15,6 +15,7 @@ import React, { Component } from "react";
 import Info from "./files/Info";
 import Login from "./files/Login";
 import Request from "./files/Request";
+import UserInfo from "./files/UserInfo";
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -45,6 +46,19 @@ const StackNavigator3 = createStackNavigator(
   {
     ViewFeed: {
       screen: ViewFeed
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator4 = createStackNavigator(
+  {
+    UserInfo: {
+      screen: UserInfo
     }
   },
   {
@@ -151,12 +165,13 @@ const TabNavigator = createBottomTabNavigator(
 );
 const RootNavigator = createStackNavigator(
   {
+    p2: TabNavigator,
     p1: StackNavigator1,
 
-    p2: TabNavigator,
     P3: StackNavigator,
     p4: StackNavigator2,
-    p5: StackNavigator3
+    p5: StackNavigator3,
+    p6: StackNavigator4
   },
   {
     headerMode: "none",

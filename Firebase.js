@@ -10,6 +10,6 @@ var config = {
   projectId: "practice-82dce",
   storageBucket: "practice-82dce.appspot.com",
   messagingSenderId: "997763906167"
-};
+};  
 firebase.initializeApp(config);
 export default firebase;

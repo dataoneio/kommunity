@@ -59,11 +59,11 @@ export default class UserNotification extends React.Component {
 
     firebase
       .database()
-      .ref("app/User/")
-      .push({
+      .ref("app/User/"+data)
+      .set({
         Name: name,
         Email: "",
-        Profile_photo: "",
+        Profile_photo: "https://cdn-images-1.medium.com/max/1600/0*WK_vAxJo4O7Kdq3j.png",
         Profession: "",
         Gender: "",
         Blood_Group: "",
@@ -73,6 +73,16 @@ export default class UserNotification extends React.Component {
         State: "",
         Address_line1: ""
       });
+      firebase.database().ref("app/User/"+data+"/Business_details").update({
+        Name: "",
+        Contact_Number:"",
+        Type:"",
+        Category:"",
+        Address_line1:"",
+        Address_line2:""
+      
+
+      })
 
     firebase
       .database()
@@ -223,6 +233,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCFF"
   },
   welcome: {
+    fontFamily: "lucida grande",
+
     fontSize: 20,
     textAlign: "center",
     margin: 10

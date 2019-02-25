@@ -48,10 +48,13 @@ export default class Profile extends React.Component {
       key1: "",
       addr_line1: "",
       businessAddr_line1: "",
-      businessAddr_line2: ""
+      businessAddr_line2: "",
+      UserId:""
     };
   }
   componentDidMount() {
+    var { screenProps } = this.props;
+    this.setState({UserId:screenProps.user.id})
     this.getData();
   }
 
@@ -187,13 +190,16 @@ export default class Profile extends React.Component {
   // }
 
   updateBusinessdetails() {
+    var { screenProps } = this.props;
+
+
     let text1 = this.state.BusinessMobileNo;
     if (!this.mobilevalidate(text1)) {
       alert("mobile is incorrect");
     } else {
       firebase
         .database()
-        .ref("app/User/ID1/Business_details")
+        .ref("app/User/"+screenProps.user.id+"/Business_details")
         .update({
           Contact_Number: this.state.BusinessMobileNo,
           Name: this.state.BusinessName,
@@ -214,9 +220,11 @@ export default class Profile extends React.Component {
     }
   }
   getData() {
+    var { screenProps } = this.props;
+
     firebase
       .database()
-      .ref("app/User/ID1")
+      .ref("app/User/"+screenProps.user.id)
       .once("value", data => {
         var value = data.toJSON();
         console.log("----" + value.Profession);
@@ -244,7 +252,7 @@ export default class Profile extends React.Component {
       });
     firebase
       .database()
-      .ref("app/User/ID1/Business_details")
+      .ref("app/User/"+screenProps.user.id+"/Business_details")
       .once("value", data => {
         var bval = data.toJSON();
         this.setState({ BusinessCategory: bval.Category });
@@ -353,6 +361,8 @@ export default class Profile extends React.Component {
   }
 
   updateData() {
+    var { screenProps } = this.props;
+
     let text = this.state.mobileNo;
     let name = this.state.Name;
     if (!this.validate()) {
@@ -370,7 +380,7 @@ export default class Profile extends React.Component {
     } else {
       firebase
         .database()
-        .ref("app/User/ID1")
+        .ref("app/User/"+screenProps.user.id)
         .update({
           Name: this.state.Name,
           Email: this.state.txtvalue,
@@ -751,7 +761,7 @@ const styles = StyleSheet.create({
     fontFamily: "lucida grande",
     justifyContent: "center",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 22,
     color: "white"
   },
   welcome: {

@@ -47,35 +47,49 @@ export default class MyPosts extends React.Component {
       searchResult: [],
       searchInput: "",
       onFilter: true,
-      isLoading: true
+      isLoading: true,
     };
   }
   componentDidMount() {
-    this.getData();
+    var { screenProps } = this.props;
+    this.setState({imageurl:screenProps.user.userphotourl},console.log("dedededeee----"+screenProps.user.userphotourl))
+
     this.getDataFromFirebase();
+    //console.log("wwww----"+screenProps.user.id)
   }
   goback() {
     const { navigate } = this.props.navigation;
     navigate("Info");
   }
+  viewDetail(uid, title, desc, imgurl) {
+    console.log("yoho------");
+    this.props.navigation.navigate("ViewFeed", {
+      id: uid,
+      Title: title,
+      description: desc,
+      url: imgurl
+    });
+  }
   getDataFromFirebase() {
+    var { screenProps } = this.props;
+
     let arr1 = [];
     var d = new Date();
     console.log("date===" + d);
     firebase
       .database()
-      .ref("app/Event details")
-      .on("child_added", data => {
+      .ref("app/Event details").orderByChild("UserId").equalTo(screenProps.user.id).on("child_added",data =>{
+        console.log("aaaaa"+JSON.stringify(data.toJSON()));
         var result = [];
         var key1 = [];
         key1.push(data.key);
         let arr = data.toJSON();
-        console.log("---" + JSON.stringify(arr));
+        //console.log("---" + JSON.stringify(arr));
         for (var i in arr) {
           result.push(arr[i]);
         }
-        console.log("key--" + key1);
-        console.log("---" + result.length);
+        //console.log("key--" + key1);
+       // console.log("---" + result.length);
 
         arr1.push({
           date: result[2].toString(),
@@ -85,62 +99,18 @@ export default class MyPosts extends React.Component {
           uid: data.key,
           title: result[6].toString(),
           url1: result[4].toString(),
-          userId: "hello"
+          userId: result[7].toString(),
         });
 
-        console.log("date-" + result[2].toString());
-        console.log("desc--" + result[3].toString());
-        console.log("title-" + result[6].toString());
-        console.log("url:" + result[4].toString());
-        this.setState({ initialVals: arr1 });
+        
         this.setState({ feeds: arr1 });
         this.setState({ isLoading: false });
-        console.log("aaawwww" + JSON.stringify(arr1));
-        console.log(
-          "aaaooooooooooooooooooooooo" + JSON.stringify(this.state.initialVals)
-        );
-        console.log("aaa" + JSON.stringify(this.state.feeds));
+       
       });
   }
-  getData() {
-    firebase
-      .database()
-      .ref("app/User/ID1")
-      .once("value", data => {
-        var value = data.toJSON();
-        console.log("----" + value.Profession);
-
-        // console.log("------" + value.Contact_Number);
-        console.log("heheheh----" + JSON.stringify(value));
-        this.setState({ Name: value.Name });
-        this.setState({ txtvalue: value.Email });
-        this.setState({ imageurl: value.Profile_photo });
-        this.setState({ profession: value.Profession });
-        this.setState({ mobileNo: value.Contact_Number });
-        console.log("----" + value.Profession);
-        console.log("-----gegeggeg" + this.state.Gender);
-        this.setState({ Gender: value.Gender });
-        this.setState({ BloodGroup: value.Blood_Group });
-        // console.log("eeeeee-" + value.Profile_photo);
-        // console.log("image---" + this.state.imageurl);
-        // console.log("iiii--" + this.state.Name);
-        // console.log("---------" + this.state.txtvalue);
-        // console;
-      });
-    firebase
-      .database()
-      .ref("app/User/ID1/Business_details")
-      .once("value", data => {
-        var bval = data.toJSON();
-        this.setState({ BusinessCategory: bval.Category });
-        this.setState({ BusinessName: bval.Name });
-        this.setState({ BusinessMobileNo: bval.Contact_Number });
-        this.setState({ Type: bval.Type });
-        console.log("hehheheheheh----" + this.state.BusinessMobileNo);
-      });
-  }
+ 
   render() {
-    let searchval = this.state.initialVals.map((val, key) => {
+    let MyPostss = this.state.feeds.map((val, key) => {
       return (
         <View key={key} style={{ padding: 5 }}>
           <View
@@ -156,6 +126,9 @@ export default class MyPosts extends React.Component {
               key={key}
               keyval={key}
               val={val}
+              viewDetailsMethod={() =>
+                this.viewDetail(val.uid, val.title, val.description, val.url1)
+              }
               //deleteMethod={() => this.deleteNote(val.uid, key)}
               //editMethod={() => this.editNote(val.uid, val.note, val.url1,val.utitleval)}
               //imageMethod={() => this.imageNote(val.uid, val.url1, key)}
@@ -180,12 +153,12 @@ export default class MyPosts extends React.Component {
                 justifyContent: "space-between"
               }}
             >
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 title=""
                 // onPress={this.handlenavigation.bind(this)}
               >
                 <Icon name="edit" color="white" size={25} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           <ScrollView style={{ padding: 10, backgroundColor: "#1B2936" }}>
@@ -250,7 +223,7 @@ export default class MyPosts extends React.Component {
           }}
         >
           <ScrollView style={{ backgroundColor: "1B2936" }}>
-            {searchval}
+            {MyPostss}
           </ScrollView>
         </View>
       </View>

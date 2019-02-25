@@ -7,7 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   ToastAndroid,
-  PermissionsAndroid
+  PermissionsAndroid,
+  Image
 } from "react-native";
 import firebase from "../Firebase";
 export default class App extends Component {
@@ -79,8 +80,8 @@ export default class App extends Component {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     body = {
-      api_key: "c5a7a96a",
-      api_secret: "fydSG6nTzmVCcxyB",
+      api_key: "cc887b3e",
+      api_secret: "l9QI2LwwOWufmE6U",
       request_id: this.state.requestId,
       code: this.state.token
     };
@@ -94,7 +95,7 @@ export default class App extends Component {
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.status == 0) {
-          this.props.navigation.navigate("Home");
+          this.props.navigation.navigate("Home", {LoggedInNumber: this.state.phone});
         } else {
           ToastAndroid.show(responseJson.error_text, ToastAndroid.SHORT);
         }
@@ -110,8 +111,8 @@ export default class App extends Component {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     body = {
-      api_key: "c5a7a96a",
-      api_secret: "fydSG6nTzmVCcxyB",
+      api_key: "cc887b3e",
+      api_secret: "l9QI2LwwOWufmE6U",
       number: this.state.phone,
       brand: this.state.brand
     };

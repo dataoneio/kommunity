@@ -36,21 +36,42 @@ export default class Home extends React.Component {
       searchResult: [],
       searchInput: "",
       onFilter: true,
-      isLoading: true
+      isLoading: true,
+      LoggedInMumber: ""
     };
   }
   componentDidMount() {
+    var { screenProps } = this.props;
     console.log("will mount");
+    const { navigation } = this.props;
+    var loggedinnumber = navigation.getParam("LoggedInNumber", "no-number");
+    console.log("hehehehwwwwwwwww----" + loggedinnumber);
+    this.setState({ LoggedInMumber: loggedinnumber });
+    screenProps.user.number = loggedinnumber;
+    firebase
+      .database()
+      .ref("app/User")
+      .orderByChild("Contact_Number")
+      .equalTo(loggedinnumber)
+      .on("child_added", data => {
+        val1 = data.val();
+        if (data.exists()) {
+          console.log("dddddddddddd----" + JSON.stringify(data.key));
+          screenProps.user.userphotourl = val1.Profile_photo;
+          console.log("11111111-----" + val1.Profile_photo);
+          this.setState({ UserId: data.key }, () => {
+            screenProps.user.id = this.state.UserId;
+          });
+        }
+      });
+
     this.getDataFromFirebase();
   }
-  // componentDidMount() {
-  //   // this.getDataFromFirebase();
-  // }
 
   getDataFromFirebase() {
     let arr1 = [];
     var d = new Date();
-    console.log("date===" + d);
+    // console.log("date===" + d);
     firebase
       .database()
       .ref("app/Event details")
@@ -59,36 +80,35 @@ export default class Home extends React.Component {
         var key1 = [];
         key1.push(data.key);
         let arr = data.toJSON();
-        console.log("---" + JSON.stringify(arr));
+        //console.log("---" + JSON.stringify(arr));
         for (var i in arr) {
           result.push(arr[i]);
         }
-        console.log("key--" + key1);
-        console.log("---" + result.length);
+        //console.log("key--" + key1);
+        //console.log("---" + result.length);
 
         arr1.push({
           date: result[2].toString(),
           category: result[0].toString(),
-
           description: result[3].toString(),
           uid: data.key,
           title: result[6].toString(),
           url1: result[4].toString(),
-          userId: "ED1"
+          userId: result[7].toString()
         });
 
-        console.log("date-" + result[2].toString());
-        console.log("desc--" + result[3].toString());
-        console.log("title-" + result[6].toString());
-        console.log("url:" + result[4].toString());
+        // console.log("date-" + result[2].toString());
+        // console.log("desc--" + result[3].toString());
+        //console.log("title-" + result[6].toString());
+        //console.log("url:" + result[4].toString());
         this.setState({ initialVals: arr1 });
         this.setState({ feeds: arr1 });
         this.setState({ isLoading: false });
-        console.log("aaawwww" + JSON.stringify(arr1));
-        console.log(
-          "aaaooooooooooooooooooooooo" + JSON.stringify(this.state.initialVals)
-        );
-        console.log("aaa" + JSON.stringify(this.state.feeds));
+        //console.log("aaawwww" + JSON.stringify(arr1));
+        //console.log(
+        //   "aaaooooooooooooooooooooooo" + JSON.stringify(this.state.initialVals)
+        // );
+        //console.log("aaa" + JSON.stringify(this.state.feeds));
       });
   }
   onpress = txt => {
@@ -129,7 +149,10 @@ export default class Home extends React.Component {
       url: imgurl
     });
   }
-
+  testing(uid) {
+    console.log("home it is" + uid);
+    this.props.navigation.navigate("UserInfo", { UserId: uid });
+  }
   render() {
     if (this.state.isLoading) {
       return (
@@ -170,6 +193,7 @@ export default class Home extends React.Component {
               key={key}
               keyval={key}
               val={val}
+              testing={() => this.testing(val.uid)}
               //deleteMethod={() => this.deleteNote(val.uid, key)}
               viewDetailsMethod={() =>
                 this.viewDetail(val.uid, val.title, val.description, val.url1)
@@ -182,7 +206,7 @@ export default class Home extends React.Component {
     });
 
     return (
-      <View style={{ paddingBottom: 10, backgroundColor: "#1B2936", flex:1 }}>
+      <View style={{ paddingBottom: 10, backgroundColor: "#1B2936", flex: 1 }}>
         <View style={styles.header}>
           <Text style={styles.home}>Community Social Network</Text>
           <View
@@ -256,10 +280,9 @@ export default class Home extends React.Component {
           </View>
         </View>
         <ScrollView style={{ backgroundColor: "#1B2936" }}>
-          <View style={{  paddingBottom:50 }}>
+          <View style={{ paddingBottom: 30 }}>
             <View
               style={{
-               
                 flexWrap: "wrap-reverse",
                 flexDirection: "column-reverse",
                 backgroundColor: "#1B2936"
