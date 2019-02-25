@@ -8,8 +8,12 @@ import {
   TouchableOpacity,
   ToastAndroid,
   PermissionsAndroid,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
+import { Icon } from "react-native-elements";
+const wid = Dimensions.get("window");
+
 import firebase from "../Firebase";
 export default class App extends Component {
   constructor(props) {
@@ -95,7 +99,9 @@ export default class App extends Component {
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.status == 0) {
-          this.props.navigation.navigate("Home", {LoggedInNumber: this.state.phone});
+          this.props.navigation.navigate("Home", {
+            LoggedInNumber: this.state.phone
+          });
         } else {
           ToastAndroid.show(responseJson.error_text, ToastAndroid.SHORT);
         }
@@ -141,41 +147,150 @@ export default class App extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{backgroundColor:"#E3E7E6" ,flex:1}}>
         <View style={[!this.state.isLogin && { display: "none" }]}>
-          <TextInput
-            title="Phone"
-            placeholder="Please Input Your Phone note : prefix number must be 91"
-            onChangeText={phone => this.setState({ phone })}
-            dataDetectorTypes="phoneNumber"
-            keyboardType="numeric"
-          />
-          <TouchableOpacity
-            style={{
-              borderRadius: 2,
-              backgroundColor: "#007BB7",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 10
-            }}
-            onPress={() => this.searchPhoneNumber()}
-          >
-            <Text
+          <View style={styles.header}>
+            <Text style={styles.home}>Kommunity</Text>
+            <View>
+              <TouchableOpacity
+                title="NEXT"
+                onPress={this.searchPhoneNumber.bind(this)}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <View>
+                    <Text
+                      style={{
+                        color: "white",
+                        paddingRight: 10,
+                        padding: 4,
+                        paddingLeft: 15,
+                        fontSize: 20,
+                        borderLeftWidth: 2,
+                        borderLeftColor: "white"
+                      }}
+                    >
+                      NEXT
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.boxOne}>
+            <Image
+              source={require("../snap.png")}
               style={{
-                fontFamily: "MyriadPro",
-                color: "#fff",
-                fontWeight: "bold",
-                paddingTop: 5,
-                paddingBottom: 5,
-                fontSize: 16
+                position:"relative",
+                height: 150,
+                width: 150,
+                top:60,
+                alignSelf:"center"
               }}
-            >
-              Submit
-            </Text>
-          </TouchableOpacity>
+            />
+          </View>
+          <View style={{justifyContent:"center",alignItems:"center"}}>
+          <View style={styles.boxTwo}>
+          <View style={{justifyContent:"center"}}>
+            <Icon
+              name="cellphone"
+              type="material-community"
+              size={35}
+              // color = "#1B2936"
+              underlayColor="#FFFFFF"
+              style={{alignSelf:"center",justifyContent:"ceter"}}
+            />
+            </View>
+            <TextInput
+              style={{
+                flex: 1,
+                paddingLeft: 10,
+                fontSize: 16,
+                height: 50,
+                width:wid.width*.95,
+                //alignSelf: "flex-start",
+                backgroundColor: "#FFFFFF",
+               // borderColor:"red",borderWidth:2
+              }}
+              placeholder="Enter phone number with 91 as prefix :"
+              onChangeText={phone => this.setState({ phone })}
+              dataDetectorTypes="phoneNumber"
+              keyboardType="numeric"
+            />
+          </View>
+          </View>
         </View>
         <View style={[!this.state.isToken && { display: "none" }]}>
-          <TextInput
+         <View style={styles.header}>
+            <Text style={styles.home}>Verify OTP</Text>
+            <View>
+              <TouchableOpacity
+                title="NEXT"
+                onPress={this.verifyToken.bind(this)}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <View>
+                    <Text
+                      style={{
+                        color: "white",
+                        paddingRight: 10,
+                        padding: 4,
+                        paddingLeft: 15,
+                        fontSize:18,
+                        borderLeftWidth: 2,
+                        borderLeftColor: "white"
+                      }}
+                    >
+                      VERIFY
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.boxOne}>
+            <Image
+              source={require("../snap.png")}
+              style={{
+                position:"relative",
+                height: 150,
+                width: 150,
+                top:60,
+                alignSelf:"center"
+              }}
+            />
+          </View>
+          <View style={{justifyContent:"center",alignItems:"center"}}>
+          <View style={styles.boxTwo}>
+          <View style={{justifyContent:"center"}}>
+            <Icon
+              name="cellphone"
+              type="material-community"
+              size={35}
+              // color = "#1B2936"
+              underlayColor="#FFFFFF"
+              style={{alignSelf:"center",justifyContent:"ceter"}}
+            />
+            </View>
+            <TextInput
+              style={{
+                flex: 1,
+                paddingLeft: 10,
+                fontSize: 16,
+                height: 50,
+                width:wid.width*.95,
+                //alignSelf: "flex-start",
+                backgroundColor: "#FFFFFF",
+               // borderColor:"red",borderWidth:2
+              }}
+              placeholder="Enter OTP"
+              onChangeText={token => this.setState({ token })}
+              dataDetectorTypes="phoneNumber"
+              keyboardType="numeric"
+            />
+          </View>
+          </View>
+
+          {/* <TextInput
             title="Token"
             placeholder="Please Input Your Token"
             onChangeText={token => this.setState({ token })}
@@ -203,7 +318,7 @@ export default class App extends Component {
             >
               Verify Token
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     );
@@ -212,14 +327,51 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#F5FCFF",
+    backgroundColor: "#E3E7E6",
     padding: 10
+  },
+  header: {
+    backgroundColor: "#243545",
+    //alignItems: "center",
+    //justifyContent: "center",
+    borderBottomWidth: 2,
+    borderBottomColor: "white",
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  boxOne: {
+  
+    justifyContent: "center",
+    paddingTop:10
+  },
+  boxTwo: {
+   // borderColor:"#676261",
+   // borderRadius:5,
+    //borderWidth:1,
+    position:"relative",
+    top:90,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    padding:5,
+    width: wid.width * 0.95
+  },
+  boxThree: {
+    flex: 5,
+    backgroundColor: "#E3E7E6"
   },
   welcome: {
     fontSize: 20,
     textAlign: "center",
     margin: 10
+  },
+  home: {
+    fontFamily: "lucida grande",
+    justifyContent: "center",
+    fontWeight: "bold",
+    fontSize: 22,
+    color: "white"
   },
   instructions: {
     textAlign: "center",

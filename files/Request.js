@@ -93,8 +93,8 @@ export default class Request extends React.Component {
           <Image
             source={require("../snap.png")}
             style={{
-              height: 200,
-              width: 200,
+              height:150,
+              width:150,
               alignSelf: "center"
             }}
           />
