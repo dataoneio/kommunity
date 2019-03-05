@@ -15,10 +15,10 @@ import {
 } from "react-native-responsive-screen";
 const win = Dimensions.get("window");
 export default class JoiningRequests extends Component {
-  handlepress() {
+  accept() {
     this.props.acceptingfunction();
   }
-  handlepress1() {
+  reject() {
     this.props.rejectingfunction();
   }
   render() {
@@ -56,15 +56,15 @@ export default class JoiningRequests extends Component {
             <View>
               <TouchableOpacity
                 title="accept"
-                onPress={this.handlepress.bind(this)}
+                onPress={this.accept.bind(this)}
               >
                 <Icon name="done" color="green" size={40} />
               </TouchableOpacity>
             </View>
-            <View style={{paddingLeft:10}}>
+            <View style={{ paddingLeft: 10 }}>
               <TouchableOpacity
                 title="reject"
-                onPress={this.handlepress1.bind(this)}
+                onPress={this.reject.bind(this)}
               >
                 <Icon
                   name="close"
@@ -82,55 +82,4 @@ export default class JoiningRequests extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  note: {
-    position: "relative",
-    padding: 0,
-    paddingBottom: 10,
-    backgroundColor: "#1B2936"
-    //borderBottomWidth: 2,
-    //borderBottomColor: "#ededed"
-  },
-  ImageContainer1: {
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 50,
-    height: 50,
-    backgroundColor: "#fff",
-    borderRadius: 50
-  },
 
-  noteText1: {
-    paddingTop: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    //fontWeight: "bold",
-    fontSize: 14,
-    color: "white"
-
-    //borderLeftWidth: 5,
-    //borderLeftColor: "black"
-  },
-  noteText2: {
-    paddingTop: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    //fontWeight:"bold",
-    fontSize: 14,
-    color: "#8b8b8b"
-
-    //borderLeftWidth: 5,
-    //borderLeftColor: "black"
-  },
-  noteText: {
-    paddingLeft: 170,
-    paddingRight: 30,
-    color: "#8b8b8b"
-    //borderLeftWidth: 5,
-    //borderLeftColor: "black"
-  }
-});

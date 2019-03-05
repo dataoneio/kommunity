@@ -4,18 +4,20 @@ import {
   createStackNavigator
 } from "react-navigation";
 import { Icon } from "react-native-elements";
-import ViewFeed from "./files/ViewFeed";
-import MyPosts from "./files/MyPosts";
-import Home from "./files/Home";
-import AddEvent from "./files/AddEvent";
-import Profile from "./files/Profile";
-import UserNotification from "./files/UserNotification";
-import Search from "./files/Search";
+import ViewFeed from "../components/ViewFeed/ViewFeed";
+import MyPosts from "../screens/MyPosts/MyPosts";
+import Home from "../screens/Home/Home";
+import AddEvent from "../screens/AddEvent/AddEvent";
+import Profile from "../screens/Profile/Profile";
+import UserNotification from "../screens/UserNotification/UserNotification";
+import Search from "../screens/Search/Search";
 import React, { Component } from "react";
-import Info from "./files/Info";
-import Login from "./files/Login";
-import Request from "./files/Request";
-import UserInfo from "./files/UserInfo";
+import Info from "../screens/Info/Info";
+import Login from "../screens/Login/Login";
+import Request from "../screens/Request/Request";
+import UserInfo from "../screens/UserInfo/UserInfo";
+import UserPosts from "../screens/UserPosts/UserPosts";
+import Main from "../screens/Main/Main";
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -68,6 +70,33 @@ const StackNavigator4 = createStackNavigator(
     }
   }
 );
+
+const StackNavigator5 = createStackNavigator(
+  {
+    UserPosts: {
+      screen: UserPosts
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator6 = createStackNavigator(
+  {
+    Main: {
+      screen: Main
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
 const StackNavigator1 = createStackNavigator(
   {
     Login: Login,
@@ -88,7 +117,7 @@ const TabNavigator = createBottomTabNavigator(
       screen: Home,
       navigationOptions: {
         tabBarIcon: (tintColor, focused, active) => (
-          <Icon name="home" size={30} color={focused ? "#288DCF" : "#cccccc"} />
+          <Icon name="home" size={30} color={focused ? "#288DCF" : "white"} />
         ),
         showIcon: true
       }
@@ -97,11 +126,7 @@ const TabNavigator = createBottomTabNavigator(
       screen: Search,
       navigationOptions: {
         tabBarIcon: (tintColor, focused) => (
-          <Icon
-            name="search"
-            size={30}
-            color={focused ? "#288DCF" : "#cccccc"}
-          />
+          <Icon name="search" size={30} color={focused ? "#288DCF" : "white"} />
         ),
         showIcon: true,
         tabBarVisible: false
@@ -115,7 +140,7 @@ const TabNavigator = createBottomTabNavigator(
           <Icon
             name="add-box"
             size={30}
-            color={focused ? "#288DCF" : "#cccccc"}
+            color={focused ? "#288DCF" : "white"}
           />
         ),
         showIcon: true,
@@ -129,7 +154,7 @@ const TabNavigator = createBottomTabNavigator(
           <Icon
             name="notifications"
             size={30}
-            color={focused ? "#288DCF" : "#cccccc"}
+            color={focused ? "#288DCF" : "white"}
           />
         ),
         showIcon: true
@@ -139,7 +164,7 @@ const TabNavigator = createBottomTabNavigator(
       screen: Info,
       navigationOptions: {
         tabBarIcon: (tintColor, focused) => (
-          <Icon name="info" size={30} color={focused ? "#288DCF" : "#cccccc"} />
+          <Icon name="info" size={30} color={focused ? "#288DCF" : "white"} />
         ),
         showIcon: true,
         tabBarVisible: false
@@ -155,9 +180,9 @@ const TabNavigator = createBottomTabNavigator(
         //lineHeight: 20,
         //fontFamily: "CircularStd-Book"
       },
-      activeTintColor: "#288DCF",
+      activeTintColor: "white",
       style: {
-        backgroundColor: "#243545"
+        backgroundColor: "#2F497E"
       }
       //tintColor: "black",
     }
@@ -165,12 +190,14 @@ const TabNavigator = createBottomTabNavigator(
 );
 const RootNavigator = createStackNavigator(
   {
+    p0: StackNavigator6,
     p1: StackNavigator1,
     p2: TabNavigator,
     P3: StackNavigator,
     p4: StackNavigator2,
     p5: StackNavigator3,
-    p6: StackNavigator4
+    p6: StackNavigator4,
+    p7: StackNavigator5
   },
   {
     headerMode: "none",

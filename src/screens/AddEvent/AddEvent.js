@@ -9,14 +9,16 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  Image
 } from "react-native";
+import Image from "react-native-image-progress";
+import * as Progress from "react-native-progress";
 import { Icon } from "react-native-elements";
 import { TextInput } from "react-native-paper";
-import firebase from "../Firebase";
+import firebase from "../../../Firebase";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
+import styles from "./AddEventStyle";
 const Blob = RNFetchBlob.polyfill.Blob;
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
@@ -72,14 +74,8 @@ export default class AddEvent extends React.Component {
       } else {
         this.setState({ loadstatus: true });
         let source = { uri: response.uri };
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
         this.uploadImage(response.uri, "image/png", "hello");
         console.log("response.uri:--" + response.uri);
-        // this.setState({
-        //   //   loadstatus: false,
-        //   ImageSource: source
-        // });
       }
     });
   }
@@ -89,7 +85,6 @@ export default class AddEvent extends React.Component {
       console.log(storage);
       const uploadUri = uri;
       const sessionId = new Date().getTime();
-      //console.log("------"+sessionId);
       let uploadBlob = null;
       const imageRef = storage.ref("images").child(`${sessionId}`);
       fs.readFile(uploadUri, "base64")
@@ -102,24 +97,12 @@ export default class AddEvent extends React.Component {
         })
         .then(() => {
           uploadBlob.close();
-
-          //var i=imageRef.getDownloadURL();
-
-          //console.log("iii-----");
           return imageRef.getDownloadURL();
         })
         .then(url => {
-          //console.log("----"+url);
-
           this.setState({ uurl: url });
           console.log(" -------  " + this.state.uurl),
             console.log("uid1:---" + this.state.uid1);
-          // firebase
-          //   .database()
-          //   .ref("user/" + this.state.uid1)
-          //   .update({
-          //     url1: url
-          //   });
           this.setState({ imageurl: url });
           this.setState({ loadstatus: false });
           console.log("ooooooo----" + this.state.imageurl);
@@ -128,50 +111,49 @@ export default class AddEvent extends React.Component {
         })
         .then(function() {
           console.log("Document successfully written!");
-          //console.log("--------"+(this.state.uurl));
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
         });
-
-      // resolve(url);
     }).catch(error => {
       reject(error);
     });
-    // console.log(" sudid=--------"+imageRef.getDownloadURL());
   };
 
   addEvent() {
     console.log("added in database");
     console.log("category---" + this.state.category);
     if (this.state.title.trim().length == 0) {
-      alert("title must not be empty");
+      alert("Title must not be empty");
     } else if (this.state.descInput.trim().length == 0) {
       alert("A short description is needed.");
     } else {
       var d1 = new Date();
 
+      console.log(d1 + "dATEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
       this.setState({
-        date: d1.getDate() + "/" + (d1.getMonth() + 1) + "/" + d1.getFullYear()
+        date: d1.toString()
       });
+      console.log(this.state.date + "Datee");
       firebase
         .database()
         .ref("app/Event details")
         .push({
           Description: this.state.descInput.trim(),
           Title: this.state.title,
-          Date:
-            d1.getDate() + "/" + (d1.getMonth() + 1) + "/" + d1.getFullYear(),
+
+          Date: Date.now(),
           Post_View: "false",
           Category: this.state.category,
           Image: this.state.imageurl,
-          Comment: "",
+          Comments: "",
           UserId: this.state.UserId
         });
       this.props.navigation.navigate("Home");
       this.setState({
         title: "",
-        descInput: ""
+        descInput: "",
+        imageurl:""
       });
     }
   }
@@ -230,8 +212,10 @@ export default class AddEvent extends React.Component {
               <TextInput
                 label="Title"
                 placeholder="Title"
+                maxLength={40}
                 placeholderTextColor="#676261"
                 onChangeText={title => this.setState({ title })}
+                value={this.state.title.slice(0, 40)}
                 value={this.state.title}
                 style={{ backgroundColor: "transparent" }}
               />
@@ -254,6 +238,8 @@ export default class AddEvent extends React.Component {
                   fontSize: 16
                 }}
                 onChangeText={descInput => this.setState({ descInput })}
+                maxLength={200}
+                value={this.state.descInput.slice(0, 200)}
                 placeholder={"Your Message"}
                 value={this.state.descInput}
                 placeholderTextColor="#908a89"
@@ -263,11 +249,12 @@ export default class AddEvent extends React.Component {
               <Image
                 style={styles.ImageContainer}
                 source={{ uri: this.state.imageurl }}
+                indicator={Progress.Circle}
               />
             </View>
           </View>
         </ScrollView>
-        <View style={{ flexDirection: "row", backgroundColor: "#243545" }}>
+        <View style={{ flexDirection: "row", backgroundColor: "#2f497e" }}>
           <TouchableOpacity
             title="image"
             style={{ padding: 10 }}
@@ -280,58 +267,3 @@ export default class AddEvent extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  ImageContainer: {
-    position: "relative",
-    top: 40,
-    //left: 70,
-    // borderRadius: 10,
-    width: (win.width * 2) / 3,
-    height: win.height / 2.5,
-    // paddingTop: 10,
-    padding: 0,
-
-    borderColor: "transparent" /*  */,
-    borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    left: win.width / 6,
-    paddingBottom: 100
-    //color:"white"
-  },
-  header: {
-    backgroundColor: "#243545",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  home: {
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 18,
-    color: "white"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  }
-});

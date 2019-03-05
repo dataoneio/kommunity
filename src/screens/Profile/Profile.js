@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-
 import Image from "react-native-image-progress";
 import * as Progress from "react-native-progress";
-
 import { Icon } from "react-native-elements";
 import { Dropdown } from "react-native-material-dropdown";
-
+import styles from "./ProfileStyle";
 import {
   Platform,
   StyleSheet,
@@ -16,8 +14,7 @@ import {
   Button
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import firebase from "../Firebase";
-
+import firebase from "../../../Firebase";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
@@ -49,12 +46,12 @@ export default class Profile extends React.Component {
       addr_line1: "",
       businessAddr_line1: "",
       businessAddr_line2: "",
-      UserId:""
+      UserId: ""
     };
   }
   componentDidMount() {
     var { screenProps } = this.props;
-    this.setState({UserId:screenProps.user.id})
+    this.setState({ UserId: screenProps.user.id });
     this.getData();
   }
 
@@ -78,14 +75,9 @@ export default class Profile extends React.Component {
       } else {
         this.setState({ loadstatus: true });
         let source = { uri: response.uri };
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
         this.uploadImage(response.uri, "image/png", "hello");
         console.log("response.uri:--" + response.uri);
-        // this.setState({
-        //   //   loadstatus: false,
-        //   ImageSource: source
-        // });
       }
     });
   }
@@ -95,7 +87,6 @@ export default class Profile extends React.Component {
       console.log(storage);
       const uploadUri = uri;
       const sessionId = new Date().getTime();
-      //console.log("------"+sessionId);
       let uploadBlob = null;
       const imageRef = storage.ref("images").child(`${sessionId}`);
       fs.readFile(uploadUri, "base64")
@@ -108,24 +99,10 @@ export default class Profile extends React.Component {
         })
         .then(() => {
           uploadBlob.close();
-
-          //var i=imageRef.getDownloadURL();
-
-          //console.log("iii-----");
           return imageRef.getDownloadURL();
         })
         .then(url => {
-          //console.log("----"+url);
-
           this.setState({ imageurl: url });
-          // console.log(" -------  " + this.state.uurl),
-          // console.log("uid1:---" + this.state.uid1);
-          // firebase
-          //   .database()
-          //   .ref("user/" + this.state.uid1)
-          //   .update({
-          //     url1: url
-          //   });
           this.setState({ imageurl: url });
           this.setState({ loadstatus: false });
           console.log("ooooooo----" + this.state.imageurl);
@@ -134,17 +111,13 @@ export default class Profile extends React.Component {
         })
         .then(function() {
           console.log("Document successfully written!");
-          //console.log("--------"+(this.state.uurl));
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
         });
-
-      // resolve(url);
     }).catch(error => {
       reject(error);
     });
-    // console.log(" sudid=--------"+imageRef.getDownloadURL());
   };
   businessDetails() {
     this.setState({ businessStatus: true });
@@ -167,15 +140,11 @@ export default class Profile extends React.Component {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (reg.test(text) === false) {
       console.log("Email is Not Correct");
-      //  alert("Email format is incorrect");
-      //this.setState({email:text})
       return false;
     } else {
       this.setState({ email: text });
-      // alert("Email format is correct")
       console.log("Email is Correct");
       return true;
-      // this.goback();
     }
   }
 
@@ -183,23 +152,16 @@ export default class Profile extends React.Component {
     var regex = /\d/g;
     return regex.test(num);
   }
-  // hasSpecialChar(char)
-  // {
-  //   var regex = /^[^!-\/:-@\[-`{-~]+$/;
-  //     return regex.test(char);
-  // }
 
   updateBusinessdetails() {
     var { screenProps } = this.props;
-
-
     let text1 = this.state.BusinessMobileNo;
     if (!this.mobilevalidate(text1)) {
       alert("mobile is incorrect");
     } else {
       firebase
         .database()
-        .ref("app/User/"+screenProps.user.id+"/Business_details")
+        .ref("app/User/" + screenProps.user.id + "/Business_details")
         .update({
           Contact_Number: this.state.BusinessMobileNo,
           Name: this.state.BusinessName,
@@ -216,7 +178,7 @@ export default class Profile extends React.Component {
         this.state.businessAddr_line2,
         this.state.businessAddr_line1
       );
-      this.props.navigation.navigate("Info");
+      this.updateData();
     }
   }
   getData() {
@@ -224,7 +186,7 @@ export default class Profile extends React.Component {
 
     firebase
       .database()
-      .ref("app/User/"+screenProps.user.id)
+      .ref("app/User/" + screenProps.user.id)
       .once("value", data => {
         var value = data.toJSON();
         console.log("----" + value.Profession);
@@ -244,15 +206,10 @@ export default class Profile extends React.Component {
         this.setState({ states: value.State });
         this.setState({ city: value.City });
         this.setState({ addr_line1: value.Address_line1 });
-        // console.log("eeeeee-" + value.Profile_photo);
-        // console.log("image---" + this.state.imageurl);
-        // console.log("iiii--" + this.state.Name);
-        // console.log("---------" + this.state.txtvalue);
-        // console;
       });
     firebase
       .database()
-      .ref("app/User/"+screenProps.user.id+"/Business_details")
+      .ref("app/User/" + screenProps.user.id + "/Business_details")
       .once("value", data => {
         var bval = data.toJSON();
         this.setState({ BusinessCategory: bval.Category });
@@ -280,8 +237,6 @@ export default class Profile extends React.Component {
         });
 
         this.setState({ countryArray: arry1 });
-        // console.log("ehehehehhe---" + arry1);
-        //   console.log(data.key);
       });
   }
 
@@ -289,33 +244,16 @@ export default class Profile extends React.Component {
     this.setState({ country: countryy, states: "", city: "" }, () =>
       this.findstate()
     );
-
-    //   console.log("-i-i-i----" + this.state.searchtest);
-    // this.findelement1();
   };
 
   handleChangeText1 = statess => {
     this.setState({ states: statess, city: "" }, () => this.findcity());
-    //   console.log("-i-i-i----" + this.state.searchtest);
-    // this.findelement1();
   };
   handleChangeText2 = city1 => {
     this.setState({ city: city1 });
-    //   console.log("-i-i-i----" + this.state.searchtest);
-    // this.findelement1();
   };
 
   findstate() {
-    // var result = arr2.filter(search => {
-    //   let v1 = search.description.toUpperCase();
-    //   let v2 = search.title.toUpperCase();
-    //   let v3 = search.category.toUpperCase();
-    //   let s1 = this.state.searchInput.toUpperCase();
-    //   if (v1.includes(s1) || v2.includes(s1) || v3.includes(s1)) {
-    //     return v1;
-    //   }
-    // });
-
     this.state.countryArray.filter(search => {
       if (search.value == this.state.country) {
         this.setState({ key1: search.nameid }, () => {
@@ -331,7 +269,6 @@ export default class Profile extends React.Component {
               });
 
               this.setState({ stateArray: arr2 });
-              // console.log("ooooooooooooooooooo"+ this.state.stateArray)
             });
         });
       }
@@ -341,7 +278,6 @@ export default class Profile extends React.Component {
   findcity() {
     this.state.stateArray.filter(search => {
       if (search.value == this.state.states) {
-        // console.log("sjsjk---" + this.state.key1);
         var arr3 = [];
         firebase
           .database()
@@ -370,17 +306,13 @@ export default class Profile extends React.Component {
     } else if (!this.mobilevalidate(text)) {
       alert("mobile no is incorrect");
     } else if (this.state.Name.trim().length == 0) {
-      alert("name cant be empty");
+      alert("Please enter your name");
     } else if (this.hasNumber(name)) {
-      alert("name cannot contain numeric/special char");
-    } else if (this.state.Gender === undefined) {
-      alert("gender required");
-    } else if (this.state.BloodGroup === undefined) {
-      alert(" BoodGrp required");
+      alert("Name cannot contain numeric/special characters");
     } else {
       firebase
         .database()
-        .ref("app/User/"+screenProps.user.id)
+        .ref("app/User/" + screenProps.user.id)
         .update({
           Name: this.state.Name,
           Email: this.state.txtvalue,
@@ -411,7 +343,7 @@ export default class Profile extends React.Component {
     }
   }
   mobilevalidate(text) {
-    const reg = /^[0]?[123456789]\d{9}$/;
+    const reg = /^[0]?[123456789]\d{11}$/;
     if (reg.test(text) === false) {
       return false;
     } else {
@@ -458,6 +390,9 @@ export default class Profile extends React.Component {
     ];
     let data7 = [
       {
+        value: "None"
+      },
+      {
         value: "Wholesale"
       },
       {
@@ -499,8 +434,9 @@ export default class Profile extends React.Component {
                   label="Business Name"
                   placeholder="Business Name"
                   placeholderTextColor="#676261"
+                  maxLength={20}
                   onChangeText={BusinessName => this.setState({ BusinessName })}
-                  value={this.state.BusinessName}
+                  value={this.state.BusinessName.slice(0, 20)}
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
@@ -517,7 +453,7 @@ export default class Profile extends React.Component {
                   value={this.state.BusinessMobileNo.toString()}
                 />
               </View>
-              <View style={{padding:10}}>
+              <View style={{ padding: 10 }}>
                 <Dropdown
                   label="Business Category"
                   labelColor="#676261"
@@ -528,12 +464,13 @@ export default class Profile extends React.Component {
                   value={this.state.BusinessCategory}
                 />
               </View>
-              <View style={{ paddingBottom: 10}}>
+              <View style={{ paddingBottom: 10 }}>
                 <TextInput
                   label="Business type"
                   placeholder="Business type"
+                  maxLength={100}
                   onChangeText={Type => this.setState({ Type })}
-                  value={this.state.Type}
+                  value={this.state.Type.slice(0, 100)}
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
@@ -541,10 +478,11 @@ export default class Profile extends React.Component {
                 <TextInput
                   label="Business address line 1"
                   placeholder="Business Address"
+                  maxLength={100}
                   onChangeText={businessAddr_line1 =>
                     this.setState({ businessAddr_line1 })
                   }
-                  value={this.state.businessAddr_line1}
+                  value={this.state.businessAddr_line1.slice(0, 100)}
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
@@ -552,10 +490,11 @@ export default class Profile extends React.Component {
                 <TextInput
                   label="Business address line 2"
                   placeholder="Business Address"
+                  maxLength={100}
                   onChangeText={businessAddr_line2 =>
                     this.setState({ businessAddr_line2 })
                   }
-                  value={this.state.businessAddr_line2}
+                  value={this.state.businessAddr_line2.slice(0, 100)}
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
@@ -616,6 +555,7 @@ export default class Profile extends React.Component {
                 <TextInput
                   label="Name"
                   placeholder="Name"
+                  maxLength={20}
                   placeholderTextColor="#676261"
                   onChangeText={Name => this.setState({ Name })}
                   value={this.state.Name}
@@ -636,9 +576,10 @@ export default class Profile extends React.Component {
                 <TextInput
                   label="Profession"
                   placeholder="Profession"
+                  maxLength={40}
                   placeholderTextColor="#676261"
                   onChangeText={profession => this.setState({ profession })}
-                  value={this.state.profession}
+                  value={this.state.profession.slice(0, 40)}
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
@@ -667,9 +608,10 @@ export default class Profile extends React.Component {
                 <TextInput
                   label="address line 1"
                   style={{ backgroundColor: "transparent", width: "100%" }}
+                  maxLength={100}
                   placeholder="Address line 1"
                   onChangeText={addr_line1 => this.setState({ addr_line1 })}
-                  value={this.state.addr_line1}
+                  value={this.state.addr_line1.slice(0, 100)}
                 />
               </View>
               <View style={{ padding: 10 }}>
@@ -727,51 +669,3 @@ export default class Profile extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  ImageContainer1: {
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 100,
-    height: 100,
-    backgroundColor: "#fff",
-    borderRadius: 100,
-    overflow: "hidden"
-  },
-  header: {
-    backgroundColor: "#243545",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  home: {
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 22,
-    color: "white"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  }
-});

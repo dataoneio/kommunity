@@ -1,15 +1,8 @@
 import React, { Component } from "react";
-
 import Image from "react-native-image-progress";
 import * as Progress from "react-native-progress";
-
 import { Icon } from "react-native-elements";
 import { Dropdown } from "react-native-material-dropdown";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData
-} from "react-country-region-selector";
 import {
   Platform,
   StyleSheet,
@@ -20,12 +13,11 @@ import {
   Button
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import firebase from "../Firebase";
-
+import firebase from "../../../Firebase";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
-//import { timingSafeEqual } from "crypto";
+import styles from "./UserInfoStyle";
 const Blob = RNFetchBlob.polyfill.Blob;
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
@@ -56,17 +48,23 @@ export default class UserInfo extends React.Component {
   }
   componentDidMount() {
     const { navigation } = this.props;
-    var userId = navigation.getParam("UserId", "No User found");
-    console.log("hellop1" + userId);
-    firebase
-      .database()
-      .ref("app/Event details/" + userId)
-      .on("value", data => {
-        var val1 = data.toJSON();
-        console.log("user id is-----" + val1.UserId);
-
-        this.getData(val1.UserId);
-      });
+    var userId = navigation.getParam("EventId", "No event found");
+    var actualuserId = navigation.getParam("UserId", "No User found");
+    if (userId == "No event found") {
+      this.setState({ UserId: actualuserId });
+      this.getData(actualuserId);
+    } else if (actualuserId == "No User found") {
+      console.log("hellop1" + userId);
+      firebase
+        .database()
+        .ref("app/Event details/" + userId)
+        .on("value", data => {
+          var val1 = data.toJSON();
+          console.log("user id is-----" + val1.UserId);
+          this.setState({ UserId: val1.UserId });
+          this.getData(val1.UserId);
+        });
+    }
   }
   businessDetails() {
     this.setState({ businessStatus: true });
@@ -84,8 +82,8 @@ export default class UserInfo extends React.Component {
     });
   }
   goback1() {
-    const { navigate } = this.props.navigation;
-    navigate("Info");
+    // const { navigate } = this.props.navigation;
+    // navigate("Info");
     this.setState({ businessStatus: false });
   }
 
@@ -97,8 +95,6 @@ export default class UserInfo extends React.Component {
       .once("value", data => {
         var value = data.toJSON();
         console.log("----" + value.Profession);
-
-        // console.log("------" + value.Contact_Number);
         console.log("heheheh----" + JSON.stringify(value));
         this.setState({ Name: value.Name });
         this.setState({ txtvalue: value.Email });
@@ -113,11 +109,6 @@ export default class UserInfo extends React.Component {
         this.setState({ states: value.State });
         this.setState({ city: value.City });
         this.setState({ addr_line1: value.Address_line1 });
-        // console.log("eeeeee-" + value.Profile_photo);
-        // console.log("image---" + this.state.imageurl);
-        // console.log("iiii--" + this.state.Name);
-        // console.log("---------" + this.state.txtvalue);
-        // console;
       });
     firebase
       .database()
@@ -250,14 +241,7 @@ export default class UserInfo extends React.Component {
               flexDirection: "row",
               justifyContent: "space-between"
             }}
-          >
-            {/* <TouchableOpacity
-                title=""
-                onPress={this.handlenavigation.bind(this)}
-              >
-                <Icon name="edit" color="white" size={25} />
-              </TouchableOpacity> */}
-          </View>
+          />
         </View>
 
         <ScrollView style={{ padding: 10 }}>
@@ -283,15 +267,21 @@ export default class UserInfo extends React.Component {
             >
               <View style={{ flex: 1 }}>
                 <Button
-                  color="red"
+                  color="#2f497e"
                   title="Info"
-                  onPress={() => this.props.navigation.navigate("Info")}
+                  onPress={() => this.props.navigation.navigate("UserInfo")}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Button
+                color="#456097"
                   title="Posts"
-                  onPress={() => this.props.navigation.navigate("MyPosts")}
+                  onPress={() =>
+                    this.props.navigation.navigate("UserPosts", {
+                      UserId: this.state.UserId,
+                      imageurl: this.state.imageurl
+                    })
+                  }
                 />
               </View>
             </View>
@@ -369,8 +359,6 @@ export default class UserInfo extends React.Component {
               <View>
                 <TextInput
                   label="address line 1"
-                  // ref="mobileNo"
-                  // keyboardType="numeric"
                   editable={false}
                   disabled={true}
                   style={{ backgroundColor: "transparent", width: "100%" }}
@@ -384,8 +372,6 @@ export default class UserInfo extends React.Component {
                   disabled={true}
                   label="country"
                   labelColor="#676261"
-                  // data={this.state.countryArray}
-                  // onChangeText={this.handleChangeText.bind(this)}
                   value={this.state.country}
                 />
               </View>
@@ -395,8 +381,6 @@ export default class UserInfo extends React.Component {
                   disabled={true}
                   label="state"
                   labelColor="#676261"
-                  // data={this.state.stateArray}
-                  // onChangeText={this.handleChangeText1.bind(this)}
                   value={this.state.states}
                 />
               </View>
@@ -406,8 +390,6 @@ export default class UserInfo extends React.Component {
                   disabled={true}
                   label="city"
                   labelColor="#676261"
-                  // data={this.state.cityArray}
-                  //onChangeText={this.handleChangeText2.bind(this)}
                   value={this.state.city}
                 />
               </View>
@@ -416,7 +398,6 @@ export default class UserInfo extends React.Component {
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
                   color="#676261"
-                  //accessibilityLabel="Learn more about this purple button"
                 />
               </View>
             </View>
@@ -426,51 +407,3 @@ export default class UserInfo extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  ImageContainer1: {
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 100,
-    height: 100,
-    backgroundColor: "#fff",
-    borderRadius: 100,
-    overflow: "hidden"
-  },
-  header: {
-    backgroundColor: "#243545",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  home: {
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 22,
-    color: "white"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  }
-});

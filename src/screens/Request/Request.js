@@ -5,19 +5,30 @@ import {
   View,
   Button,
   TouchableOpacity,
-  Image
+  Image,
+  BackHandler,
+  NavigationActions
 } from "react-native";
-import firebase from "../Firebase";
-import { Icon } from "react-native-elements";
+import firebase from "../../../Firebase";
+//import { Icon } from "react-native-elements";
 import { TextInput } from "react-native-paper";
-
+import styles from "./RequestStyle";
 export default class Request extends React.Component {
-  componentDidMount() {
+  handleBackButton() {
+    this.props.navigation.goBack();
+  }
+  componentWillMount() {
     const { navigation } = this.props;
     var ph_number = navigation.getParam("phone1", "no-number");
     this.setState({ phone: ph_number });
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButton.bind(this)
+    );
   }
-
+  //   componentWillUnmount() {
+  //     BackHandler.removeEventListener('hardwareBackPress');
+  // }
   constructor(props) {
     super(props);
 
@@ -38,21 +49,23 @@ export default class Request extends React.Component {
   }
 
   saveRequest() {
-    firebase
-      .database()
-      .ref("app/Joining_Requests")
-      .push({
-        Contact_Number: this.state.phone,
-        Name: this.state.name,
-        email: this.state.email
+    if (this.state.name.trim() == "") {
+      alert("Please enter your name");
+    } else {
+      firebase
+        .database()
+        .ref("app/Joining_Requests")
+        .push({
+          Contact_Number: this.state.phone,
+          Name: this.state.name
+        });
+      this.setState({
+        phone: "",
+        name: ""
       });
-    this.setState({
-      phone: "",
-      name: "",
-      email: ""
-    });
 
-    this.props.navigation.navigate("Login");
+      this.props.navigation.navigate("Login");
+    }
   }
 
   render() {
@@ -68,33 +81,18 @@ export default class Request extends React.Component {
             >
               <View style={{ flexDirection: "row" }}>
                 <View>
-                  <Text
-                    style={{
-                      color: "white",
-                      paddingRight: 10,
-                      padding: 4,
-                      paddingLeft:15,
-                      fontSize: 20,
-                      borderLeftWidth: 2,
-                      borderLeftColor: "white"
-                    }}
-                  >
-                    Send
-                  </Text>
+                  <Text style={styles.sendButton}>Send</Text>
                 </View>
-                {/* <View>
-                  <Icon name="done" color="white" size={25} />
-                </View> */}
               </View>
             </TouchableOpacity>
           </View>
         </View>
         <View style={{ paddingTop: 50 }}>
           <Image
-            source={require("../snap.png")}
+            source={require("../../assets/App_logo.png")}
             style={{
-              height:150,
-              width:150,
+              height: 150,
+              width: 150,
               alignSelf: "center"
             }}
           />
@@ -104,25 +102,24 @@ export default class Request extends React.Component {
             style={{ backgroundColor: "transparent" }}
             label="Mobile No"
             placeholder="Enter Mobile No:"
-            //autoCapitalize="sentences"
-
             onChangeText={phone => this.setState({ phone })}
             value={this.state.phone}
             editable={false}
-            disable={true}
+            disabled={true}
           />
         </View>
         <View style={{ padding: 20 }}>
           <TextInput
             style={{ backgroundColor: "transparent" }}
             label="Name"
+            maxLength={20}
             placeholder="Name"
             autoCapitalize="words"
             onChangeText={name => this.setState({ name })}
-            value={this.state.name}
+            value={this.state.name.slice(0, 20)}
           />
         </View>
-        <View style={{ padding: 20 }}>
+        {/* <View style={{ padding: 20 }}>
           <TextInput
             style={{ backgroundColor: "transparent" }}
             label="Email Id"
@@ -131,34 +128,8 @@ export default class Request extends React.Component {
             onChangeText={email => this.setState({ email })}
             value={this.state.email}
           />
-        </View>
+        </View> */}
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  header: {
-    backgroundColor: "#243545",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  home: {
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 22,
-    color: "white"
-  }
-});

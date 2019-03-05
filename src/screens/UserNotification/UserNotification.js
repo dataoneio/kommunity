@@ -20,8 +20,8 @@ import {
   Button
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import Joining_Requests from "./JoiningRequests";
-import firebase from "../Firebase";
+import Joining_Requests from "../../components/JoiningRequests/JoiningRequests";
+import firebase from "../../../Firebase";
 
 import SendSMS from "react-native-sms";
 
@@ -37,7 +37,7 @@ export default class UserNotification extends React.Component {
     console.log("will mount");
     this.getDataFromFirebase();
   }
-  onPress1(Number, name, data, key) {
+  acceptRequest(Number, name, data, key) {
     SendSMS.send(
       {
         body: "You have been accepted as a member of our community",
@@ -59,11 +59,12 @@ export default class UserNotification extends React.Component {
 
     firebase
       .database()
-      .ref("app/User/"+data)
+      .ref("app/User/" + data)
       .set({
         Name: name,
         Email: "",
-        Profile_photo: "https://cdn-images-1.medium.com/max/1600/0*WK_vAxJo4O7Kdq3j.png",
+        Profile_photo:
+          "https://cdn-images-1.medium.com/max/1600/0*WK_vAxJo4O7Kdq3j.png",
         Profession: "",
         Gender: "",
         Blood_Group: "",
@@ -73,16 +74,17 @@ export default class UserNotification extends React.Component {
         State: "",
         Address_line1: ""
       });
-      firebase.database().ref("app/User/"+data+"/Business_details").update({
+    firebase
+      .database()
+      .ref("app/User/" + data + "/Business_details")
+      .update({
         Name: "",
-        Contact_Number:"",
-        Type:"",
-        Category:"",
-        Address_line1:"",
-        Address_line2:""
-      
-
-      })
+        Contact_Number: "",
+        Type: "",
+        Category: "",
+        Address_line1: "",
+        Address_line2: ""
+      });
 
     firebase
       .database()
@@ -91,7 +93,7 @@ export default class UserNotification extends React.Component {
     this.state.requests.splice(key, 1);
     this.setState({ requests: this.state.requests });
   }
-  onPress2(Number, data, key) {
+  rejectRequest(Number, data, key) {
     SendSMS.send(
       {
         body: "You have been rejected to be a member of our community",
@@ -161,10 +163,6 @@ export default class UserNotification extends React.Component {
             style={{
               paddingBottom: 20,
               padding: 5
-              // borderRadius: 5,
-              // borderBottomWidth: 0.5,
-              // borderBottomColor: "white",
-              // backgroundColor: "#1B2936"
             }}
           >
             <Joining_Requests
@@ -172,9 +170,11 @@ export default class UserNotification extends React.Component {
               keyval={key}
               val={val}
               acceptingfunction={() =>
-                this.onPress1(val.Number, val.Name, val.Uid, key)
+                this.acceptRequest(val.Number, val.Name, val.Uid, key)
               }
-              rejectingfunction={() => this.onPress2(val.Number, val.Uid, key)}
+              rejectingfunction={() =>
+                this.rejectRequest(val.Number, val.Uid, key)
+              }
             />
           </View>
         </View>
@@ -182,7 +182,7 @@ export default class UserNotification extends React.Component {
     });
 
     return (
-      <View style={{flex:1, backgroundColor:"yellow"}}>
+      <View style={{ flex: 1, backgroundColor: "yellow" }}>
         <View style={styles.header}>
           <View>
             <TouchableOpacity title="" onPress={this.goback.bind(this)}>
@@ -195,21 +195,9 @@ export default class UserNotification extends React.Component {
               flexDirection: "row",
               justifyContent: "space-between"
             }}
-          >
-            {/* <TouchableOpacity
-              title=""
-              onPress={this.handlenavigation.bind(this)}
-            >
-              <Icon name="edit" color="white" size={25} />
-            </TouchableOpacity> */}
-          </View>
+          />
         </View>
-        {/* <View>
-          <Button title="pressss me" onPress={this.onPress1.bind(this)}>
-            press me
-          </Button>
-        </View> */}
-        <ScrollView style={{backgroundColor:"#f2f2f2"}}>
+        <ScrollView style={{ backgroundColor: "#f2f2f2" }}>
           <View
             style={{
               flexWrap: "wrap-reverse",
@@ -232,13 +220,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCFF"
   },
-  welcome: {
-    fontFamily: "lucida grande",
 
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
   home: {
     fontFamily: "lucida grande",
     justifyContent: "center",
@@ -247,18 +229,11 @@ const styles = StyleSheet.create({
     color: "white"
   },
   header: {
-    backgroundColor: "#243545",
-    //alignItems: "center",
-    //justifyContent: "center",
+    backgroundColor: "#2f497e",
     borderBottomWidth: 2,
     borderBottomColor: "white",
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between"
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
   }
 });

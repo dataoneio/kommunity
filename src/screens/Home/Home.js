@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   Button,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage,
+  BackHandler
 } from "react-native";
 import { Icon } from "react-native-elements";
 //import { Button } from "native-base";
-import firebase from "../Firebase";
-import Feed from "./Feed";
+import firebase from "../../../Firebase";
+import Feed from "../../components/Feed/Feed";
 import {
   Menu,
   MenuOptions,
@@ -26,7 +28,6 @@ import { Circle, Rect } from "react-native-svg";
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       ftitle: "",
       fdescription: "",
@@ -41,32 +42,43 @@ export default class Home extends React.Component {
     };
   }
   componentDidMount() {
+    //this.setValueLocally();
+    this.getValueLocally();
     var { screenProps } = this.props;
-    console.log("will mount");
+    console.log("Did mount");
     const { navigation } = this.props;
     var loggedinnumber = navigation.getParam("LoggedInNumber", "no-number");
-    console.log("hehehehwwwwwwwww----" + loggedinnumber);
+    //console.log("hehehehwwwwwwwww----" + loggedinnumber);
     this.setState({ LoggedInMumber: loggedinnumber });
-    screenProps.user.number = loggedinnumber;
-    firebase
-      .database()
-      .ref("app/User")
-      .orderByChild("Contact_Number")
-      .equalTo(loggedinnumber)
-      .on("child_added", data => {
-        val1 = data.val();
-        if (data.exists()) {
-          console.log("dddddddddddd----" + JSON.stringify(data.key));
-          screenProps.user.userphotourl = val1.Profile_photo;
-          console.log("11111111-----" + val1.Profile_photo);
-          this.setState({ UserId: data.key }, () => {
-            screenProps.user.id = this.state.UserId;
-          });
-        }
-      });
-
     this.getDataFromFirebase();
   }
+  getValueLocally = () => {
+    var { screenProps } = this.props;
+
+    AsyncStorage.getItem("token").then(value =>
+      this.setState({ getToken: value }, () => {
+        console.log("--inside it--" + this.state.getToken);
+        screenProps.user.number = this.state.getToken;
+
+        firebase
+          .database()
+          .ref("app/User")
+          .orderByChild("Contact_Number")
+          .equalTo(this.state.getToken)
+          .on("child_added", data => {
+            val1 = data.val();
+            if (data.exists()) {
+              // console.log("dddddddddddd----" + JSON.stringify(data.key));
+              screenProps.user.userphotourl = val1.Profile_photo;
+              // console.log("11111111-----" + val1.Profile_photo);
+              this.setState({ UserId: data.key }, () => {
+                screenProps.user.id = this.state.UserId;
+              });
+            }
+          });
+      })
+    );
+  };
 
   getDataFromFirebase() {
     let arr1 = [];
@@ -151,7 +163,7 @@ export default class Home extends React.Component {
   }
   testing(uid) {
     console.log("home it is" + uid);
-    this.props.navigation.navigate("UserInfo", { UserId: uid });
+    this.props.navigation.navigate("UserInfo", { EventId: uid });
   }
   render() {
     if (this.state.isLoading) {
@@ -173,20 +185,22 @@ export default class Home extends React.Component {
       );
     }
 
+    var { screenProps } = this.props;
+    screenProps.user.screenName = "Home";
+    console.log("hehehheh" + screenProps.user.screenName);
     let search =
       this.state.onFilter === true
         ? this.state.initialVals
         : this.state.searchResult;
     let searchval = search.map((val, key) => {
       return (
-        <View key={key} style={{ padding: 5 }}>
+        <View key={key} style={{ paddingHorizontal: 5, paddingVertical: 3 }}>
           <View
             style={{
-              padding: 1,
+              padding: 2,
               borderRadius: 5,
-              borderBottomWidth: 0.5,
-              borderBottomColor: "white",
-              backgroundColor: "#1B2936"
+
+              backgroundColor: "#DDDCE2"
             }}
           >
             <Feed
@@ -206,7 +220,7 @@ export default class Home extends React.Component {
     });
 
     return (
-      <View style={{ paddingBottom: 10, backgroundColor: "#1B2936", flex: 1 }}>
+      <View style={{ paddingBottom: 10, backgroundColor: "#dddce2", flex: 1 }}>
         <View style={styles.header}>
           <Text style={styles.home}>Community Social Network</Text>
           <View
@@ -219,14 +233,19 @@ export default class Home extends React.Component {
             <View>
               <Menu>
                 <MenuTrigger>
-                  <Icon name="list" color="#cccccc" size={30} />
+                  <Icon
+                    name="filter"
+                    type="font-awesome"
+                    color="white"
+                    size={30}
+                  />
                 </MenuTrigger>
                 <MenuOptions
-                  style={{ backgroundColor: "#243545" }}
+                  style={{ backgroundColor: "white" }}
                   optionsContainerStyle={{
                     marginTop: 30,
-                    borderColor: "#233443",
-                    borderWidth: 10
+                    borderColor: "#dddce2",
+                    borderWidth: 3
                   }}
                 >
                   <ScrollView
@@ -238,35 +257,47 @@ export default class Home extends React.Component {
                       onSelect={this.onpress.bind(this, "All")}
                       // text="Party"
                     >
-                      <Text style={{ color: "white" }}>ALL</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        ALL
+                      </Text>
                     </MenuOption>
                     <MenuOption
                       onSelect={this.onpress.bind(this, "Party")}
                       // text="Party"
                     >
-                      <Text style={{ color: "white" }}>Party</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Party
+                      </Text>
                     </MenuOption>
                     <MenuOption onSelect={this.onpress.bind(this, "Meet-up")}>
-                      <Text style={{ color: "white" }}>Meet-up</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Meet-up
+                      </Text>
                     </MenuOption>
                     <MenuOption
                       onSelect={this.onpress.bind(this, "Announcement")}
                       // //disabled={true}
                       // text="Announcement"
                     >
-                      <Text style={{ color: "white" }}>Announcement</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Announcement
+                      </Text>
                     </MenuOption>
 
                     <MenuOption onSelect={this.onpress.bind(this, "Business")}>
-                      <Text style={{ color: "white" }}>Business</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Business
+                      </Text>
                     </MenuOption>
                     <MenuOption onSelect={this.onpress.bind(this, "Education")}>
-                      <Text style={{ color: "white" }}>Education</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Education
+                      </Text>
                     </MenuOption>
                     <MenuOption
                       onSelect={this.onpress.bind(this, "Birthday/Anniversary")}
                     >
-                      <Text style={{ color: "white" }}>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
                         Birthday/Anniversary
                       </Text>
                     </MenuOption>
@@ -279,13 +310,13 @@ export default class Home extends React.Component {
             </TouchableOpacity> */}
           </View>
         </View>
-        <ScrollView style={{ backgroundColor: "#1B2936" }}>
-          <View style={{ paddingBottom: 30 }}>
+        <ScrollView style={{ backgroundColor: "#DDDCE2" }}>
+          <View style={{ paddingVertical: 8 }}>
             <View
               style={{
                 flexWrap: "wrap-reverse",
                 flexDirection: "column-reverse",
-                backgroundColor: "#1B2936"
+                backgroundColor: "#dddce2"
               }}
             >
               {searchval}
@@ -299,7 +330,7 @@ export default class Home extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#243545",
+    backgroundColor: "#2F497E",
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,
@@ -314,21 +345,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     color: "white"
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
   }
 });

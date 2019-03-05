@@ -9,7 +9,7 @@
 
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
-import AppContainer from "./AppContainer";
+import AppContainer from "./src/navigator/AppContainer";
 import { MenuProvider } from "react-native-popup-menu";
 
 export default class App extends Component {

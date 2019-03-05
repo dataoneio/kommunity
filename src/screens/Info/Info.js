@@ -6,26 +6,22 @@ import * as Progress from "react-native-progress";
 import { Icon } from "react-native-elements";
 import { Dropdown } from "react-native-material-dropdown";
 import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData
-} from "react-country-region-selector";
-import {
   Platform,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ScrollView,
-  Button
+  Button,
+  AsyncStorage,
+  BackHandler
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import firebase from "../Firebase";
-
+import firebase from "../../../Firebase";
+import styles from "./InfoStyle";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
-//import { timingSafeEqual } from "crypto";
 const Blob = RNFetchBlob.polyfill.Blob;
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
@@ -51,12 +47,14 @@ export default class Info extends React.Component {
       addr_line1: "",
       businessAddr_line1: "",
       businessAddr_line2: "",
-      UserId:""
+      UserId: ""
     };
   }
+
   componentDidMount() {
     var { screenProps } = this.props;
-    this.setState({UserId:screenProps.user.id})
+    screenProps.user.screenName = "Info";
+    this.setState({ UserId: screenProps.user.id });
     this.getData();
   }
 
@@ -75,17 +73,15 @@ export default class Info extends React.Component {
       returnData1: this.returnData1.bind(this)
     });
   }
+  logout() {
+    AsyncStorage.removeItem("token");
+    this.props.navigation.navigate("Login");
+  }
   goback1() {
     const { navigate } = this.props.navigation;
     navigate("Info");
     this.setState({ businessStatus: false });
   }
-
-  // hasSpecialChar(char)
-  // {
-  //   var regex = /^[^!-\/:-@\[-`{-~]+$/;
-  //     return regex.test(char);
-  // }
   returnData(
     Name,
     Email,
@@ -120,7 +116,7 @@ export default class Info extends React.Component {
       Type: type,
       BusinessCategory: Category,
       businessAddr_line1: Address_line1,
-      businessAddr_line2:Address_line2
+      businessAddr_line2: Address_line2
     });
   }
   getData() {
@@ -128,7 +124,7 @@ export default class Info extends React.Component {
 
     firebase
       .database()
-      .ref("app/User/"+screenProps.user.id)
+      .ref("app/User/" + screenProps.user.id)
       .once("value", data => {
         var value = data.toJSON();
         console.log("----" + value.Profession);
@@ -156,16 +152,15 @@ export default class Info extends React.Component {
       });
     firebase
       .database()
-      .ref("app/User/"+screenProps.user.id+"/Business_details")
+      .ref("app/User/" + screenProps.user.id + "/Business_details")
       .once("value", data => {
         var bval = data.toJSON();
         this.setState({ BusinessCategory: bval.Category });
         this.setState({ BusinessName: bval.Name });
         this.setState({ BusinessMobileNo: bval.Contact_Number });
         this.setState({ Type: bval.Type });
-        this.setState({businessAddr_line1:bval.Address_line1});
-        this.setState({businessAddr_line2:bval.Address_line2});
-
+        this.setState({ businessAddr_line1: bval.Address_line1 });
+        this.setState({ businessAddr_line2: bval.Address_line2 });
 
         console.log("hehheheheheh----" + this.state.BusinessMobileNo);
       });
@@ -188,14 +183,7 @@ export default class Info extends React.Component {
                 flexDirection: "row",
                 justifyContent: "space-between"
               }}
-            >
-              {/* <TouchableOpacity
-                title=""
-                onPress={this.updateBusinessdetails.bind(this)}
-              >
-                <Icon name="done" color="white" size={30} />
-              </TouchableOpacity> */}
-            </View>
+            />
           </View>
           <ScrollView style={{ padding: 10 }}>
             <View>
@@ -223,7 +211,7 @@ export default class Info extends React.Component {
                   onChangeText={BusinessMobileNo =>
                     this.setState({ BusinessMobileNo })
                   }
-                  //value={this.state.BusinessMobileNo.toString()}
+                  val={this.state.BusinessMobileNo}
                 />
               </View>
 
@@ -238,7 +226,7 @@ export default class Info extends React.Component {
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
-              <View style={{ padding: 10, paddingBottom:10 }}>
+              <View style={{ padding: 10, paddingBottom: 10 }}>
                 <Dropdown
                   disabled={true}
                   label="Business Category"
@@ -249,24 +237,28 @@ export default class Info extends React.Component {
                   value={this.state.BusinessCategory}
                 />
               </View>
-              <View style={{ padding:5 }}>
+              <View style={{ padding: 5 }}>
                 <TextInput
                   label="Business address line 1"
                   editable={false}
                   disabled={true}
                   placeholder="Business Address"
-                  onChangeText={businessAddr_line1 => this.setState({businessAddr_line1  })}
+                  onChangeText={businessAddr_line1 =>
+                    this.setState({ businessAddr_line1 })
+                  }
                   value={this.state.businessAddr_line1}
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
-              <View style={{ padding:5}}>
+              <View style={{ padding: 5 }}>
                 <TextInput
                   label="Business address line 2"
                   editable={false}
                   disabled={true}
                   placeholder="Business Address"
-                  onChangeText={businessAddr_line2 => this.setState({businessAddr_line2  })}
+                  onChangeText={businessAddr_line2 =>
+                    this.setState({ businessAddr_line2 })
+                  }
                   value={this.state.businessAddr_line2}
                   style={{ backgroundColor: "transparent" }}
                 />
@@ -313,16 +305,6 @@ export default class Info extends React.Component {
                   }}
                   indicator={Progress.Circle}
                 />
-
-                {/* <TouchableOpacity
-                  style={{ alignSelf: "center" }}
-                  onPress={this.selectPhotoTapped.bind(this)}
-                >
-                  <Text style={{ fontFamily: "lucida grande" }}>
-                    {" "}
-                    Edit Photo{" "}
-                  </Text>
-                </TouchableOpacity> */}
               </View>
             </View>
             <View
@@ -334,15 +316,20 @@ export default class Info extends React.Component {
             >
               <View style={{ flex: 1 }}>
                 <Button
-                  color="red"
+                  color="#2f497e"
                   title="Info"
                   onPress={() => this.props.navigation.navigate("Info")}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Button
+                  color="#456097"
                   title="Posts"
-                  onPress={() => this.props.navigation.navigate("MyPosts")}
+                  onPress={() =>
+                    this.props.navigation.navigate("MyPosts", {
+                      imageurl: this.state.imageurl
+                    })
+                  }
                 />
               </View>
             </View>
@@ -359,13 +346,6 @@ export default class Info extends React.Component {
                   style={{ backgroundColor: "transparent" }}
                 />
               </View>
-              {/* <TextInput
-            placeholder="Email"
-            placeholderTextColor="#676261"
-            // onChangeText={Email => this.setState({Email})}
-            // value={this.state.Email}
-            style={{ backgroundColor: "transparent" }}
-          /> */}
               <View>
                 <TextInput
                   label="Email ID"
@@ -426,8 +406,6 @@ export default class Info extends React.Component {
               <View>
                 <TextInput
                   label="address line 1"
-                  // ref="mobileNo"
-                  // keyboardType="numeric"
                   editable={false}
                   disabled={true}
                   style={{ backgroundColor: "transparent", width: "100%" }}
@@ -441,8 +419,6 @@ export default class Info extends React.Component {
                   disabled={true}
                   label="country"
                   labelColor="#676261"
-                  // data={this.state.countryArray}
-                  // onChangeText={this.handleChangeText.bind(this)}
                   value={this.state.country}
                 />
               </View>
@@ -452,8 +428,6 @@ export default class Info extends React.Component {
                   disabled={true}
                   label="state"
                   labelColor="#676261"
-                  // data={this.state.stateArray}
-                  // onChangeText={this.handleChangeText1.bind(this)}
                   value={this.state.states}
                 />
               </View>
@@ -463,17 +437,21 @@ export default class Info extends React.Component {
                   disabled={true}
                   label="city"
                   labelColor="#676261"
-                  // data={this.state.cityArray}
-                  //onChangeText={this.handleChangeText2.bind(this)}
                   value={this.state.city}
+                />
+              </View>
+              <View style={{ paddingBottom: 20 }}>
+                <Button
+                  onPress={this.businessDetails.bind(this)}
+                  title="Business Details"
+                  color="#2f497e"
                 />
               </View>
               <View style={{ paddingBottom: 100 }}>
                 <Button
-                  onPress={this.businessDetails.bind(this)}
-                  title="Business Details"
-                  color="#676261"
-                  //accessibilityLabel="Learn more about this purple button"
+                  onPress={this.logout.bind(this)}
+                  title="Logout"
+                  color="#2f497e"
                 />
               </View>
             </View>
@@ -483,51 +461,3 @@ export default class Info extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  ImageContainer1: {
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 100,
-    height: 100,
-    backgroundColor: "#fff",
-    borderRadius: 100,
-    overflow: "hidden"
-  },
-  header: {
-    backgroundColor: "#243545",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  home: {
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 22,
-    color: "white"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  }
-});
