@@ -57,4 +57,4 @@ buck-out/
 #keys
 keys.js
 # Firebase
-Firebase.js
+!Firebase.js
