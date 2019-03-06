@@ -14,20 +14,25 @@ import firebase from "../../../Firebase";
 import { TextInput } from "react-native-paper";
 import styles from "./RequestStyle";
 export default class Request extends React.Component {
-  handleBackButton() {
-    this.props.navigation.goBack();
-  }
-  componentWillMount() {
+  // handleBackButton() {
+  //   this.props.navigation.goBack();
+  //   return true;
+  // }
+
+  componentDidMount() {
     const { navigation } = this.props;
     var ph_number = navigation.getParam("phone1", "no-number");
     this.setState({ phone: ph_number });
-    BackHandler.addEventListener(
-      "hardwareBackPress",
-      this.handleBackButton.bind(this)
-    );
+
+    // this.b3 = BackHandler.addEventListener(
+    //   "reqback",
+    //   this.handleBackButton.bind(this)
+    // );
   }
-  //   componentWillUnmount() {
-  //     BackHandler.removeEventListener('hardwareBackPress');
+  // componentWillUnmount() {
+  //   console.log("Request");
+
+  //   this.b3.remove();
   // }
   constructor(props) {
     super(props);

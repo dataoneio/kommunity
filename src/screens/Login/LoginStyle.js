@@ -9,7 +9,7 @@ export default styles= StyleSheet.create({
       padding: 10
     },
     header: {
-      backgroundColor: "#243545",
+      backgroundColor: "#2f497e",
       //alignItems: "center",
       //justifyContent: "center",
       borderBottomWidth: 2,

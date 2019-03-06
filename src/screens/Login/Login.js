@@ -36,20 +36,14 @@ export default class App extends Component {
     this.verifyToken = this.verifyToken.bind(this);
     this.searchPhoneNumber = this.searchPhoneNumber.bind(this);
   }
-  handleBackButton() {
-    this.setState({ isLogin: true });
-    this.setState({ isToken: false });
-    return true;
-  }
-  // componentWillUnmount() {
-  //   BackHandler.removeEventListener("hardwareBackPress");
+  // handleBackButton() {
+  //   this.setState({ isLogin: true });
+  //   this.setState({ isToken: false });
+  //   return true;
   // }
-  componentWillMount() {
-    BackHandler.addEventListener(
-      "hardwareBackPress",
-      this.handleBackButton.bind(this)
-    );
 
+  isMount = false;
+  componentDidMount() {
     try {
       const granted = PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
@@ -67,6 +61,9 @@ export default class App extends Component {
       console.warn(err);
     }
   }
+  // componentWillUnmount() {
+  //   this.b2.remove();
+  // }
   setValueLocally = () => {
     AsyncStorage.setItem("token", this.state.phone);
     //alert("Value Stored Successfully.")
@@ -123,10 +120,10 @@ export default class App extends Component {
     return regex.test(num);
   }
   verifyToken() {
-    BackHandler.removeEventListener("hardwareBackPress");
+   // BackHandler.removeEventListener("hardwareBackPress");
 
-    if (!(this.state.token.length == 4)) {
-      alert("4 digit otp only");
+    if (!(this.state.token.length == 4 || this.state.token.length ==0)) {
+      alert("Please Enter OTP of 4 digit");
     } else {
       this.setValueLocally();
       var myHeaders = new Headers();

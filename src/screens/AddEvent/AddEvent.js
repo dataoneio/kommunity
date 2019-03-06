@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  Image
 } from "react-native";
+import Image from "react-native-image-progress";
+import * as Progress from "react-native-progress";
 import { Icon } from "react-native-elements";
 import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
@@ -151,7 +152,8 @@ export default class AddEvent extends React.Component {
       this.props.navigation.navigate("Home");
       this.setState({
         title: "",
-        descInput: ""
+        descInput: "",
+        imageurl:""
       });
     }
   }
@@ -210,10 +212,10 @@ export default class AddEvent extends React.Component {
               <TextInput
                 label="Title"
                 placeholder="Title"
-                maxLength={20}
+                maxLength={40}
                 placeholderTextColor="#676261"
                 onChangeText={title => this.setState({ title })}
-                value={this.state.title.slice(0, 20)}
+                value={this.state.title.slice(0, 40)}
                 value={this.state.title}
                 style={{ backgroundColor: "transparent" }}
               />
@@ -247,6 +249,7 @@ export default class AddEvent extends React.Component {
               <Image
                 style={styles.ImageContainer}
                 source={{ uri: this.state.imageurl }}
+                indicator={Progress.Circle}
               />
             </View>
           </View>

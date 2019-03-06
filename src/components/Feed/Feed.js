@@ -40,89 +40,40 @@ export default class Feed extends Component {
     var interval = Math.floor(seconds / 31536000);
 
     if (interval >= 1) {
-      return interval + " years ago";
+      if (Math.floor(interval) == 1) {
+        return interval + " year ago";
+      } else return interval + " years ago";
     }
     interval = Math.floor(seconds / 2592000);
     if (interval >= 1) {
-      return interval + " months ago";
+      if (Math.floor(interval) == 1) {
+        return interval + " month ago";
+      } else return interval + " months ago";
     }
     interval = Math.floor(seconds / 86400);
     if (interval >= 1) {
-      return interval + " days ago";
+      if (Math.floor(interval) == 1) {
+        return interval + " day ago";
+      } else return interval + " days ago";
     }
     interval = Math.floor(seconds / 3600);
     if (interval >= 1) {
-      return interval + " hours ago";
+      if (Math.floor(interval) == 1) {
+        return interval + " hour ago";
+      } else return interval + " hours ago";
     }
     interval = Math.floor(seconds / 60);
     if (interval >= 1) {
-      return interval + " minutes ago";
+      if (Math.floor(interval) == 1) {
+        return interval + " minute ago";
+      } else return interval + " minutes ago";
     }
-    return Math.floor(seconds) + " seconds ago";
+    if (Math.floor(seconds) == 0 || Math.floor(seconds) == 1)
+      return Math.floor(seconds) + " second ago";
+    else return Math.floor(seconds) + " seconds ago";
   }
 
   render() {
-    //  console.log(this.state.username + "===========================");
-    // if (this.props.val.url1 == "") {
-    //   return (
-    //     <View key={this.props.keyval} style={styles.note}>
-    //       <View>
-    //         <View
-    //           style={{
-    //             flexDirection: "row",
-    //             justifyContent: "flex-start",
-    //             padding: 10
-    //           }}
-    //         >
-    //           <TouchableOpacity onPress={this.props.testing}>
-    //             <Image
-    //               style={styles.ImageContainer1}
-    //               source={{
-    //                 uri: this.props.profile
-    //                   ? this.props.profile
-    //                   : this.state.UserImage
-    //               }}
-    //             />
-    //           </TouchableOpacity>
-    //           <TouchableOpacity onPress={this.props.viewDetailsMethod}>
-    //             <View style={{ paddingLeft: 20 }}>
-    //               <View
-    //                 style={{
-    //                   flexDirection: "row",
-    //                   justifyContent: "space-between"
-    //                 }}
-    //               >
-    //                 <View
-    //                   style={{
-    //                     alignSelf: "flex-start"
-    //                   }}
-    //                 >
-    //                   <Text style={styles.username}>
-    //                     {this.props.name
-    //                       ? this.props.name
-    //                       : this.state.username}
-    //                   </Text>
-    //                 </View>
-    //                 <View style={{ alignSelf: "flex-end" }}>
-    //                   <Text style={styles.date}>{this.props.val.date}</Text>
-    //                 </View>
-    //               </View>
-    //               <View>
-    //                 <Text style={styles.title}>{this.props.val.title}</Text>
-    //               </View>
-    //             </View>
-    //           </TouchableOpacity>
-    //         </View>
-    //         <View>
-    //           <Text style={styles.description} multiline={false}>
-    //             {this.props.val.description}
-    //           </Text>
-    //         </View>
-    //         <View style={{ alignItems: "center" }} />
-    //       </View>
-    //     </View>
-    //   );
-    // } else
     var d1 = new Date();
     var aDay = 24 * 60 * 60 * 1000;
     console.log(this.timeSince(new Date(Date.now() - aDay)));

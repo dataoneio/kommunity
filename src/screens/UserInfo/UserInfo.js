@@ -10,7 +10,8 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Button
+  Button,
+  Linking
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
@@ -66,6 +67,18 @@ export default class UserInfo extends React.Component {
         });
     }
   }
+  sendWhatsAppMessage = link => {
+    Linking.canOpenURL(link).then(supported => {
+      if (!supported) {
+        alert("Please install whatsapp to send direct message via whatsapp!");
+      } else {
+        return Linking.openURL(link);
+      }
+    });
+  };
+  shareToWhatsAppWithContact = () => {
+    this.sendWhatsAppMessage("whatsapp://send?phone=" + this.state.mobileNo);
+  };
   businessDetails() {
     this.setState({ businessStatus: true });
   }
@@ -241,7 +254,25 @@ export default class UserInfo extends React.Component {
               flexDirection: "row",
               justifyContent: "space-between"
             }}
-          />
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#25D366",
+                padding: 3,
+                paddingHorizontal: 6,
+                borderRadius: 30
+              }}
+              title=""
+              onPress={this.shareToWhatsAppWithContact.bind(this)}
+            >
+              <Icon
+                name="whatsapp"
+                type="font-awesome"
+                color="white"
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <ScrollView style={{ padding: 10 }}>
@@ -267,13 +298,14 @@ export default class UserInfo extends React.Component {
             >
               <View style={{ flex: 1 }}>
                 <Button
-                  color="red"
+                  color="#2f497e"
                   title="Info"
                   onPress={() => this.props.navigation.navigate("UserInfo")}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Button
+                  color="#456097"
                   title="Posts"
                   onPress={() =>
                     this.props.navigation.navigate("UserPosts", {

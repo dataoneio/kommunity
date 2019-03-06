@@ -115,6 +115,15 @@ export default class Search extends React.Component {
   clearSearch() {
     this.setState({ searchInput: "" });
   }
+  viewDetail(uid, title, desc, imgurl) {
+    console.log("yoho------");
+    this.props.navigation.navigate("ViewFeed", {
+      id: uid,
+      Title: title,
+      description: desc,
+      url: imgurl
+    });
+  }
   searchByPost() {
     var arr2 = this.state.initialVals;
     var result = arr2.filter(search => {
@@ -167,6 +176,8 @@ export default class Search extends React.Component {
               name={name}
               profile={profile}
               testing={() => this.testing(val.uid)}
+              viewDetailsMethod={() =>
+                this.viewDetail(val.uid, val.title, val.description, val.url1)}
             />
           </View>
         </View>

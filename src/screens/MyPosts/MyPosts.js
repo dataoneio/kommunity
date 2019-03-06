@@ -104,6 +104,8 @@ export default class MyPosts extends React.Component {
   }
 
   render() {
+    const { navigation } = this.props;
+    const imageurl = navigation.getParam("imageurl", "no url");
     let MyPostss = this.state.feeds.map((val, key) => {
       return (
         <View key={key} style={{ paddingHorizontal: 5, paddingVertical: 3 }}>
@@ -158,7 +160,7 @@ export default class MyPosts extends React.Component {
                   borderRadius={50}
                   style={styles.ImageContainer1}
                   source={{
-                    uri: this.state.imageurl
+                    uri:imageurl
                   }}
                   indicator={Progress.Circle}
                 />
@@ -174,13 +176,14 @@ export default class MyPosts extends React.Component {
             >
               <View style={{ flex: 1 }}>
                 <Button
-                  color="red"
+                  color="#456097"
                   title="Info"
                   onPress={() => this.props.navigation.navigate("Info")}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Button
+                  color="#2f497e"
                   title="Posts"
                   onPress={() => this.props.navigation.navigate("MyPosts")}
                 />

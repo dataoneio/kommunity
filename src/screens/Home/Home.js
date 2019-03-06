@@ -8,7 +8,8 @@ import {
   Button,
   ScrollView,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  BackHandler
 } from "react-native";
 import { Icon } from "react-native-elements";
 //import { Button } from "native-base";
@@ -27,7 +28,6 @@ import { Circle, Rect } from "react-native-svg";
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       ftitle: "",
       fdescription: "",
@@ -41,7 +41,6 @@ export default class Home extends React.Component {
       LoggedInMumber: ""
     };
   }
-
   componentDidMount() {
     //this.setValueLocally();
     this.getValueLocally();
@@ -186,6 +185,9 @@ export default class Home extends React.Component {
       );
     }
 
+    var { screenProps } = this.props;
+    screenProps.user.screenName = "Home";
+    console.log("hehehheh" + screenProps.user.screenName);
     let search =
       this.state.onFilter === true
         ? this.state.initialVals
@@ -231,14 +233,19 @@ export default class Home extends React.Component {
             <View>
               <Menu>
                 <MenuTrigger>
-                  <Icon name="filter" type="font-awesome" color="white" size={30} />
+                  <Icon
+                    name="filter"
+                    type="font-awesome"
+                    color="white"
+                    size={30}
+                  />
                 </MenuTrigger>
                 <MenuOptions
-                  style={{ backgroundColor: "white"}}
+                  style={{ backgroundColor: "white" }}
                   optionsContainerStyle={{
                     marginTop: 30,
                     borderColor: "#dddce2",
-                    borderWidth:3
+                    borderWidth: 3
                   }}
                 >
                   <ScrollView
@@ -250,35 +257,47 @@ export default class Home extends React.Component {
                       onSelect={this.onpress.bind(this, "All")}
                       // text="Party"
                     >
-                      <Text style={{ color: "black" ,fontWeight:"bold"}}>ALL</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        ALL
+                      </Text>
                     </MenuOption>
                     <MenuOption
                       onSelect={this.onpress.bind(this, "Party")}
                       // text="Party"
                     >
-                      <Text style={{color: "black" ,fontWeight:"bold"}}>Party</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Party
+                      </Text>
                     </MenuOption>
                     <MenuOption onSelect={this.onpress.bind(this, "Meet-up")}>
-                      <Text style={{ color: "black" ,fontWeight:"bold" }}>Meet-up</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Meet-up
+                      </Text>
                     </MenuOption>
                     <MenuOption
                       onSelect={this.onpress.bind(this, "Announcement")}
                       // //disabled={true}
                       // text="Announcement"
                     >
-                      <Text style={{color: "black" ,fontWeight:"bold" }}>Announcement</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Announcement
+                      </Text>
                     </MenuOption>
 
                     <MenuOption onSelect={this.onpress.bind(this, "Business")}>
-                      <Text style={{color: "black" ,fontWeight:"bold"}}>Business</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Business
+                      </Text>
                     </MenuOption>
                     <MenuOption onSelect={this.onpress.bind(this, "Education")}>
-                      <Text style={{ color: "black" ,fontWeight:"bold" }}>Education</Text>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
+                        Education
+                      </Text>
                     </MenuOption>
                     <MenuOption
                       onSelect={this.onpress.bind(this, "Birthday/Anniversary")}
                     >
-                      <Text style={{ color: "black" ,fontWeight:"bold" }}>
+                      <Text style={{ color: "black", fontWeight: "bold" }}>
                         Birthday/Anniversary
                       </Text>
                     </MenuOption>

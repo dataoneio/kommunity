@@ -11,7 +11,7 @@
     "axios": "^0.18.0",
     "country-state-city": "^0.1.0",
     "countrycitystatejson": "^0.2.9",
-    "firebase": "^5.8.2",
+    "firebase": "^5.0.3",
     "native-base": "^2.12.0",
     "react": "16.6.3",
     "react-content-loader": "^4.0.1",

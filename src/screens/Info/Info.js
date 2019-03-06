@@ -13,7 +13,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
-  AsyncStorage
+  AsyncStorage,
+  BackHandler,
+  Linking
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
@@ -21,6 +23,7 @@ import styles from "./InfoStyle";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
+
 const Blob = RNFetchBlob.polyfill.Blob;
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
@@ -49,8 +52,23 @@ export default class Info extends React.Component {
       UserId: ""
     };
   }
+  // sendWhatsAppMessage = link => {
+  //   Linking.canOpenURL(link).then(supported => {
+  //     if (!supported) {
+  //       alert("Please install whats app to send direct message via whatsapp");
+  //     } else {
+  //       return Linking.openURL(link);
+  //     }
+  //   });
+   
+  // };
+  
+  // shareToWhatsAppWithContact = () => {
+  //   this.sendWhatsAppMessage("whatsapp://send?phone=918141080040");
+  // };
   componentDidMount() {
     var { screenProps } = this.props;
+    screenProps.user.screenName = "Info";
     this.setState({ UserId: screenProps.user.id });
     this.getData();
   }
@@ -313,15 +331,20 @@ export default class Info extends React.Component {
             >
               <View style={{ flex: 1 }}>
                 <Button
-                  color="red"
+                  color="#2f497e"
                   title="Info"
                   onPress={() => this.props.navigation.navigate("Info")}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Button
+                  color="#456097"
                   title="Posts"
-                  onPress={() => this.props.navigation.navigate("MyPosts")}
+                  onPress={() =>
+                    this.props.navigation.navigate("MyPosts", {
+                      imageurl: this.state.imageurl
+                    })
+                  }
                 />
               </View>
             </View>
@@ -436,14 +459,21 @@ export default class Info extends React.Component {
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
-                  color="#676261"
+                  color="#2f497e"
                 />
               </View>
+              {/* <View style={{ paddingBottom: 20 }}>
+                <Button
+                  onPress={this.shareToWhatsAppWithContact.bind(this)}
+                  title="whatsapp"
+                  color="#2f497e"
+                />
+              </View> */}
               <View style={{ paddingBottom: 100 }}>
                 <Button
                   onPress={this.logout.bind(this)}
                   title="Logout"
-                  color="#676261"
+                  color="#2f497e"
                 />
               </View>
             </View>
