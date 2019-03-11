@@ -9,8 +9,14 @@ import {
   ScrollView,
   ActivityIndicator,
   AsyncStorage,
-  BackHandler
+  BackHandler,
+  RefreshControl,
+  TouchableHighlight,
+  Modal,
+  Image,
+  Dimensions
 } from "react-native";
+import { NavigationEvents } from "react-navigation";
 import { Icon } from "react-native-elements";
 //import { Button } from "native-base";
 import firebase from "../../../Firebase";
@@ -22,9 +28,10 @@ import {
   MenuTrigger
 } from "react-native-popup-menu";
 import ContentLoader from "react-native-content-loader";
+import Drawer from "react-native-circle-drawer";
 import { Circle, Rect } from "react-native-svg";
-// const MyLoader = () => <ContentLoader />
-// const MyFacebookLoader = () => <Facebook />
+import RNShake from "react-native-shake";
+
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -38,11 +45,29 @@ export default class Home extends React.Component {
       searchInput: "",
       onFilter: true,
       isLoading: true,
-      LoggedInMumber: ""
+      LoggedInMumber: "",
+      refreshing: false,
+      drawerview: false
     };
   }
+
+  handleBackPress = () => {
+    BackHandler.exitApp(); // works best when the goBack is async
+    return true;
+  };
+
+  onblur() {
+    console.log("blur");
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  onfocus() {
+    console.log("focus");
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
   componentDidMount() {
     //this.setValueLocally();
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.getValueLocally();
     var { screenProps } = this.props;
     console.log("Did mount");
@@ -52,6 +77,16 @@ export default class Home extends React.Component {
     this.setState({ LoggedInMumber: loggedinnumber });
     this.getDataFromFirebase();
   }
+  componentWillMount() {
+    RNShake.addEventListener("ShakeEvent", () => {
+      alert("shaked");
+    });
+  }
+
+  componentWillUnmount() {
+    RNShake.removeEventListener("ShakeEvent");
+  }
+
   getValueLocally = () => {
     var { screenProps } = this.props;
 
@@ -68,9 +103,7 @@ export default class Home extends React.Component {
           .on("child_added", data => {
             val1 = data.val();
             if (data.exists()) {
-              // console.log("dddddddddddd----" + JSON.stringify(data.key));
               screenProps.user.userphotourl = val1.Profile_photo;
-              // console.log("11111111-----" + val1.Profile_photo);
               this.setState({ UserId: data.key }, () => {
                 screenProps.user.id = this.state.UserId;
               });
@@ -92,13 +125,9 @@ export default class Home extends React.Component {
         var key1 = [];
         key1.push(data.key);
         let arr = data.toJSON();
-        //console.log("---" + JSON.stringify(arr));
         for (var i in arr) {
           result.push(arr[i]);
         }
-        //console.log("key--" + key1);
-        //console.log("---" + result.length);
-
         arr1.push({
           date: result[2].toString(),
           category: result[0].toString(),
@@ -108,19 +137,9 @@ export default class Home extends React.Component {
           url1: result[4].toString(),
           userId: result[7].toString()
         });
-
-        // console.log("date-" + result[2].toString());
-        // console.log("desc--" + result[3].toString());
-        //console.log("title-" + result[6].toString());
-        //console.log("url:" + result[4].toString());
         this.setState({ initialVals: arr1 });
         this.setState({ feeds: arr1 });
         this.setState({ isLoading: false });
-        //console.log("aaawwww" + JSON.stringify(arr1));
-        //console.log(
-        //   "aaaooooooooooooooooooooooo" + JSON.stringify(this.state.initialVals)
-        // );
-        //console.log("aaa" + JSON.stringify(this.state.feeds));
       });
   }
   onpress = txt => {
@@ -128,17 +147,17 @@ export default class Home extends React.Component {
       onFilter: false
     });
     if (txt == "All") {
-      console.log("allPosted........................");
+      // console.log("allPosted........................");
       this.setState({ searchResult: this.state.initialVals });
     } else {
-      console.log("oooo" + txt);
+      // console.log("oooo" + txt);
       this.setState({ searchInput: txt }, () => this.searchByPost());
     }
   };
   searchByPost() {
-    console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz" + this.state.searchInput);
+    // console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz" + this.state.searchInput);
     var arr2 = this.state.initialVals;
-    console.log("lolololololololol" + JSON.stringify(arr2));
+    // console.log("lolololololololol" + JSON.stringify(arr2));
     var result = arr2.filter(search => {
       let v1 = search.description.toUpperCase();
       let v2 = search.title.toUpperCase();
@@ -162,8 +181,30 @@ export default class Home extends React.Component {
     });
   }
   testing(uid) {
-    console.log("home it is" + uid);
+    //console.log("home it is" + uid);
     this.props.navigation.navigate("UserInfo", { EventId: uid });
+  }
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.getDataFromFirebase();
+    this.setState({ refreshing: false });
+  };
+  openDrawer() {
+    this.setState({ drawerview: true });
+  }
+
+  logout() {
+    this.setState({ drawerview: false });
+    AsyncStorage.removeItem("token");
+    this.props.navigation.navigate("Login");
+  }
+  gotoAboutus() {
+    this.setState({ drawerview: false });
+    this.props.navigation.navigate("AboutUs");
+  }
+  gotoReportProblem() {
+    this.setState({ drawerview: false });
+    this.props.navigation.navigate("ReportProblem");
   }
   render() {
     if (this.state.isLoading) {
@@ -218,10 +259,25 @@ export default class Home extends React.Component {
         </View>
       );
     });
-
     return (
       <View style={{ paddingBottom: 10, backgroundColor: "#dddce2", flex: 1 }}>
+        <NavigationEvents
+          // onWillFocus={payload => console.log("will focus", payload)}
+          onDidFocus={this.onfocus.bind(this)}
+          // onWillBlur={payload => console.log("will blur", payload)}
+          onDidBlur={this.onblur.bind(this)}
+        />
         <View style={styles.header}>
+          <View>
+            <TouchableOpacity title="" onPress={() => this.openDrawer()}>
+              <Icon
+                name="align-justify"
+                type="font-awesome"
+                color="white"
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
           <Text style={styles.home}>Community Social Network</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
@@ -251,7 +307,10 @@ export default class Home extends React.Component {
                   <ScrollView
                     style={{ maxHeight: 120 }}
                     showsVerticalScrollIndicator={true}
-                    indicatorStyle={{ color: "red", backgroundColor: "yellow" }}
+                    indicatorStyle={{
+                      color: "red",
+                      backgroundColor: "yellow"
+                    }}
                   >
                     <MenuOption
                       onSelect={this.onpress.bind(this, "All")}
@@ -310,7 +369,71 @@ export default class Home extends React.Component {
             </TouchableOpacity> */}
           </View>
         </View>
-        <ScrollView style={{ backgroundColor: "#DDDCE2" }}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          style={{ backgroundColor: "#DDDCE2" }}
+        >
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={this.state.drawerview}
+            onRequestClose={() => this.setState({ drawerview: false })}
+            //style={{backgroundColor:"red",opacity:0.5}}
+          >
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <View
+                onblur={() => this.setState({ drawerview: false })}
+                style={{
+                  flex: 1,
+                  width: 250,
+                  backgroundColor: "#2f497e",
+                  borderBottomRightRadius: 10,
+                  borderTopRightRadius: 10
+                }}
+              >
+                <View>
+                  <View style={styles.drawerHeader}>
+                    <Image
+                      source={require("../../assets/App_logo.png")}
+                      style={styles.logoStyle}
+                    />
+                    <Text style={styles.drawer}>Kommunity</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={this.gotoAboutus.bind(this)}
+                    style={{ borderBottomWidth: 1, borderBottomColor: "white" }}
+                  >
+                    <Text style={styles.drawerOptions}>About Us</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={this.gotoReportProblem.bind(this)}
+                    style={{ borderBottomWidth: 1, borderBottomColor: "white" }}
+                  >
+                    <Text style={styles.drawerOptions}>Report A Problem</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={this.logout.bind(this)}
+                    style={{ borderBottomWidth: 1, borderBottomColor: "white" }}
+                  >
+                    <Text style={styles.drawerOptions}>Logout</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View
+                style={{ flex: 1, backgroundColor: "#676261", opacity: 0.3 }}
+              >
+                <TouchableOpacity
+                  style={{ flex: 1 }}
+                  onPress={() => this.setState({ drawerview: false })}
+                />
+              </View>
+            </View>
+          </Modal>
           <View style={{ paddingVertical: 8 }}>
             <View
               style={{
@@ -339,11 +462,48 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
+  logoStyle: {
+    //position: "relative",
+    height: 50,
+    width: 50,
+    alignSelf: "flex-start"
+  },
   home: {
+    fontFamily: "lucida grande",
+    justifyContent: "center",
+    fontWeight: "bold",
+    fontSize: 24,
+    color: "white"
+  },
+  drawerHeader: {
+    paddingVertical: 20,
+    borderTopRightRadius: 10,
+    backgroundColor: "#2f497e",
+    //alignItems: "center",
+    //justifyContent: "center",
+    borderBottomWidth: 2,
+    borderBottomColor: "white",
+    padding: 10
+    // flexDirection: "column",
+    // justifyContent: "space-between"
+  },
+  drawerOptions: {
+    paddingVertical: 20,
+    padding: 10,
+    fontFamily: "lucida grande",
+    justifyContent: "center",
+    fontSize: 18,
+    color: "white"
+    //backgroundColor:"#676761"
+  },
+  drawer: {
+    paddingTop: 10,
+    //paddingLeft:5,
     fontFamily: "lucida grande",
     justifyContent: "center",
     fontWeight: "bold",
     fontSize: 20,
     color: "white"
+    //backgroundColor:"#676761"
   }
 });

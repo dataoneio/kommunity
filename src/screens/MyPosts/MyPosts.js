@@ -37,8 +37,6 @@ export default class MyPosts extends React.Component {
       fdescription: "",
       fdate: "",
       feeds: [],
-      initialVals: [],
-      searchResult: [],
       searchInput: "",
       onFilter: true,
       isLoading: true
@@ -102,7 +100,16 @@ export default class MyPosts extends React.Component {
         this.setState({ isLoading: false });
       });
   }
+  delete(uid, key) {
+    //alert("deleted");
+    firebase
+      .database()
+      .ref("app/Event details/" + uid)
+      .remove();
 
+    this.state.feeds.splice(key, 1);
+    this.setState({ feeds: this.state.feeds });
+  }
   render() {
     const { navigation } = this.props;
     const imageurl = navigation.getParam("imageurl", "no url");
@@ -111,6 +118,7 @@ export default class MyPosts extends React.Component {
         <View key={key} style={{ paddingHorizontal: 5, paddingVertical: 3 }}>
           <View
             style={{
+              flex: 1,
               padding: 1,
               borderRadius: 5
             }}
@@ -119,6 +127,8 @@ export default class MyPosts extends React.Component {
               key={key}
               keyval={key}
               val={val}
+              mypost="true"
+              delete={() => this.delete(val.uid, key)}
               viewDetailsMethod={() =>
                 this.viewDetail(val.uid, val.title, val.description, val.url1)
               }
@@ -160,7 +170,7 @@ export default class MyPosts extends React.Component {
                   borderRadius={50}
                   style={styles.ImageContainer1}
                   source={{
-                    uri:imageurl
+                    uri: imageurl
                   }}
                   indicator={Progress.Circle}
                 />

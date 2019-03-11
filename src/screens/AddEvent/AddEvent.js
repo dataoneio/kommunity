@@ -8,7 +8,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
+  Dimensions
 } from "react-native";
 import Image from "react-native-image-progress";
 import * as Progress from "react-native-progress";
@@ -19,11 +19,27 @@ import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
 import styles from "./AddEventStyle";
+
 const Blob = RNFetchBlob.polyfill.Blob;
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 const win = Dimensions.get("window");
+
 export default class AddEvent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      descInput: "",
+      date: "",
+      category: "",
+      imageurl: "",
+      testing: "",
+      UserId: "",
+      testWidth: "99%"
+    };
+  }
+
   componentDidMount() {
     const { screenProps } = this.props;
     console.log("gegegegeg" + screenProps.user.number);
@@ -41,19 +57,11 @@ export default class AddEvent extends React.Component {
           this.setState({ UserId: data.key });
         }
       });
+    setTimeout(() => {
+      this.setState({ testWidth: "100%" });
+    }, 100);
   }
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: "",
-      descInput: "",
-      date: "",
-      category: "",
-      imageurl: "",
-      testing: "",
-      UserId: ""
-    };
-  }
+
   selectPhotoTapped() {
     const options = {
       quality: 1.0,
@@ -153,7 +161,7 @@ export default class AddEvent extends React.Component {
       this.setState({
         title: "",
         descInput: "",
-        imageurl:""
+        imageurl: ""
       });
     }
   }
@@ -233,16 +241,17 @@ export default class AddEvent extends React.Component {
               <AutoGrowingTextInput
                 label="Description"
                 style={{
+                  width: this.state.testWidth,
                   borderBottomColor: "#908a89",
                   borderBottomWidth: 0.5,
                   fontSize: 16
                 }}
                 onChangeText={descInput => this.setState({ descInput })}
                 maxLength={200}
-                value={this.state.descInput.slice(0, 200)}
+                // value={this.state.descInput.slice(0, 200)}
                 placeholder={"Your Message"}
-                value={this.state.descInput}
                 placeholderTextColor="#908a89"
+                value={this.state.descInput}
               />
             </View>
             <View style={{ justifyContent: "space-around" }}>

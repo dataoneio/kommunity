@@ -60,9 +60,9 @@ export default class Info extends React.Component {
   //       return Linking.openURL(link);
   //     }
   //   });
-   
+
   // };
-  
+
   // shareToWhatsAppWithContact = () => {
   //   this.sendWhatsAppMessage("whatsapp://send?phone=918141080040");
   // };
@@ -455,24 +455,10 @@ export default class Info extends React.Component {
                   value={this.state.city}
                 />
               </View>
-              <View style={{ paddingBottom: 20 }}>
+              <View style={{ paddingBottom: 100 }}>
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
-                  color="#2f497e"
-                />
-              </View>
-              {/* <View style={{ paddingBottom: 20 }}>
-                <Button
-                  onPress={this.shareToWhatsAppWithContact.bind(this)}
-                  title="whatsapp"
-                  color="#2f497e"
-                />
-              </View> */}
-              <View style={{ paddingBottom: 100 }}>
-                <Button
-                  onPress={this.logout.bind(this)}
-                  title="Logout"
                   color="#2f497e"
                 />
               </View>

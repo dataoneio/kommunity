@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 
-import Image from "react-native-image-progress";
-import * as Progress from "react-native-progress";
-
 import { Icon } from "react-native-elements";
-import { Dropdown } from "react-native-material-dropdown";
+
 import {
   CountryDropdown,
   RegionDropdown,
@@ -34,8 +31,13 @@ export default class UserNotification extends React.Component {
     };
   }
   componentDidMount() {
+    var { screenProps } = this.props;
     console.log("will mount");
-    this.getDataFromFirebase();
+    if (screenProps.user.number == "919408880345") {
+      // alert("admin");
+      this.getDataFromFirebase();
+    }
+    // this.getDataFromFirebase();
   }
   acceptRequest(Number, name, data, key) {
     SendSMS.send(

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 //import firebase from "../../../Firebase";
 export default class Comment extends Component {
   componentDidMount() {
@@ -8,40 +8,44 @@ export default class Comment extends Component {
 
   render() {
     return (
-      <View >
+      <View>
         <View
           key={this.props.keyval}
           style={{ backgroundColor: "transparent" }}
         >
-          <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
-            <View>
-              <Image
-                style={styles.ImageContainer1}
-                source={{
-                  uri: this.props.profile
-                }}
-              />
+          <TouchableOpacity onPress={this.props.testing}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "flex-start" }}
+            >
+              <View>
+                <Image
+                  style={styles.ImageContainer1}
+                  source={{
+                    uri: this.props.profile
+                  }}
+                />
+              </View>
+              <View style={{ paddingLeft: 5, paddingRight: 2 }}>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 12,
+                    fontFamily: "lucida grande",
+                    fontWeight: "bold"
+                  }}
+                >
+                  {this.props.name}
+                </Text>
+              </View>
             </View>
-            <View style={{ paddingLeft: 5, paddingRight: 2 }}>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 12,
-                  fontFamily: "lucida grande",
-                  fontWeight:"bold"
-                }}
-              >
-                {this.props.name}
-              </Text>
-            </View>
-          </View>
-          <View style={{ paddingLeft:30}}>
+          </TouchableOpacity>
+          <View style={{ paddingLeft: 30 }}>
             <Text
               style={{
                 color: "black",
                 fontSize: 14,
                 fontFamily: "lucida grande",
-                paddingRight:90
+                paddingRight: 90
               }}
             >
               {this.props.val.text}

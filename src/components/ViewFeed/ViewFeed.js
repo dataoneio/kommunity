@@ -15,6 +15,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import styles from "./ViewFeedStyle";
 import firebase from "../../../Firebase";
 import Comment from "../Comment/Comment";
+import Autolink from "react-native-autolink";
+
 //import { TextInput } from "react-native-paper";
 const win = Dimensions.get("window");
 
@@ -24,7 +26,8 @@ export default class ViewFeed extends React.Component {
 
     this.state = {
       CommentsArray: [],
-      Addcomment: false
+      Addcomment: false,
+      mycomment: ""
     };
   }
   componentDidMount() {
@@ -49,6 +52,15 @@ export default class ViewFeed extends React.Component {
         this.setState({ CommentsArray: arr1 });
       });
   }
+  goback() {
+    const { navigation } = this.props;
+    var fromSearch = navigation.getParam("fromSearch", "no");
+    if (fromSearch == "no") {
+      this.props.navigation.navigate("Home");
+    } else {
+      this.props.navigation.navigate("Search");
+    }
+  }
   Activatecomment() {
     this.setState({ Addcomment: true });
   }
@@ -67,6 +79,10 @@ export default class ViewFeed extends React.Component {
     }
     this.setState({ Addcomment: false });
     this.setState({ mycomment: "" });
+  }
+  testing(uid) {
+    console.log("viewfeed it is" + uid);
+    this.props.navigation.navigate("UserInfo", { UserId: uid });
   }
   render() {
     const { navigation } = this.props;
@@ -114,6 +130,8 @@ export default class ViewFeed extends React.Component {
               val={val}
               name={name}
               profile={profile}
+              userId={val.userId}
+              testing={() => this.testing(val.userId)}
             />
           </View>
         </View>
@@ -124,10 +142,7 @@ export default class ViewFeed extends React.Component {
         <ScrollView style={{ paddingBottom: 10 }}>
           <View style={styles.header}>
             <View>
-              <TouchableOpacity
-                title=""
-                onPress={() => this.props.navigation.navigate("Home")}
-              >
+              <TouchableOpacity title="" onPress={() => this.goback()}>
                 <Icon name="arrow-back" color="white" size={30} />
               </TouchableOpacity>
             </View>
@@ -144,9 +159,15 @@ export default class ViewFeed extends React.Component {
           <Text style={styles.title}>
             {JSON.stringify(title).replace(/\"/g, "")}
           </Text>
-          <Text style={styles.description}>
+          {/* <Text style={styles.description}>
             {JSON.stringify(description).replace(/\"/g, "")}
-          </Text>
+          </Text> */}
+          <Autolink
+            style={styles.description}
+            text={JSON.stringify(description)
+              .replace(/\\n/g, "\n")
+              .replace(/\"/g, "")}
+          />
           {renderIf(JSON.stringify(imageurl).replace(/\"/g, "") != "")(
             <View style={{ alignItems: "center" }}>
               <Image

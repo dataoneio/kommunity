@@ -18,6 +18,8 @@ import Request from "../screens/Request/Request";
 import UserInfo from "../screens/UserInfo/UserInfo";
 import UserPosts from "../screens/UserPosts/UserPosts";
 import Main from "../screens/Main/Main";
+import AboutUs from "../screens/AboutUs/AboutUs";
+import ReportProblem from "../screens/ReportProblem/ReportProblem";
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -97,6 +99,32 @@ const StackNavigator6 = createStackNavigator(
     }
   }
 );
+const StackNavigator7 = createStackNavigator(
+  {
+    AboutUs: {
+      screen: AboutUs
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator8 = createStackNavigator(
+  {
+    ReportProblem: {
+      screen: ReportProblem
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
 const StackNavigator1 = createStackNavigator(
   {
     Login: Login,
@@ -154,7 +182,7 @@ const TabNavigator = createBottomTabNavigator(
           <Icon
             name="notifications"
             size={30}
-            color={focused ? "#288DCF" : "white"}
+            color={focused ? "white" : "white"}
           />
         ),
         showIcon: true
@@ -197,7 +225,9 @@ const RootNavigator = createStackNavigator(
     p4: StackNavigator2,
     p5: StackNavigator3,
     p6: StackNavigator4,
-    p7: StackNavigator5
+    p7: StackNavigator5,
+    p8: StackNavigator7,
+    p9: StackNavigator8
   },
   {
     headerMode: "none",

@@ -49,16 +49,18 @@ export default class UserInfo extends React.Component {
   }
   componentDidMount() {
     const { navigation } = this.props;
-    var userId = navigation.getParam("EventId", "No event found");
+    var EventId = navigation.getParam("EventId", "No event found");
     var actualuserId = navigation.getParam("UserId", "No User found");
-    if (userId == "No event found") {
+    console.log("eventId" + EventId);
+    console.log("userId" + actualuserId);
+    if (EventId == "No event found") {
       this.setState({ UserId: actualuserId });
       this.getData(actualuserId);
     } else if (actualuserId == "No User found") {
-      console.log("hellop1" + userId);
+      console.log("hellop1" + EventId);
       firebase
         .database()
-        .ref("app/Event details/" + userId)
+        .ref("app/Event details/" + EventId)
         .on("value", data => {
           var val1 = data.toJSON();
           console.log("user id is-----" + val1.UserId);
@@ -67,6 +69,7 @@ export default class UserInfo extends React.Component {
         });
     }
   }
+
   sendWhatsAppMessage = link => {
     Linking.canOpenURL(link).then(supported => {
       if (!supported) {
@@ -101,7 +104,7 @@ export default class UserInfo extends React.Component {
   }
 
   getData(userId) {
-    console.log("hellloop;" + userId);
+    console.log("hellloopxxxx" + userId);
     firebase
       .database()
       .ref("app/User/" + userId)
@@ -256,19 +259,19 @@ export default class UserInfo extends React.Component {
             }}
           >
             <TouchableOpacity
+              title=""
+              onPress={this.shareToWhatsAppWithContact.bind(this)}
               style={{
-                backgroundColor: "#25D366",
+                backgroundColor: "#25d366",
                 padding: 3,
                 paddingHorizontal: 6,
                 borderRadius: 30
               }}
-              title=""
-              onPress={this.shareToWhatsAppWithContact.bind(this)}
             >
               <Icon
                 name="whatsapp"
-                type="font-awesome"
                 color="white"
+                type="font-awesome"
                 size={30}
               />
             </TouchableOpacity>
@@ -280,6 +283,7 @@ export default class UserInfo extends React.Component {
             <View style={{ alignSelf: "center", paddingTop: 20 }}>
               <View style={{ justifyContent: "center" }}>
                 <Image
+                  //resizeMode="contain"
                   borderRadius={50}
                   style={styles.ImageContainer1}
                   source={{

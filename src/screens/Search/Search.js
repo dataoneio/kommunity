@@ -75,9 +75,9 @@ export default class Search extends React.Component {
         }
 
         arr1.push({
+          date: result[2].toString(),
           category: result[0].toString(),
           description: result[3].toString(),
-
           title: result[6].toString(),
           url1: result[4].toString(),
           userId: result[7].toString(),
@@ -121,7 +121,8 @@ export default class Search extends React.Component {
       id: uid,
       Title: title,
       description: desc,
-      url: imgurl
+      url: imgurl,
+      fromSearch: "yes"
     });
   }
   searchByPost() {
@@ -177,7 +178,8 @@ export default class Search extends React.Component {
               profile={profile}
               testing={() => this.testing(val.uid)}
               viewDetailsMethod={() =>
-                this.viewDetail(val.uid, val.title, val.description, val.url1)}
+                this.viewDetail(val.uid, val.title, val.description, val.url1)
+              }
             />
           </View>
         </View>
