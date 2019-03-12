@@ -19,7 +19,6 @@ import {
 import { TextInput } from "react-native-paper";
 import Joining_Requests from "../../components/JoiningRequests/JoiningRequests";
 import firebase from "../../../Firebase";
-import CommentNotification from "../../components/commentNotification/CommentNotification";
 import SendSMS from "react-native-sms";
 
 export default class UserNotification extends React.Component {
@@ -36,38 +35,10 @@ export default class UserNotification extends React.Component {
     var { screenProps } = this.props;
     console.log(screenProps.user.id + "++++++userid++++");
 
+    this.getDataFromFirebase();
+
     var arr1 = [];
     let eventid = [];
-    firebase
-      .database()
-      .ref("app/Event details")
-      .orderByChild("UserId")
-      .equalTo(screenProps.user.id)
-      .on("child_added", data => {
-        eventid.push(data.key);
-
-        console.log("key-----" + eventid);
-        this.setState({ EventIds: eventid });
-      });
-    console.log("---++++++------" + eventid);
-    var comment = [];
-    for (var i in eventid) {
-      console.log(i + "------------" + eventid[i]);
-      firebase
-        .database()
-        .ref("app/Event details/" + eventid[i] + "/Comments")
-        .on("child_added", data => {
-          console.log(JSON.stringify(data.val()) + "comments----------");
-          comment.push({
-            userid: data.val().Id,
-            text: data.val().text,
-            eventid: eventid[i],
-            commentId: data.key
-          });
-        });
-    }
-    this.setState({ Comments: comment });
-    console.log("commmmmmeeentsssss" + JSON.stringify(comment));
   }
 
   handleClick(eid, etitle, edesc, eimage) {
@@ -164,34 +135,33 @@ export default class UserNotification extends React.Component {
     alert("navigated");
   }
   goback() {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("Home");
   }
+  getDataFromFirebase() {
+    let arr1 = [];
+    var d = new Date();
+    firebase
+      .database()
+      .ref("app/Joining_Requests")
+      .on("child_added", data => {
+        var result = [];
+        var key1 = [];
+        key1.push(data.key);
+        let arr = data.toJSON();
+        for (var i in arr) {
+          result.push(arr[i]);
+        }
 
+        arr1.push({
+          Number: result[0].toString(),
+          Name: result[1].toString(),
+          Uid: data.key
+        });
+        this.setState({ requests: arr1 });
+      });
+  }
   render() {
-    //console.log("this is comments" + JSON.stringify(this.state.Comments));
-
-    let postcomments = this.state.Comments.map((val, key) => {
-      // console.log("-------"+val.userid)
-      var name = "",
-        EventTitle = "",
-        EventDescription = "",
-        EventImage = "";
-      firebase
-        .database()
-        .ref("app/User/" + val.userid)
-        .on("value", data => {
-          console.log("data for name" + JSON.stringify(data.toJSON().Name)),
-            (name = data.toJSON().Name);
-        });
-      firebase
-        .database()
-        .ref("app/Event details/" + val.eventid)
-        .on("value", data => {
-          console.log("data for name" + JSON.stringify(data.toJSON().Title)),
-            (EventTitle = data.toJSON().Title),
-            (EventDescription = data.toJSON().Description),
-            (EventImage = data.toJSON().Image);
-        });
+    let requestval = this.state.requests.map((val, key) => {
       return (
         <View key={key} style={{ padding: 5 }}>
           <View
@@ -200,19 +170,16 @@ export default class UserNotification extends React.Component {
               padding: 5
             }}
           >
-            <CommentNotification
+            <Joining_Requests
               key={key}
+              keyval={key}
               val={val}
-              name={name}
-              title={EventTitle}
-              oncommentClick={() => {
-                this.handleClick(
-                  val.eventid,
-                  EventTitle,
-                  EventDescription,
-                  EventImage
-                );
-              }}
+              acceptingfunction={() =>
+                this.acceptRequest(val.Number, val.Name, val.Uid, key)
+              }
+              rejectingfunction={() =>
+                this.rejectRequest(val.Number, val.Uid, key)
+              }
             />
           </View>
         </View>
@@ -243,7 +210,7 @@ export default class UserNotification extends React.Component {
               backgroundColor: "#f2f2f2"
             }}
           >
-            {postcomments}
+            {requestval}
           </View>
         </ScrollView>
       </View>

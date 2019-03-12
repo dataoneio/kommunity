@@ -20,6 +20,7 @@ import UserPosts from "../screens/UserPosts/UserPosts";
 import Main from "../screens/Main/Main";
 import AboutUs from "../screens/AboutUs/AboutUs";
 import ReportProblem from "../screens/ReportProblem/ReportProblem";
+import UserJoiningRequests from "../screens/UserJoiningRequests/UserJoiningRequests";
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -116,6 +117,19 @@ const StackNavigator8 = createStackNavigator(
   {
     ReportProblem: {
       screen: ReportProblem
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator9 = createStackNavigator(
+  {
+    UserJoiningRequests: {
+      screen: UserJoiningRequests
     }
   },
   {
@@ -227,7 +241,8 @@ const RootNavigator = createStackNavigator(
     p6: StackNavigator4,
     p7: StackNavigator5,
     p8: StackNavigator7,
-    p9: StackNavigator8
+    p9: StackNavigator8,
+    p10: StackNavigator9
   },
   {
     headerMode: "none",
