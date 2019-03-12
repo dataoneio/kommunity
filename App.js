@@ -13,18 +13,17 @@ import AppContainer from "./src/navigator/AppContainer";
 import { MenuProvider } from "react-native-popup-menu";
 
 export default class App extends Component {
-
   render() {
     const screenProps = {
       user: {
-        id: 'John Doe',
-        number: 'johndoe123',
-        name: 'john@doe.com',
-      },
-    }
+        id: "amoli",
+        number: "johndoe123",
+        name: "john@doe.com"
+      }
+    };
     return (
       <MenuProvider>
-        <AppContainer screenProps={screenProps}  />
+        <AppContainer screenProps={screenProps} />
       </MenuProvider>
     );
   }
