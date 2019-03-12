@@ -27,17 +27,59 @@ export default class UserNotification extends React.Component {
     super(props);
 
     this.state = {
-      requests: []
+      requests: [],
+      EventIds: [],
+      Comments: []
     };
   }
   componentDidMount() {
     var { screenProps } = this.props;
-    console.log("will mount");
+    console.log(screenProps.user.id + "++++++userid++++");
     if (screenProps.user.number == "919408880345") {
       // alert("admin");
       this.getDataFromFirebase();
     }
-    // this.getDataFromFirebase();
+    var arr1 = [];
+    let eventid = [];
+    firebase
+      .database()
+      .ref("app/Event details")
+      .orderByChild("UserId")
+      .equalTo(screenProps.user.id)
+      .on("child_added", data => {
+        eventid.push(data.key);
+
+        console.log("key-----" + eventid);
+        this.setState({ EventIds: eventid });
+      });
+    console.log("---++++++------" + eventid);
+    var comment = [];
+    for (var i in eventid) {
+      console.log(i + "------------" + eventid[i]);
+      firebase
+        .database()
+        .ref("app/Event details/" + eventid[i] + "/Comments")
+        .on("child_added", data => {
+          console.log(JSON.stringify(data.val()) + "comments----------");
+          comment.push({
+            userid: data.val().Id,
+            text: data.val().text,
+            eventid: eventid[i],
+            commentId: data.key
+          });
+        });
+    }
+    this.setState({ Comments: comment });
+    console.log("commmmmmeeentsssss" + JSON.stringify(comment));
+  }
+
+  handleClick(eid, etitle, edesc, eimage) {
+    this.props.navigation.navigate("ViewFeed", {
+      id: eid,
+      Title: etitle,
+      description: edesc,
+      url: eimage
+    });
   }
   acceptRequest(Number, name, data, key) {
     SendSMS.send(
@@ -130,7 +172,7 @@ export default class UserNotification extends React.Component {
   getDataFromFirebase() {
     let arr1 = [];
     var d = new Date();
-    console.log("date===" + d);
+    // console.log("date===" + d);
     firebase
       .database()
       .ref("app/Joining_Requests")
@@ -139,12 +181,12 @@ export default class UserNotification extends React.Component {
         var key1 = [];
         key1.push(data.key);
         let arr = data.toJSON();
-        console.log("JOINING REQUESTS" + JSON.stringify(arr));
+        // console.log("JOINING REQUESTS" + JSON.stringify(arr));
         for (var i in arr) {
           result.push(arr[i]);
         }
-        console.log("key--" + key1);
-        console.log("---" + result.length);
+        // console.log("key--" + key1);
+        // console.log("---" + result.length);
 
         arr1.push({
           Number: result[0].toString(),
@@ -152,12 +194,64 @@ export default class UserNotification extends React.Component {
           Uid: data.key
         });
         this.setState({ requests: arr1 });
-        console.log("Number" + result[0].toString());
-        console.log("Name" + result[1].toString());
-        console.log("aaawwww" + JSON.stringify(arr1));
+        // console.log("Number" + result[0].toString());
+        // console.log("Name" + result[1].toString());
+        // console.log("aaawwww" + JSON.stringify(arr1));
       });
   }
   render() {
+    //console.log("this is comments" + JSON.stringify(this.state.Comments));
+
+    let postcomments = this.state.Comments.map((val, key) => {
+      // console.log("-------"+val.userid)
+      var name = "",
+        EventTitle = "",
+        EventDescription = "",
+        EventImage = "";
+      firebase
+        .database()
+        .ref("app/User/" + val.userid)
+        .on("value", data => {
+          console.log("data for name" + JSON.stringify(data.toJSON().Name)),
+            (name = data.toJSON().Name);
+        });
+      firebase
+        .database()
+        .ref("app/Event details/" + val.eventid)
+        .on("value", data => {
+          console.log("data for name" + JSON.stringify(data.toJSON().Title)),
+            (EventTitle = data.toJSON().Title),
+            (EventDescription = data.toJSON().Description),
+            (EventImage = data.toJSON().Image);
+        });
+      return (
+        <View key={key} style={{ padding: 5 }}>
+          <View
+            style={{
+              paddingBottom: 20,
+              padding: 5
+            }}
+          >
+          
+            <TouchableOpacity
+              onPress={() => {
+                this.handleClick(
+                  val.eventid,
+                  EventTitle,
+                  EventDescription,
+                  EventImage
+                );
+              }}
+            >
+              <Text>
+                {name} has commented "{val.text}" on your "{EventTitle}" post
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    });
+
     let requestval = this.state.requests.map((val, key) => {
       return (
         <View key={key} style={{ padding: 5 }}>
@@ -209,6 +303,7 @@ export default class UserNotification extends React.Component {
           >
             {requestval}
           </View>
+          <View>{postcomments}</View>
         </ScrollView>
       </View>
     );

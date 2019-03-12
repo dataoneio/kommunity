@@ -17,7 +17,7 @@ export default class App extends Component {
   render() {
     const screenProps = {
       user: {
-        id: 'John Doe',
+        id: 'amoli',
         number: 'johndoe123',
         name: 'john@doe.com',
       },

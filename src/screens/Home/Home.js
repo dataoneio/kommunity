@@ -104,13 +104,14 @@ export default class Home extends React.Component {
             val1 = data.val();
             if (data.exists()) {
               screenProps.user.userphotourl = val1.Profile_photo;
-              this.setState({ UserId: data.key }, () => {
-                screenProps.user.id = this.state.UserId;
-              });
+              screenProps.user.id = data.key;
+              console.log("key-----" + data.key);
+              console.log("value-----" + screenProps.user.id);
             }
           });
       })
     );
+    console.log("---333333----" + screenProps.user.id);
   };
 
   getDataFromFirebase() {
@@ -228,7 +229,7 @@ export default class Home extends React.Component {
 
     var { screenProps } = this.props;
     screenProps.user.screenName = "Home";
-    console.log("hehehheh" + screenProps.user.screenName);
+    //console.log("hehehheh" + screenProps.user.screenName);
     let search =
       this.state.onFilter === true
         ? this.state.initialVals
@@ -278,7 +279,7 @@ export default class Home extends React.Component {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.home}>Community Social Network</Text>
+          <Text style={styles.home}>Kommunity</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
