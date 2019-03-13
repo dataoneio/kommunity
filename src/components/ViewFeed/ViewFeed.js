@@ -186,24 +186,32 @@ export default class ViewFeed extends React.Component {
             </View>
           )}
           <View style={{ paddingTop: 10 }}>
-            <Text style={{ color: "black", fontSize: 18, padding: 10 }}>
-              Comments
-            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ color: "black", fontSize: 18, padding: 10 }}>
+                Comments
+              </Text>
+              {/* <View
+                style={{
+                  padding: 10,
+                  backgroundColor: "#2f497e",
+                  width:30,
+                  height: 30,
+                  borderRadius:15
+                }}
+              >
+                <Icon name="add" size={15} color="white" />
+              </View> */}
+            </View>
           </View>
 
           <View>{comments}</View>
         </ScrollView>
         <TouchableOpacity
-          style={styles.addButton1}
+          style={styles.commentButton1}
           title="add"
           onPress={this.Activatecomment.bind(this)}
         >
-          <Icon
-            name="comment-outline"
-            type="material-community"
-            size={30}
-            color="white"
-          />
+          <Icon name="comment" type="font-awesome" size={30} color="white" />
         </TouchableOpacity>
         <View style={styles.footer}>
           {renderIf(this.state.Addcomment)(

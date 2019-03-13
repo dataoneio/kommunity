@@ -15,7 +15,6 @@ import {
   ScrollView,
   Button
 } from "react-native";
-import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
 
 import ImagePicker from "react-native-image-picker";

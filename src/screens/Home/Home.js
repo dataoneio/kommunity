@@ -257,9 +257,7 @@ export default class Home extends React.Component {
     return (
       <View style={{ paddingBottom: 10, backgroundColor: "#dddce2", flex: 1 }}>
         <NavigationEvents
-          // onWillFocus={payload => console.log("will focus", payload)}
           onDidFocus={this.onfocus.bind(this)}
-          // onWillBlur={payload => console.log("will blur", payload)}
           onDidBlur={this.onblur.bind(this)}
         />
         <View style={styles.header}>

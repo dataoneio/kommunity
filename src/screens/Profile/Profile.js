@@ -658,7 +658,7 @@ export default class Profile extends React.Component {
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
-                  color="#676261"
+                  color="#2f497e"
                   //accessibilityLabel="Learn more about this purple button"
                 />
               </View>

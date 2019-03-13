@@ -432,7 +432,7 @@ export default class UserInfo extends React.Component {
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
-                  color="#676261"
+                  color="#2f497e"
                 />
               </View>
             </View>

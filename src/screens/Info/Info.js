@@ -226,7 +226,7 @@ export default class Info extends React.Component {
                   onChangeText={BusinessMobileNo =>
                     this.setState({ BusinessMobileNo })
                   }
-                  val={this.state.BusinessMobileNo}
+                  value={this.state.BusinessMobileNo}
                 />
               </View>
 

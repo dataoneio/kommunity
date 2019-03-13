@@ -37,11 +37,11 @@ export default (styles = StyleSheet.create({
     fontFamily: "lucida grande",
     color: "#8b8b8b"
   },
-  addButton1: {
+  commentButton1: {
     position: "absolute",
     zIndex: 11,
     right: 20,
-    bottom: 15,
+    bottom: 55,
     backgroundColor: "#676261", //"#2f497e",
     width: 70,
     height: 70,

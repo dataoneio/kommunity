@@ -33,7 +33,7 @@
     "react-native-image-picker": "^0.28.0",
     "react-native-image-progress": "^1.1.1",
     "react-native-material-dropdown": "git+https://github.com/harshitjee/react-native-material-dropdown.git",
-    "react-native-paper": "^2.10.1",
+    "react-native-paper": "^2.12.0",
     "react-native-popup-menu": "^0.15.0",
     "react-native-progress": "^3.5.0",
     "react-native-pull-to-refresh": "^2.1.3",
