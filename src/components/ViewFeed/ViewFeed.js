@@ -190,7 +190,7 @@ export default class ViewFeed extends React.Component {
               <Text style={{ color: "black", fontSize: 18, padding: 10 }}>
                 Comments
               </Text>
-              <View
+              {/* <View
                 style={{
                   padding: 10,
                   backgroundColor: "#2f497e",
@@ -200,7 +200,7 @@ export default class ViewFeed extends React.Component {
                 }}
               >
                 <Icon name="add" size={15} color="white" />
-              </View>
+              </View> */}
             </View>
           </View>
 

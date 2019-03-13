@@ -33,23 +33,11 @@ export default class UserNotification extends React.Component {
       Comments: []
     };
   }
-<<<<<<< HEAD
-  componentDidUpdate(){
-
-    console.log("did update")
-  }
-  
-  getCommentNotification()
-  {
-    var {screenProps}=this.props
-    //var arr1 = [];
-=======
   componentDidMount() {
     var { screenProps } = this.props;
     console.log(screenProps.user.id + "++++++userid++++");
 
     var arr1 = [];
->>>>>>> 8b33d25e1939a9e116656579a7f10ce6ebdf5829
     let eventid = [];
     firebase
       .database()
@@ -191,24 +179,6 @@ export default class UserNotification extends React.Component {
     this.props.navigation.goBack();
   }
 
-<<<<<<< HEAD
-        arr1.push({
-          Number: result[0].toString(),
-          Name: result[1].toString(),
-          Uid: data.key
-        });
-        this.setState({ requests: arr1 });
-        // console.log("Number" + result[0].toString());
-        // console.log("Name" + result[1].toString());
-        // console.log("aaawwww" + JSON.stringify(arr1));
-      });
-  }
-  onfocus()
-  {
-    this.getCommentNotification();
-  }
-=======
->>>>>>> 8b33d25e1939a9e116656579a7f10ce6ebdf5829
   render() {
     //console.log("this is comments" + JSON.stringify(this.state.Comments));
 

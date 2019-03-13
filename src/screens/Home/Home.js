@@ -72,11 +72,7 @@ export default class Home extends React.Component {
     const { navigation } = this.props;
     // var loggedinnumber = navigation.getParam("LoggedInNumber", "no-number");
 
-<<<<<<< HEAD
-    this.setState({ LoggedInNumber: loggedinnumber });
-=======
     // this.setState({ LoggedInNumber: loggedinnumber });
->>>>>>> 8b33d25e1939a9e116656579a7f10ce6ebdf5829
     this.getDataFromFirebase();
   }
   componentWillMount() {
@@ -275,7 +271,7 @@ export default class Home extends React.Component {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.home}>Kommunity</Text>
+          <Text style={styles.home}>Parkar Samaaj</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -394,7 +390,7 @@ export default class Home extends React.Component {
                       source={require("../../assets/App_logo.png")}
                       style={styles.logoStyle}
                     />
-                    <Text style={styles.drawer}>Kommunity</Text>
+                    <Text style={styles.drawer}>Parkar Samaaj</Text>
                   </View>
                   <TouchableOpacity
                     onPress={this.gotoAboutus.bind(this)}
