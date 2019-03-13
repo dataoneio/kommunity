@@ -19,8 +19,9 @@ import {
 import { TextInput } from "react-native-paper";
 import Joining_Requests from "../../components/JoiningRequests/JoiningRequests";
 import firebase from "../../../Firebase";
-
+import CommentNotification from "../../components/commentNotification/CommentNotification";
 import SendSMS from "react-native-sms";
+import { NavigationEvents } from "react-navigation";
 
 export default class UserNotification extends React.Component {
   constructor(props) {
@@ -32,14 +33,15 @@ export default class UserNotification extends React.Component {
       Comments: []
     };
   }
-  componentDidMount() {
-    var { screenProps } = this.props;
-    console.log(screenProps.user.id + "++++++userid++++");
-    if (screenProps.user.number == "919408880345") {
-      // alert("admin");
-      this.getDataFromFirebase();
-    }
-    var arr1 = [];
+  componentDidUpdate(){
+
+    console.log("did update")
+  }
+  
+  getCommentNotification()
+  {
+    var {screenProps}=this.props
+    //var arr1 = [];
     let eventid = [];
     firebase
       .database()
@@ -49,13 +51,13 @@ export default class UserNotification extends React.Component {
       .on("child_added", data => {
         eventid.push(data.key);
 
-        console.log("key-----" + eventid);
+       /// console.log("key-----" + eventid);
         this.setState({ EventIds: eventid });
       });
-    console.log("---++++++------" + eventid);
+   // console.log("---++++++------" + eventid);
     var comment = [];
     for (var i in eventid) {
-      console.log(i + "------------" + eventid[i]);
+      //console.log(i + "------------" + eventid[i]);
       firebase
         .database()
         .ref("app/Event details/" + eventid[i] + "/Comments")
@@ -71,6 +73,17 @@ export default class UserNotification extends React.Component {
     }
     this.setState({ Comments: comment });
     console.log("commmmmmeeentsssss" + JSON.stringify(comment));
+  }
+  componentDidMount() {
+    var { screenProps } = this.props;
+    console.log(screenProps.user.id + "++++++userid++++");
+    if (screenProps.user.number == "919408880345") {
+      // alert("admin");
+      this.getDataFromFirebase();
+    }
+    this.getCommentNotification()
+
+    
   }
 
   handleClick(eid, etitle, edesc, eimage) {
@@ -199,6 +212,10 @@ export default class UserNotification extends React.Component {
         // console.log("aaawwww" + JSON.stringify(arr1));
       });
   }
+  onfocus()
+  {
+    this.getCommentNotification();
+  }
   render() {
     //console.log("this is comments" + JSON.stringify(this.state.Comments));
 
@@ -225,6 +242,7 @@ export default class UserNotification extends React.Component {
             (EventImage = data.toJSON().Image);
         });
       return (
+        
         <View key={key} style={{ padding: 5 }}>
           <View
             style={{
@@ -232,9 +250,12 @@ export default class UserNotification extends React.Component {
               padding: 5
             }}
           >
-          
-            <TouchableOpacity
-              onPress={() => {
+            <CommentNotification
+              key={key}
+              val={val}
+              name={name}
+              title={EventTitle}
+              oncommentClick={() => {
                 this.handleClick(
                   val.eventid,
                   EventTitle,
@@ -243,10 +264,21 @@ export default class UserNotification extends React.Component {
                 );
               }}
             >
-              <Text>
-                {name} has commented "{val.text}" on your "{EventTitle}" post
-              </Text>
-            </TouchableOpacity>
+              {/* <TouchableOpacity
+                onPress={() => {
+                  this.handleClick(
+                    val.eventid,
+                    EventTitle,
+                    EventDescription,
+                    EventImage
+                  );
+                }}
+              >
+                <Text>
+                  {name} has commented "{val.text}" on your "{EventTitle}" post
+                </Text>
+              </TouchableOpacity> */}
+            </CommentNotification>
           </View>
         </View>
       );
@@ -278,7 +310,11 @@ export default class UserNotification extends React.Component {
     });
 
     return (
-      <View style={{ flex: 1, backgroundColor: "yellow" }}>
+      <View style={{ flex: 1 }}>
+      <NavigationEvents
+        onDidFocus={this.onfocus.bind(this)}
+        //onDidBlur={this.onblur.bind(this)}
+      />
         <View style={styles.header}>
           <View>
             <TouchableOpacity title="" onPress={this.goback.bind(this)}>

@@ -45,9 +45,10 @@ export default class Home extends React.Component {
       searchInput: "",
       onFilter: true,
       isLoading: true,
-      LoggedInMumber: "",
+      LoggedInNumber: "",
       refreshing: false,
-      drawerview: false
+      drawerview: false,
+      UserId: ""
     };
   }
 
@@ -73,8 +74,8 @@ export default class Home extends React.Component {
     console.log("Did mount");
     const { navigation } = this.props;
     var loggedinnumber = navigation.getParam("LoggedInNumber", "no-number");
-    //console.log("hehehehwwwwwwwww----" + loggedinnumber);
-    this.setState({ LoggedInMumber: loggedinnumber });
+
+    this.setState({ LoggedInNumber: loggedinnumber });
     this.getDataFromFirebase();
   }
   componentWillMount() {
@@ -94,6 +95,7 @@ export default class Home extends React.Component {
       this.setState({ getToken: value }, () => {
         console.log("--inside it--" + this.state.getToken);
         screenProps.user.number = this.state.getToken;
+        console.log("-------------------")
 
         firebase
           .database()
@@ -102,16 +104,17 @@ export default class Home extends React.Component {
           .equalTo(this.state.getToken)
           .on("child_added", data => {
             val1 = data.val();
+            console.log("hehehehehehheheheheh")
             if (data.exists()) {
               screenProps.user.userphotourl = val1.Profile_photo;
               screenProps.user.id = data.key;
-              console.log("key-----" + data.key);
-              console.log("value-----" + screenProps.user.id);
+              console.log(data.key + "datakey");
+              console.log(screenProps.user.id + "----");
             }
           });
       })
     );
-    console.log("---333333----" + screenProps.user.id);
+    console.log(screenProps.user.id + "++++");
   };
 
   getDataFromFirebase() {
@@ -229,7 +232,6 @@ export default class Home extends React.Component {
 
     var { screenProps } = this.props;
     screenProps.user.screenName = "Home";
-    //console.log("hehehheh" + screenProps.user.screenName);
     let search =
       this.state.onFilter === true
         ? this.state.initialVals
@@ -263,9 +265,7 @@ export default class Home extends React.Component {
     return (
       <View style={{ paddingBottom: 10, backgroundColor: "#dddce2", flex: 1 }}>
         <NavigationEvents
-          // onWillFocus={payload => console.log("will focus", payload)}
           onDidFocus={this.onfocus.bind(this)}
-          // onWillBlur={payload => console.log("will blur", payload)}
           onDidBlur={this.onblur.bind(this)}
         />
         <View style={styles.header}>
