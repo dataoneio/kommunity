@@ -208,7 +208,7 @@ export default class App extends Component {
       <View style={{ backgroundColor: "#E3E7E6", flex: 1 }}>
         <View style={[!this.state.isLogin && { display: "none" }]}>
           <View style={styles.header}>
-            <Text style={styles.home}>Kommunity</Text>
+            <Text style={styles.home}>Parkar Samaaj</Text>
             <View>
               <TouchableOpacity
                 title="NEXT"

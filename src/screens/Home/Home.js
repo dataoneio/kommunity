@@ -273,7 +273,7 @@ export default class Home extends React.Component {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.home}>Community Social Network</Text>
+          <Text style={styles.home}>Parkar Samaaj</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -392,7 +392,7 @@ export default class Home extends React.Component {
                       source={require("../../assets/App_logo.png")}
                       style={styles.logoStyle}
                     />
-                    <Text style={styles.drawer}>Kommunity</Text>
+                    <Text style={styles.drawer}>Parkar Samaaj</Text>
                   </View>
                   <TouchableOpacity
                     onPress={this.gotoAboutus.bind(this)}
