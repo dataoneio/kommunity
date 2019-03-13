@@ -12,7 +12,17 @@ export default class CommentNotification extends React.Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={this.props.oncommentClick}>
-          <Text>
+          <Text
+            style={{
+              fontFamily: "lucida grande",
+              paddingLeft: 5,
+              // paddingRight:10,
+              fontSize: 20,
+              color: "black",
+              fontWeight: "bold",
+              borderColor: "white"
+            }}
+          >
             {this.props.name} has commented "{this.props.val.text}" on your "
             {this.props.title}" post
           </Text>

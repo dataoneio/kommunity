@@ -18,7 +18,6 @@ import {
 } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Icon } from "react-native-elements";
-//import { Button } from "native-base";
 import firebase from "../../../Firebase";
 import Feed from "../../components/Feed/Feed";
 import {
@@ -31,6 +30,7 @@ import ContentLoader from "react-native-content-loader";
 import Drawer from "react-native-circle-drawer";
 import { Circle, Rect } from "react-native-svg";
 import RNShake from "react-native-shake";
+import renderIf from "../../components/ViewFeed/renderIf";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -58,24 +58,25 @@ export default class Home extends React.Component {
   };
 
   onblur() {
-    console.log("blur");
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
   onfocus() {
-    console.log("focus");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentDidMount() {
-    //this.setValueLocally();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.getValueLocally();
     var { screenProps } = this.props;
-    console.log("Did mount");
-    const { navigation } = this.props;
-    var loggedinnumber = navigation.getParam("LoggedInNumber", "no-number");
 
+    const { navigation } = this.props;
+    // var loggedinnumber = navigation.getParam("LoggedInNumber", "no-number");
+
+<<<<<<< HEAD
     this.setState({ LoggedInNumber: loggedinnumber });
+=======
+    // this.setState({ LoggedInNumber: loggedinnumber });
+>>>>>>> 8b33d25e1939a9e116656579a7f10ce6ebdf5829
     this.getDataFromFirebase();
   }
   componentWillMount() {
@@ -93,9 +94,7 @@ export default class Home extends React.Component {
 
     AsyncStorage.getItem("token").then(value =>
       this.setState({ getToken: value }, () => {
-        console.log("--inside it--" + this.state.getToken);
         screenProps.user.number = this.state.getToken;
-        console.log("-------------------")
 
         firebase
           .database()
@@ -104,23 +103,19 @@ export default class Home extends React.Component {
           .equalTo(this.state.getToken)
           .on("child_added", data => {
             val1 = data.val();
-            console.log("hehehehehehheheheheh")
+            console.log("hehehehehehheheheheh");
             if (data.exists()) {
               screenProps.user.userphotourl = val1.Profile_photo;
               screenProps.user.id = data.key;
-              console.log(data.key + "datakey");
-              console.log(screenProps.user.id + "----");
             }
           });
       })
     );
-    console.log(screenProps.user.id + "++++");
   };
 
   getDataFromFirebase() {
     let arr1 = [];
     var d = new Date();
-    // console.log("date===" + d);
     firebase
       .database()
       .ref("app/Event details")
@@ -151,17 +146,13 @@ export default class Home extends React.Component {
       onFilter: false
     });
     if (txt == "All") {
-      // console.log("allPosted........................");
       this.setState({ searchResult: this.state.initialVals });
     } else {
-      // console.log("oooo" + txt);
       this.setState({ searchInput: txt }, () => this.searchByPost());
     }
   };
   searchByPost() {
-    // console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz" + this.state.searchInput);
     var arr2 = this.state.initialVals;
-    // console.log("lolololololololol" + JSON.stringify(arr2));
     var result = arr2.filter(search => {
       let v1 = search.description.toUpperCase();
       let v2 = search.title.toUpperCase();
@@ -209,6 +200,10 @@ export default class Home extends React.Component {
   gotoReportProblem() {
     this.setState({ drawerview: false });
     this.props.navigation.navigate("ReportProblem");
+  }
+  gotojoiningRequests() {
+    this.setState({ drawerview: false });
+    this.props.navigation.navigate("UserJoiningRequests");
   }
   render() {
     if (this.state.isLoading) {
@@ -262,6 +257,7 @@ export default class Home extends React.Component {
         </View>
       );
     });
+
     return (
       <View style={{ paddingBottom: 10, backgroundColor: "#dddce2", flex: 1 }}>
         <NavigationEvents
@@ -336,8 +332,6 @@ export default class Home extends React.Component {
                     </MenuOption>
                     <MenuOption
                       onSelect={this.onpress.bind(this, "Announcement")}
-                      // //disabled={true}
-                      // text="Announcement"
                     >
                       <Text style={{ color: "black", fontWeight: "bold" }}>
                         Announcement
@@ -365,9 +359,6 @@ export default class Home extends React.Component {
                 </MenuOptions>
               </Menu>
             </View>
-            {/* <TouchableOpacity title="">
-              <Icon name="search" color="#cccccc" size={30} />
-            </TouchableOpacity> */}
           </View>
         </View>
         <ScrollView
@@ -417,6 +408,17 @@ export default class Home extends React.Component {
                   >
                     <Text style={styles.drawerOptions}>Report A Problem</Text>
                   </TouchableOpacity>
+                  {renderIf(screenProps.user.number == "919408880345")(
+                    <TouchableOpacity
+                      onPress={this.gotojoiningRequests.bind(this)}
+                      style={{
+                        borderBottomWidth: 1,
+                        borderBottomColor: "white"
+                      }}
+                    >
+                      <Text style={styles.drawerOptions}>User Requests</Text>
+                    </TouchableOpacity>
+                  )}
                   <TouchableOpacity
                     onPress={this.logout.bind(this)}
                     style={{ borderBottomWidth: 1, borderBottomColor: "white" }}

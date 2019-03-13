@@ -19,9 +19,7 @@ import {
 import { TextInput } from "react-native-paper";
 import Joining_Requests from "../../components/JoiningRequests/JoiningRequests";
 import firebase from "../../../Firebase";
-import CommentNotification from "../../components/commentNotification/CommentNotification";
 import SendSMS from "react-native-sms";
-import { NavigationEvents } from "react-navigation";
 
 export default class UserNotification extends React.Component {
   constructor(props) {
@@ -33,65 +31,14 @@ export default class UserNotification extends React.Component {
       Comments: []
     };
   }
-<<<<<<< HEAD
-  componentDidUpdate(){
-
-    console.log("did update")
-  }
-  
-  getCommentNotification()
-  {
-    var {screenProps}=this.props
-    //var arr1 = [];
-=======
   componentDidMount() {
     var { screenProps } = this.props;
     console.log(screenProps.user.id + "++++++userid++++");
+
+    this.getDataFromFirebase();
 
     var arr1 = [];
->>>>>>> 8b33d25e1939a9e116656579a7f10ce6ebdf5829
     let eventid = [];
-    firebase
-      .database()
-      .ref("app/Event details")
-      .orderByChild("UserId")
-      .equalTo(screenProps.user.id)
-      .on("child_added", data => {
-        eventid.push(data.key);
-
-       /// console.log("key-----" + eventid);
-        this.setState({ EventIds: eventid });
-      });
-   // console.log("---++++++------" + eventid);
-    var comment = [];
-    for (var i in eventid) {
-      //console.log(i + "------------" + eventid[i]);
-      firebase
-        .database()
-        .ref("app/Event details/" + eventid[i] + "/Comments")
-        .on("child_added", data => {
-          console.log(JSON.stringify(data.val()) + "comments----------");
-          comment.push({
-            userid: data.val().Id,
-            text: data.val().text,
-            eventid: eventid[i],
-            commentId: data.key
-          });
-        });
-    }
-    this.setState({ Comments: comment });
-    console.log("commmmmmeeentsssss" + JSON.stringify(comment));
-  }
-  componentDidMount() {
-    var { screenProps } = this.props;
-    console.log(screenProps.user.id + "++++++userid++++");
-    if (screenProps.user.number == "919408880345") {
-      // alert("admin");
-      this.getDataFromFirebase();
-    }
-    this.getCommentNotification()
-
-    
   }
 
   handleClick(eid, etitle, edesc, eimage) {
@@ -188,54 +135,34 @@ export default class UserNotification extends React.Component {
     alert("navigated");
   }
   goback() {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("Home");
   }
+  getDataFromFirebase() {
+    let arr1 = [];
+    var d = new Date();
+    firebase
+      .database()
+      .ref("app/Joining_Requests")
+      .on("child_added", data => {
+        var result = [];
+        var key1 = [];
+        key1.push(data.key);
+        let arr = data.toJSON();
+        for (var i in arr) {
+          result.push(arr[i]);
+        }
 
-<<<<<<< HEAD
         arr1.push({
           Number: result[0].toString(),
           Name: result[1].toString(),
           Uid: data.key
         });
         this.setState({ requests: arr1 });
-        // console.log("Number" + result[0].toString());
-        // console.log("Name" + result[1].toString());
-        // console.log("aaawwww" + JSON.stringify(arr1));
       });
   }
-  onfocus()
-  {
-    this.getCommentNotification();
-  }
-=======
->>>>>>> 8b33d25e1939a9e116656579a7f10ce6ebdf5829
   render() {
-    //console.log("this is comments" + JSON.stringify(this.state.Comments));
-
-    let postcomments = this.state.Comments.map((val, key) => {
-      // console.log("-------"+val.userid)
-      var name = "",
-        EventTitle = "",
-        EventDescription = "",
-        EventImage = "";
-      firebase
-        .database()
-        .ref("app/User/" + val.userid)
-        .on("value", data => {
-          console.log("data for name" + JSON.stringify(data.toJSON().Name)),
-            (name = data.toJSON().Name);
-        });
-      firebase
-        .database()
-        .ref("app/Event details/" + val.eventid)
-        .on("value", data => {
-          console.log("data for name" + JSON.stringify(data.toJSON().Title)),
-            (EventTitle = data.toJSON().Title),
-            (EventDescription = data.toJSON().Description),
-            (EventImage = data.toJSON().Image);
-        });
+    let requestval = this.state.requests.map((val, key) => {
       return (
-        
         <View key={key} style={{ padding: 5 }}>
           <View
             style={{
@@ -243,19 +170,16 @@ export default class UserNotification extends React.Component {
               padding: 5
             }}
           >
-            <CommentNotification
+            <Joining_Requests
               key={key}
+              keyval={key}
               val={val}
-              name={name}
-              title={EventTitle}
-              oncommentClick={() => {
-                this.handleClick(
-                  val.eventid,
-                  EventTitle,
-                  EventDescription,
-                  EventImage
-                );
-              }}
+              acceptingfunction={() =>
+                this.acceptRequest(val.Number, val.Name, val.Uid, key)
+              }
+              rejectingfunction={() =>
+                this.rejectRequest(val.Number, val.Uid, key)
+              }
             />
           </View>
         </View>
@@ -263,11 +187,7 @@ export default class UserNotification extends React.Component {
     });
 
     return (
-      <View style={{ flex: 1 }}>
-      <NavigationEvents
-        onDidFocus={this.onfocus.bind(this)}
-        //onDidBlur={this.onblur.bind(this)}
-      />
+      <View style={{ flex: 1, backgroundColor: "yellow" }}>
         <View style={styles.header}>
           <View>
             <TouchableOpacity title="" onPress={this.goback.bind(this)}>
@@ -290,7 +210,7 @@ export default class UserNotification extends React.Component {
               backgroundColor: "#f2f2f2"
             }}
           >
-            {postcomments}
+            {requestval}
           </View>
         </ScrollView>
       </View>
