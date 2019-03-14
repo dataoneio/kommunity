@@ -212,6 +212,10 @@ export default class Home extends React.Component {
     this.setState({ drawerview: false });
     this.props.navigation.navigate("UserJoiningRequests");
   }
+  gotoBroadcast() {
+    this.setState({ drawerview: false });
+    this.props.navigation.navigate("Broadcast");
+  }
   render() {
     if (this.state.isLoading) {
       return (
@@ -435,6 +439,17 @@ export default class Home extends React.Component {
                       }}
                     >
                       <Text style={styles.drawerOptions}>User Requests</Text>
+                    </TouchableOpacity>
+                  )}
+                  {renderIf(screenProps.user.number == "919408880345")(
+                    <TouchableOpacity
+                      onPress={this.gotoBroadcast.bind(this)}
+                      style={{
+                        borderBottomWidth: 1,
+                        borderBottomColor: "white"
+                      }}
+                    >
+                      <Text style={styles.drawerOptions}>Broadcast</Text>
                     </TouchableOpacity>
                   )}
                   <TouchableOpacity
