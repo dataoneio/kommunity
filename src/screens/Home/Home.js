@@ -239,6 +239,15 @@ export default class Home extends React.Component {
         ? this.state.initialVals
         : this.state.searchResult;
     let searchval = search.map((val, key) => {
+      let name = "";
+      let profile = "";
+      firebase
+        .database()
+        .ref("app/User/" + val.userId)
+        .on("value", data => {
+          name = data.toJSON().Name;
+          profile = data.toJSON().Profile_photo;
+        });
       return (
         <View key={key} style={{ paddingHorizontal: 5, paddingVertical: 3 }}>
           <View
@@ -250,6 +259,8 @@ export default class Home extends React.Component {
             }}
           >
             <Feed
+              name={name}
+              profile={profile}
               key={key}
               keyval={key}
               val={val}
