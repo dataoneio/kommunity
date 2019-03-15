@@ -32,7 +32,10 @@
     "react-native-gesture-handler": "^1.0.15",
     "react-native-image-picker": "^0.28.0",
     "react-native-image-progress": "^1.1.1",
+<<<<<<< HEAD
     "react-native-link-preview": "^1.4.2",
+=======
+>>>>>>> 5d930a860e854d687dc0754bc19b82d50332279c
     "react-native-material-dropdown": "git+https://github.com/harshitjee/react-native-material-dropdown.git",
     "react-native-paper": "^2.13.0",
     "react-native-popup-menu": "^0.15.4",
@@ -43,7 +46,10 @@
     "react-native-shake": "^3.3.0",
     "react-native-sms": "^1.8.0",
     "react-native-svg": "^9.2.4",
+<<<<<<< HEAD
     "react-native-url-preview": "^1.0.8",
+=======
+>>>>>>> 5d930a860e854d687dc0754bc19b82d50332279c
     "react-native-vector-icons": "^6.2.0",
     "react-navigation": "^3.3.2",
     "react-navigation-material-bottom-tabs": "^1.0.0",
