@@ -207,7 +207,7 @@ export default class MyPosts extends React.Component {
         >
           <View
             style={{
-              paddingBottom: 250,
+              paddingBottom: 150,
               flexWrap: "wrap-reverse",
               flexDirection: "column-reverse",
               backgroundColor: "#dddce2"

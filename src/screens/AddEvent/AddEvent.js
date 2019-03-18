@@ -252,7 +252,7 @@ export default class AddEvent extends React.Component {
                 // value={"None"}
               />
             </View>
-            <View style={{ padding: 10 }}>
+            {/* <View style={{ padding: 10 }}>
               <Dropdown
                 label="Share To"
                 labelColor="#676261"
@@ -262,7 +262,7 @@ export default class AddEvent extends React.Component {
                 }
                 // value={"None"}
               />
-            </View>
+            </View> */}
             <View style={{ padding: 10, paddingTop: 20 }}>
               <AutoGrowingTextInput
                 label="Description"

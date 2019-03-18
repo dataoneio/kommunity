@@ -50,7 +50,10 @@ export default class Home extends React.Component {
       refreshing: false,
       drawerview: false,
       UserId: "",
-      dialogVisible: false
+      dialogVisible: false,
+      gender: "",
+      city: "",
+      State: ""
     };
   }
 
@@ -79,12 +82,12 @@ export default class Home extends React.Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.getValueLocally();
     var { screenProps } = this.props;
-
     const { navigation } = this.props;
-    // var loggedinnumber = navigation.getParam("LoggedInNumber", "no-number");
-
-    // this.setState({ LoggedInNumber: loggedinnumber });
     this.getDataFromFirebase();
+    var category = navigation.getParam("txt", "No text");
+    this.setState({ searchInput: category, onFilter: false }, () =>
+      this.searchByPost()
+    );
   }
   componentWillMount() {
     RNShake.addEventListener("ShakeEvent", () => {
@@ -112,6 +115,17 @@ export default class Home extends React.Component {
             val1 = data.val();
             console.log("hehehehehehheheheheh");
             if (data.exists()) {
+              this.setState({ gender: val1.Gender });
+              this.setState({ State: val1.State });
+              this.setState({ city: val1.City });
+              console.log(
+                "yoyooo---" +
+                  val1.Gender +
+                  "------" +
+                  val1.City +
+                  "-------" +
+                  val1.State
+              );
               screenProps.user.userphotourl = val1.Profile_photo;
               screenProps.user.id = data.key;
             }
@@ -123,6 +137,8 @@ export default class Home extends React.Component {
   getDataFromFirebase() {
     let arr1 = [];
     var d = new Date();
+    //var eventid="";
+    var flag = 1;
     firebase
       .database()
       .ref("app/Event details")
@@ -134,6 +150,10 @@ export default class Home extends React.Component {
         for (var i in arr) {
           result.push(arr[i]);
         }
+        //console.log("--------"+result[5].toString())
+
+        // if (result[5].toString() == "false") {
+        console.log("false");
         arr1.push({
           date: result[2].toString(),
           category: result[0].toString(),
@@ -146,19 +166,124 @@ export default class Home extends React.Component {
         this.setState({ initialVals: arr1 });
         this.setState({ feeds: arr1 });
         this.setState({ isLoading: false });
+        // } else {
+        //   console.log("custom");
+        //   console.log("------" + data.key);
+        //   firebase
+        //     .database()
+        //     .ref("app/BroadcastPost/" + data.key)
+        //     .once("value", data1 => {
+        //       console.log(
+        //         "---aaaaaaaaa---" + JSON.stringify(data1.toJSON().gender)
+        //       );
+        //       console.log("eeee" + this.state.gender);
+        //       if (result[5].toString() == "gender") {
+        //         if (data1.toJSON().gender == this.state.gender) {
+        //           console.log("gender");
+        //           arr1.push({
+        //             date: result[2].toString(),
+        //             category: result[0].toString(),
+        //             description: result[3].toString(),
+        //             uid: data.key,
+        //             title: result[6].toString(),
+        //             url1: result[4].toString(),
+        //             userId: result[7].toString()
+        //           });
+        //           this.setState({ initialVals: arr1 });
+        //           this.setState({ feeds: arr1 });
+        //           this.setState({ isLoading: false });
+        //         }
+        //       } else if (result[5].toString() == "gender&state") {
+        //         if (
+        //           data1.toJSON().gender == this.state.gender &&
+        //           data1.toJSON().state == this.state.State
+        //         ) {
+        //           console.log("gender&state");
+        //           arr1.push({
+        //             date: result[2].toString(),
+        //             category: result[0].toString(),
+        //             description: result[3].toString(),
+        //             uid: data.key,
+        //             title: result[6].toString(),
+        //             url1: result[4].toString(),
+        //             userId: result[7].toString()
+        //           });
+        //           this.setState({ initialVals: arr1 });
+        //           this.setState({ feeds: arr1 });
+        //           this.setState({ isLoading: false });
+        //         }
+        //       } else if (result[5].toString() == "gender&state&city") {
+        //         if (
+        //           data1.toJSON().city == this.state.city &&
+        //           data1.toJSON().state == this.state.State
+        //         ) {
+        //           console.log("gender&state&city");
+        //           arr1.push({
+        //             date: result[2].toString(),
+        //             category: result[0].toString(),
+        //             description: result[3].toString(),
+        //             uid: data.key,
+        //             title: result[6].toString(),
+        //             url1: result[4].toString(),
+        //             userId: result[7].toString()
+        //           });
+        //           this.setState({ initialVals: arr1 });
+        //           this.setState({ feeds: arr1 });
+        //           this.setState({ isLoading: false });
+        //         }
+        //       } else if (result[5].toString() == "state") {
+        //         if (data1.toJSON().state == this.state.State) {
+        //           console.log("state");
+        //           arr1.push({
+        //             date: result[2].toString(),
+        //             category: result[0].toString(),
+        //             description: result[3].toString(),
+        //             uid: data.key,
+        //             title: result[6].toString(),
+        //             url1: result[4].toString(),
+        //             userId: result[7].toString()
+        //           });
+        //           this.setState({ initialVals: arr1 });
+        //           this.setState({ feeds: arr1 });
+        //           this.setState({ isLoading: false });
+        //         }
+        //       } else if (result[5].toString() == "state&city") {
+        //         if (
+        //           data1.toJSON().state == this.state.State &&
+        //           data1.toJSON().city == this.state.city
+        //         ) {
+        //           console.log("state&city");
+        //           arr1.push({
+        //             date: result[2].toString(),
+        //             category: result[0].toString(),
+        //             description: result[3].toString(),
+        //             uid: data.key,
+        //             title: result[6].toString(),
+        //             url1: result[4].toString(),
+        //             userId: result[7].toString()
+        //           });
+        //           this.setState({ initialVals: arr1 });
+        //           this.setState({ feeds: arr1 });
+        //           this.setState({ isLoading: false });
+        //         }
+        //       }
+        //     });
+        //  console.log("custooommmmm");
+        //}
       });
   }
-  onpress = txt => {
-    this.setState({
-      onFilter: false
-    });
-    if (txt == "All") {
-      this.setState({ searchResult: this.state.initialVals });
-    } else {
-      this.setState({ searchInput: txt }, () => this.searchByPost());
-    }
-  };
+  // onpress = txt => {
+  //   this.setState({
+  //     onFilter: false
+  //   });
+  //   if (txt == "All") {
+  //     this.setState({ searchResult: this.state.initialVals });
+  //   } else {
+  //     this.setState({ searchInput: txt }, () => this.searchByPost());
+  //   }
+  // };
   searchByPost() {
+    //alert(this.state.searchInput);
     var arr2 = this.state.initialVals;
     var result = arr2.filter(search => {
       let v1 = search.description.toUpperCase();
@@ -166,6 +291,7 @@ export default class Home extends React.Component {
       let v3 = search.category.toUpperCase();
       let s1 = this.state.searchInput.toUpperCase();
       if (v3.includes(s1)) {
+        alert("sucess");
         return v1;
       }
     });
@@ -305,7 +431,7 @@ export default class Home extends React.Component {
             <Icon name="list" color="#3394C6" size={30} />
           </TouchableOpacity> */}
 
-            <View>
+            {/* <View>
               <Menu>
                 <MenuTrigger>
                   <Icon
@@ -380,7 +506,7 @@ export default class Home extends React.Component {
                   </ScrollView>
                 </MenuOptions>
               </Menu>
-            </View>
+            </View> */}
           </View>
         </View>
         <ScrollView
@@ -430,7 +556,7 @@ export default class Home extends React.Component {
                   >
                     <Text style={styles.drawerOptions}>Report A Problem</Text>
                   </TouchableOpacity>
-                  {renderIf(screenProps.user.number == "919408880345")(
+                  {renderIf(screenProps.user.number == "917878580099")(
                     <TouchableOpacity
                       onPress={this.gotojoiningRequests.bind(this)}
                       style={{
@@ -441,7 +567,7 @@ export default class Home extends React.Component {
                       <Text style={styles.drawerOptions}>User Requests</Text>
                     </TouchableOpacity>
                   )}
-                  {renderIf(screenProps.user.number == "919408880345")(
+                  {renderIf(screenProps.user.number == "917878580099")(
                     <TouchableOpacity
                       onPress={this.gotoBroadcast.bind(this)}
                       style={{
