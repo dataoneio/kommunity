@@ -32,6 +32,7 @@ import { Circle, Rect } from "react-native-svg";
 import RNShake from "react-native-shake";
 import renderIf from "../../components/ViewFeed/renderIf";
 import Dialog from "react-native-dialog";
+import styles from "./HomeStyle";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -57,10 +58,11 @@ export default class Home extends React.Component {
     };
   }
 
-  handleBackPress = () => {
-    BackHandler.exitApp(); // works best when the goBack is async
-    return true;
-  };
+  // handleBackPress = () => {
+  //   thi
+  //   // BackHandler.exitApp(); // works best when the goBack is async
+  //   return true;
+  // };
   showDialog = () => {
     this.setState({ dialogVisible: true });
   };
@@ -71,23 +73,29 @@ export default class Home extends React.Component {
   handleRed() {
     this.setState({ dialogVisible: false });
   }
-  onblur() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
-  }
-  onfocus() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-  }
+  // onblur() {
+  //   BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  // }
+  // onfocus() {
+  //   BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  // }
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.getValueLocally();
     var { screenProps } = this.props;
     const { navigation } = this.props;
-    this.getDataFromFirebase();
+    // this.getDataFromFirebase();
     var category = navigation.getParam("txt", "No text");
-    this.setState({ searchInput: category, onFilter: false }, () =>
-      this.searchByPost()
-    );
+    if (category == "All") {
+      this.setState({ searchInput: category }, () =>
+        this.getDataFromFirebase()
+      );
+    } else {
+      this.setState({ searchInput: category, onFilter: false }, () =>
+        this.getDataFromFirebase()
+      );
+    }
   }
   componentWillMount() {
     RNShake.addEventListener("ShakeEvent", () => {
@@ -163,127 +171,19 @@ export default class Home extends React.Component {
           url1: result[4].toString(),
           userId: result[7].toString()
         });
-        this.setState({ initialVals: arr1 });
+        this.setState({ initialVals: arr1 }, () => {
+          this.searchByPost();
+        });
         this.setState({ feeds: arr1 });
         this.setState({ isLoading: false });
-        // } else {
-        //   console.log("custom");
-        //   console.log("------" + data.key);
-        //   firebase
-        //     .database()
-        //     .ref("app/BroadcastPost/" + data.key)
-        //     .once("value", data1 => {
-        //       console.log(
-        //         "---aaaaaaaaa---" + JSON.stringify(data1.toJSON().gender)
-        //       );
-        //       console.log("eeee" + this.state.gender);
-        //       if (result[5].toString() == "gender") {
-        //         if (data1.toJSON().gender == this.state.gender) {
-        //           console.log("gender");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       } else if (result[5].toString() == "gender&state") {
-        //         if (
-        //           data1.toJSON().gender == this.state.gender &&
-        //           data1.toJSON().state == this.state.State
-        //         ) {
-        //           console.log("gender&state");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       } else if (result[5].toString() == "gender&state&city") {
-        //         if (
-        //           data1.toJSON().city == this.state.city &&
-        //           data1.toJSON().state == this.state.State
-        //         ) {
-        //           console.log("gender&state&city");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       } else if (result[5].toString() == "state") {
-        //         if (data1.toJSON().state == this.state.State) {
-        //           console.log("state");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       } else if (result[5].toString() == "state&city") {
-        //         if (
-        //           data1.toJSON().state == this.state.State &&
-        //           data1.toJSON().city == this.state.city
-        //         ) {
-        //           console.log("state&city");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       }
-        //     });
-        //  console.log("custooommmmm");
-        //}
       });
   }
-  // onpress = txt => {
-  //   this.setState({
-  //     onFilter: false
-  //   });
-  //   if (txt == "All") {
-  //     this.setState({ searchResult: this.state.initialVals });
-  //   } else {
-  //     this.setState({ searchInput: txt }, () => this.searchByPost());
-  //   }
-  // };
+
   searchByPost() {
     //alert(this.state.searchInput);
+    console.log(
+      "CHECKING INITIAL VALUE" + JSON.stringify(this.state.initialVals)
+    );
     var arr2 = this.state.initialVals;
     var result = arr2.filter(search => {
       let v1 = search.description.toUpperCase();
@@ -291,12 +191,12 @@ export default class Home extends React.Component {
       let v3 = search.category.toUpperCase();
       let s1 = this.state.searchInput.toUpperCase();
       if (v3.includes(s1)) {
-        alert("sucess");
+        // alert("sucess");
         return v1;
       }
     });
     this.setState({ searchResult: result });
-    console.log("result" + JSON.stringify(result));
+    console.log("result ------" + JSON.stringify(this.state.searchResult));
   }
 
   viewDetail(uid, title, desc, imgurl) {
@@ -408,10 +308,10 @@ export default class Home extends React.Component {
 
     return (
       <View style={{ paddingBottom: 10, backgroundColor: "#dddce2", flex: 1 }}>
-        <NavigationEvents
+        {/* <NavigationEvents
           onDidFocus={this.onfocus.bind(this)}
           onDidBlur={this.onblur.bind(this)}
-        />
+        /> */}
         <View style={styles.header}>
           <View>
             <TouchableOpacity title="" onPress={() => this.openDrawer()}>
@@ -426,88 +326,7 @@ export default class Home extends React.Component {
           <Text style={styles.home}>Parkar Samaaj</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            {/* <TouchableOpacity title="">
-            <Icon name="list" color="#3394C6" size={30} />
-          </TouchableOpacity> */}
-
-            {/* <View>
-              <Menu>
-                <MenuTrigger>
-                  <Icon
-                    name="filter"
-                    type="font-awesome"
-                    color="white"
-                    size={30}
-                  />
-                </MenuTrigger>
-                <MenuOptions
-                  style={{ backgroundColor: "white" }}
-                  optionsContainerStyle={{
-                    marginTop: 30,
-                    borderColor: "#dddce2",
-                    borderWidth: 3
-                  }}
-                >
-                  <ScrollView
-                    style={{ maxHeight: 120 }}
-                    showsVerticalScrollIndicator={true}
-                    indicatorStyle={{
-                      color: "red",
-                      backgroundColor: "yellow"
-                    }}
-                  >
-                    <MenuOption
-                      onSelect={this.onpress.bind(this, "All")}
-                      // text="Party"
-                    >
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        ALL
-                      </Text>
-                    </MenuOption>
-                    <MenuOption
-                      onSelect={this.onpress.bind(this, "Party")}
-                      // text="Party"
-                    >
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Party
-                      </Text>
-                    </MenuOption>
-                    <MenuOption onSelect={this.onpress.bind(this, "Meet-up")}>
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Meet-up
-                      </Text>
-                    </MenuOption>
-                    <MenuOption
-                      onSelect={this.onpress.bind(this, "Announcement")}
-                    >
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Announcement
-                      </Text>
-                    </MenuOption>
-
-                    <MenuOption onSelect={this.onpress.bind(this, "Business")}>
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Business
-                      </Text>
-                    </MenuOption>
-                    <MenuOption onSelect={this.onpress.bind(this, "Education")}>
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Education
-                      </Text>
-                    </MenuOption>
-                    <MenuOption
-                      onSelect={this.onpress.bind(this, "Birthday/Anniversary")}
-                    >
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Birthday/Anniversary
-                      </Text>
-                    </MenuOption>
-                  </ScrollView>
-                </MenuOptions>
-              </Menu>
-            </View> */}
-          </View>
+          />
         </View>
         <ScrollView
           refreshControl={
@@ -633,60 +452,3 @@ export default class Home extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "#2F497E",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  logoStyle: {
-    //position: "relative",
-    height: 50,
-    width: 50,
-    alignSelf: "flex-start"
-  },
-  home: {
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 24,
-    color: "white"
-  },
-  drawerHeader: {
-    paddingVertical: 20,
-    borderTopRightRadius: 10,
-    backgroundColor: "#2f497e",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10
-    // flexDirection: "column",
-    // justifyContent: "space-between"
-  },
-  drawerOptions: {
-    paddingVertical: 20,
-    padding: 10,
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontSize: 18,
-    color: "white"
-    //backgroundColor:"#676761"
-  },
-  drawer: {
-    paddingTop: 10,
-    //paddingLeft:5,
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "white"
-    //backgroundColor:"#676761"
-  }
-});
