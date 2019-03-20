@@ -57,10 +57,10 @@ export default class Home extends React.Component {
     };
   }
 
-  handleBackPress = () => {
-    BackHandler.exitApp(); // works best when the goBack is async
-    return true;
-  };
+  // handleBackPress = () => {
+  //   BackHandler.exitApp(); // works best when the goBack is async
+  //   return true;
+  // };
   showDialog = () => {
     this.setState({ dialogVisible: true });
   };
@@ -71,33 +71,64 @@ export default class Home extends React.Component {
   handleRed() {
     this.setState({ dialogVisible: false });
   }
-  onblur() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
-  }
-  onfocus() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-  }
+  // onblur() {
+  //   BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  // }
+  // onfocus() {
+  //   BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  // }
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    //BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.getValueLocally();
     var { screenProps } = this.props;
     const { navigation } = this.props;
-    this.getDataFromFirebase();
+    // this.getDataFromFirebase();
+    this.getcustomData();
     var category = navigation.getParam("txt", "No text");
-    this.setState({ searchInput: category, onFilter: false }, () =>
-      this.searchByPost()
-    );
+    console.log("category-------" + category);
+    this.setState({ searchInput: category }, () => this.searchByPost());
   }
-  componentWillMount() {
-    RNShake.addEventListener("ShakeEvent", () => {
-      alert("shaked");
-    });
-  }
+  getcustomData() {
+    const { navigation } = this.props;
 
-  componentWillUnmount() {
-    RNShake.removeEventListener("ShakeEvent");
+    var category = navigation.getParam("txt", "No text");
+    let arr1 = [];
+   
+    
+      firebase.database()
+      .ref("app/Event details")
+      .orderByChild("Category")
+      .equalTo(category)
+      .on("child_added", data => {
+        console.log(data.toJSON().UserId)       
+        if (data.exists()) {
+          arr1.push({
+            date: data.toJSON().Date,
+            category: data.toJSON().Category,
+            description: data.toJSON().Description,
+            uid: data.key,
+            title: data.toJSON().Title,
+            url1: data.toJSON().Image,
+            userId: data.toJSON().UserId
+          });
+          this.setState({ initialVals: arr1 });
+          this.setState({ feeds: arr1 });
+          this.setState({ isLoading: false });
+          console.log("true-----");
+        }
+      });
+    this.setState({ isLoading: false });
   }
+  // componentWillMount() {
+  //   RNShake.addEventListener("ShakeEvent", () => {
+  //     alert("shaked");
+  //   });
+  // }
+
+  // componentWillUnmount() {
+  //   RNShake.removeEventListener("ShakeEvent");
+  // }
 
   getValueLocally = () => {
     var { screenProps } = this.props;
@@ -166,122 +197,10 @@ export default class Home extends React.Component {
         this.setState({ initialVals: arr1 });
         this.setState({ feeds: arr1 });
         this.setState({ isLoading: false });
-        // } else {
-        //   console.log("custom");
-        //   console.log("------" + data.key);
-        //   firebase
-        //     .database()
-        //     .ref("app/BroadcastPost/" + data.key)
-        //     .once("value", data1 => {
-        //       console.log(
-        //         "---aaaaaaaaa---" + JSON.stringify(data1.toJSON().gender)
-        //       );
-        //       console.log("eeee" + this.state.gender);
-        //       if (result[5].toString() == "gender") {
-        //         if (data1.toJSON().gender == this.state.gender) {
-        //           console.log("gender");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       } else if (result[5].toString() == "gender&state") {
-        //         if (
-        //           data1.toJSON().gender == this.state.gender &&
-        //           data1.toJSON().state == this.state.State
-        //         ) {
-        //           console.log("gender&state");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       } else if (result[5].toString() == "gender&state&city") {
-        //         if (
-        //           data1.toJSON().city == this.state.city &&
-        //           data1.toJSON().state == this.state.State
-        //         ) {
-        //           console.log("gender&state&city");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       } else if (result[5].toString() == "state") {
-        //         if (data1.toJSON().state == this.state.State) {
-        //           console.log("state");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       } else if (result[5].toString() == "state&city") {
-        //         if (
-        //           data1.toJSON().state == this.state.State &&
-        //           data1.toJSON().city == this.state.city
-        //         ) {
-        //           console.log("state&city");
-        //           arr1.push({
-        //             date: result[2].toString(),
-        //             category: result[0].toString(),
-        //             description: result[3].toString(),
-        //             uid: data.key,
-        //             title: result[6].toString(),
-        //             url1: result[4].toString(),
-        //             userId: result[7].toString()
-        //           });
-        //           this.setState({ initialVals: arr1 });
-        //           this.setState({ feeds: arr1 });
-        //           this.setState({ isLoading: false });
-        //         }
-        //       }
-        //     });
-        //  console.log("custooommmmm");
-        //}
+       
       });
   }
-  // onpress = txt => {
-  //   this.setState({
-  //     onFilter: false
-  //   });
-  //   if (txt == "All") {
-  //     this.setState({ searchResult: this.state.initialVals });
-  //   } else {
-  //     this.setState({ searchInput: txt }, () => this.searchByPost());
-  //   }
-  // };
+
   searchByPost() {
     //alert(this.state.searchInput);
     var arr2 = this.state.initialVals;
@@ -291,7 +210,7 @@ export default class Home extends React.Component {
       let v3 = search.category.toUpperCase();
       let s1 = this.state.searchInput.toUpperCase();
       if (v3.includes(s1)) {
-        alert("sucess");
+        //alert("sucess");
         return v1;
       }
     });
@@ -408,10 +327,10 @@ export default class Home extends React.Component {
 
     return (
       <View style={{ paddingBottom: 10, backgroundColor: "#dddce2", flex: 1 }}>
-        <NavigationEvents
+        {/* <NavigationEvents
           onDidFocus={this.onfocus.bind(this)}
           onDidBlur={this.onblur.bind(this)}
-        />
+        /> */}
         <View style={styles.header}>
           <View>
             <TouchableOpacity title="" onPress={() => this.openDrawer()}>

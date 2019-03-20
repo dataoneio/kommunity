@@ -153,7 +153,7 @@ export default class App extends Component {
         .then(response => response.json())
         .then(responseJson => {
           if (responseJson.status == 0) {
-            this.props.navigation.navigate("Home", {
+            this.props.navigation.navigate("HomeNavigator", {
               LoggedInNumber: this.state.phone
             });
             this.setState({ isToken: false });

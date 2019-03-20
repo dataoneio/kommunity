@@ -7,9 +7,11 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  ScrollView
+  ScrollView,BackHandler
 } from "react-native";
 import styles from "./HomeNavigatorStyle";
+import { NavigationEvents } from "react-navigation";
+
 const win = Dimensions.get("window");
 
 const instructions = Platform.select({
@@ -20,12 +22,31 @@ const instructions = Platform.select({
 });
 
 export default class HomeNavigator extends React.Component {
+  handleBackPress = () => {
+    BackHandler.exitApp(); // works best when the goBack is async
+    return true;
+  };
+   onblur() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  onfocus() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  componentDidMount()
+  {
+        BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+
+  }
   onpressf = text => {
     alert(text);
   };
   render() {
     return (
       <View>
+        <NavigationEvents
+          onDidFocus={this.onfocus.bind(this)}
+          onDidBlur={this.onblur.bind(this)}
+        />
         <View style={styles.header}>
           <View />
           <Text style={styles.home}>Home</Text>
@@ -61,8 +82,8 @@ export default class HomeNavigator extends React.Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  this.onpressf("2");
+                 onPress={() => {
+                  this.props.navigation.navigate("AddressBook");
                 }}
               >
                 <View style={styles.card}>

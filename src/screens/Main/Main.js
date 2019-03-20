@@ -16,7 +16,7 @@ export default class Main extends Component {
       this.props.navigation.navigate("Login");
     } else {
       console.log("value already stored");
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("HomeNavigator");
     }
   }
   componentDidMount() {
