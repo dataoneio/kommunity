@@ -57,6 +57,7 @@ export default (styles = StyleSheet.create({
     justifyContent: "center",
     fontWeight: "bold",
     fontSize: 24,
-    color: "white"
+    color: "white",
+    left: win.width / 2.5
   }
 }));

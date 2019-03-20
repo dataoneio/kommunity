@@ -8,10 +8,13 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
-  BackHandler
+  BackHandler,
+  AsyncStorage
 } from "react-native";
 import styles from "./HomeNavigatorStyle";
+import { Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
+import Dialog from "react-native-dialog";
 const win = Dimensions.get("window");
 
 const instructions = Platform.select({
@@ -35,6 +38,11 @@ export default class HomeNavigator extends React.Component {
   onfocus() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+
+  logout() {
+    AsyncStorage.removeItem("token");
+    this.props.navigation.navigate("Login");
+  }
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -46,7 +54,6 @@ export default class HomeNavigator extends React.Component {
           onDidBlur={this.onblur.bind(this)}
         />
         <View style={styles.header}>
-          <View />
           <Text style={styles.home}>Home</Text>
           <View
             style={{
@@ -54,6 +61,20 @@ export default class HomeNavigator extends React.Component {
               justifyContent: "space-between"
             }}
           />
+          <View style={{ paddingTop: 2 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.logout();
+              }}
+            >
+              <Icon
+                name="power-off"
+                type="font-awesome"
+                color="white"
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={{ paddingBottom: 100 }}>
           <ScrollView>
