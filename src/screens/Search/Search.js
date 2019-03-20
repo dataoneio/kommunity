@@ -20,13 +20,63 @@ export default class Search extends React.Component {
       searchResult: [],
       searchResult1: [],
       initialVals: [],
-      UserArray: []
+      UserArray: [],
+      bloodgroup: "",
+      flag: false,
+      city: ""
     };
   }
 
   componentDidMount() {
+    const { navigation } = this.props;
+    var bloodgroup = navigation.getParam("txt", "not");
+    var city = navigation.getParam("city", "no");
+    this.setState({ bloodgroup: bloodgroup, city: city }, () => {
+      if (this.state.bloodgroup != "") {
+        // alert(this.state.bloodgroup + "jellos");
+        this.setState(
+          { flag: true, bloodgroup: bloodgroup, city: city },
+          () => {
+            // this.getDataFromFirebase();
+            this.getUserDataFromFirebase();
+          }
+        );
+
+        // this.setState({ bloodgroup: bloodgroup }, () => {
+        //   this.searchByUser1();
+        // });
+      }
+    });
+
     this.getDataFromFirebase();
     this.getUserDataFromFirebase();
+  }
+  searchByUser1() {
+    // alert(this.state.UserArray);
+    console.log("BLOOOOOOOOOOOOOOOOOD" + this.state.bloodgroup);
+    var arr4 = this.state.UserArray;
+    var result1 = arr4.filter(search => {
+      let r1 = search.Blood_Group.toUpperCase();
+
+      let st1 = this.state.bloodgroup.toUpperCase();
+      if (r1.includes(st1)) {
+        return true;
+      }
+    });
+    if (this.state.city != "") {
+      var result2 = result1.filter(search => {
+        let r1 = search.City.toUpperCase();
+        let st1 = this.state.city.toUpperCase();
+        if (r1.includes(st1)) {
+          return true;
+        }
+      });
+      this.setState({ searchResult1: result2 });
+    } else {
+      this.setState({ searchResult1: result1 });
+    }
+
+    console.log("result1" + JSON.stringify(result1));
   }
   getUserDataFromFirebase() {
     let arr3 = [];
@@ -48,10 +98,17 @@ export default class Search extends React.Component {
         arr3.push({
           Name: result[8].toString(),
           profile_photo: result[10].toString(),
-          userId: data.key
+          Blood_Group: result[1].toString(),
+          userId: data.key,
+          City: result[3].toString()
         });
-
-        this.setState({ UserArray: arr3 });
+        if (this.state.flag) {
+          this.setState({ UserArray: arr3 }, () => {
+            this.searchByUser1();
+          });
+        } else {
+          this.setState({ UserArray: arr3 });
+        }
         // console.log("aaawwww" + JSON.stringify(arr3));
 
         // console.log("aaa" + JSON.stringify(this.state.UserArray));
@@ -98,6 +155,7 @@ export default class Search extends React.Component {
   };
   searchByUser() {
     // console.log("USERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    console.log("BLOOOOOOOOOOOOOOOOOD" + this.state.bloodgroup);
     var arr4 = this.state.UserArray;
     var result1 = arr4.filter(search => {
       console.log(
@@ -225,7 +283,9 @@ export default class Search extends React.Component {
             <TouchableOpacity
               title="back"
               style={{ paddingTop: 7 }}
-              onPress={() => this.props.navigation.navigate("Home")}
+              onPress={() => {
+                this.props.navigation.navigate("Homescreen");
+              }}
             >
               <Icon name="arrow-back" size={30} color="#cccccc" />
             </TouchableOpacity>

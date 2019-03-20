@@ -137,33 +137,65 @@ export default class AddEvent extends React.Component {
     } else if (this.state.descInput.trim().length == 0) {
       alert("A short description is needed.");
     } else {
-      var d1 = new Date();
+      if (this.state.category == "") {
+        this.setState({ category: "General" }, () => {
+          var d1 = new Date();
 
-      console.log(d1 + "dATEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-      this.setState({
-        date: d1.toString()
-      });
-      console.log(this.state.date + "Datee");
-      firebase
-        .database()
-        .ref("app/Event details")
-        .push({
-          Description: this.state.descInput.trim(),
-          Title: this.state.title,
+          console.log(d1 + "dATEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+          this.setState({
+            date: d1.toString()
+          });
+          console.log(this.state.date + "Datee");
+          firebase
+            .database()
+            .ref("app/Event details")
+            .push({
+              Description: this.state.descInput.trim(),
+              Title: this.state.title,
 
-          Date: Date.now(),
-          Post_View: "false",
-          Category: this.state.category,
-          Image: this.state.imageurl,
-          Comments: "",
-          UserId: this.state.UserId
+              Date: Date.now(),
+              Post_View: "false",
+              Category: this.state.category,
+              Image: this.state.imageurl,
+              Comments: "",
+              UserId: this.state.UserId
+            });
+          this.props.navigation.navigate("Home");
+          this.setState({
+            title: "",
+            descInput: "",
+            imageurl: ""
+          });
         });
-      this.props.navigation.navigate("Home");
-      this.setState({
-        title: "",
-        descInput: "",
-        imageurl: ""
-      });
+      } else {
+        var d1 = new Date();
+
+        console.log(d1 + "dATEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+        this.setState({
+          date: d1.toString()
+        });
+        console.log(this.state.date + "Datee");
+        firebase
+          .database()
+          .ref("app/Event details")
+          .push({
+            Description: this.state.descInput.trim(),
+            Title: this.state.title,
+
+            Date: Date.now(),
+            Post_View: "false",
+            Category: this.state.category,
+            Image: this.state.imageurl,
+            Comments: "",
+            UserId: this.state.UserId
+          });
+        this.props.navigation.navigate("Home");
+        this.setState({
+          title: "",
+          descInput: "",
+          imageurl: ""
+        });
+      }
     }
   }
   goback() {
@@ -174,10 +206,7 @@ export default class AddEvent extends React.Component {
     var { screenProps } = this.props;
     let data = [
       {
-        value: "None  "
-      },
-      {
-        value: "Birthday/Anniversary"
+        value: "Birthday"
       },
       {
         value: "Announcement"
@@ -193,6 +222,21 @@ export default class AddEvent extends React.Component {
       },
       {
         value: "Business"
+      },
+      {
+        value: "Good"
+      },
+      {
+        value: "Sad"
+      },
+      {
+        value: "Religion"
+      },
+      {
+        value: "Sports"
+      },
+      {
+        value: "Job"
       }
     ];
     let data1 = [

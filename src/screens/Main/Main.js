@@ -16,7 +16,7 @@ export default class Main extends Component {
       this.props.navigation.navigate("Login");
     } else {
       console.log("value already stored");
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("Homescreen");
     }
   }
   componentDidMount() {
@@ -32,19 +32,19 @@ export default class Main extends Component {
 
   render() {
     return (
-      <View style={{ flex:1 }}>
-         <ContentLoader height={300}>
-            <Circle cx="30" cy="30" r="30" />
-            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-            <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
-          </ContentLoader>
-          <ContentLoader height={300}>
-            <Circle cx="30" cy="30" r="30" />
-            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-            <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
-          </ContentLoader>
+      <View style={{ flex: 1 }}>
+        <ContentLoader height={300}>
+          <Circle cx="30" cy="30" r="30" />
+          <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+          <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+          <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
+        </ContentLoader>
+        <ContentLoader height={300}>
+          <Circle cx="30" cy="30" r="30" />
+          <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+          <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+          <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
+        </ContentLoader>
       </View>
     );
   }

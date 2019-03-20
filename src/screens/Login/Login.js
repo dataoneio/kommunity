@@ -38,10 +38,10 @@ export default class App extends Component {
   }
 
   handleBackPress = () => {
-    console.log("removed")
+    console.log("removed");
     BackHandler.exitApp(); // works best when the goBack is async
     return true;
-  }
+  };
   handleBackButton() {
     this.setState({ isLogin: true });
     this.setState({ isToken: false });
@@ -51,10 +51,7 @@ export default class App extends Component {
   //   BackHandler.removeEventListener("hardwareBackPress");
   // }
   componentWillMount() {
-    BackHandler.addEventListener(
-      "hardwareBackPress",
-      this.handleBackPress
-    );
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
 
     try {
       const granted = PermissionsAndroid.request(
@@ -129,7 +126,7 @@ export default class App extends Component {
     return regex.test(num);
   }
   verifyToken() {
-    BackHandler.removeEventListener("hardwareBackPress",this.handleBackPress);
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
 
     if (!(this.state.token.length == 4)) {
       alert("4 digit otp only");
@@ -153,7 +150,7 @@ export default class App extends Component {
         .then(response => response.json())
         .then(responseJson => {
           if (responseJson.status == 0) {
-            this.props.navigation.navigate("Home", {
+            this.props.navigation.navigate("Homescreen", {
               LoggedInNumber: this.state.phone
             });
             this.setState({ isToken: false });

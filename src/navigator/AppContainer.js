@@ -22,9 +22,10 @@ import AboutUs from "../screens/AboutUs/AboutUs";
 import ReportProblem from "../screens/ReportProblem/ReportProblem";
 import UserJoiningRequests from "../screens/UserJoiningRequests/UserJoiningRequests";
 import Broadcast from "../screens/Broadcast/Broadcast";
-import HomeNavigator from "../screens/HomeNavigator/HomeNavigator";
+// import HomeNavigator from "../screens/HomeNavigator/HomeNavigator";
 import News from "../screens/News/News";
 import Homescreen from "../screens/HomeNavigator/HomeNavigator";
+import BloodBook from "../screens/BloodBook/BloodBook";
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -158,8 +159,8 @@ const StackNavigator10 = createStackNavigator(
 );
 const StackNavigator11 = createStackNavigator(
   {
-    HomeNavigator: {
-      screen: HomeNavigator
+    Homescreen: {
+      screen: Homescreen
     }
   },
 
@@ -174,6 +175,34 @@ const StackNavigator12 = createStackNavigator(
   {
     News: {
       screen: News
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator13 = createStackNavigator(
+  {
+    Search: {
+      screen: Search
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator14 = createStackNavigator(
+  {
+    BloodBook: {
+      screen: BloodBook
     }
   },
 
@@ -209,16 +238,16 @@ const TabNavigator = createBottomTabNavigator(
         showIcon: true
       }
     },
-    Search: {
-      screen: Search,
-      navigationOptions: {
-        tabBarIcon: (tintColor, focused) => (
-          <Icon name="search" size={30} color={focused ? "#288DCF" : "white"} />
-        ),
-        showIcon: true,
-        tabBarVisible: false
-      }
-    },
+    // Search: {
+    //   screen: Search,
+    //   navigationOptions: {
+    //     tabBarIcon: (tintColor, focused) => (
+    //       <Icon name="search" size={30} color={focused ? "#288DCF" : "white"} />
+    //     ),
+    //     showIcon: true,
+    //     tabBarVisible: false
+    //   }
+    // },
 
     AddEvent: {
       screen: AddEvent,
@@ -277,8 +306,6 @@ const TabNavigator = createBottomTabNavigator(
 );
 const RootNavigator = createStackNavigator(
   {
-    p12: StackNavigator11,
-    p13: StackNavigator12,
     p0: StackNavigator6,
     p1: StackNavigator1,
     p2: TabNavigator,
@@ -290,7 +317,11 @@ const RootNavigator = createStackNavigator(
     p8: StackNavigator7,
     p9: StackNavigator8,
     p10: StackNavigator9,
-    p11: StackNavigator10
+    p11: StackNavigator10,
+    p12: StackNavigator11,
+    p13: StackNavigator12,
+    p14: StackNavigator13,
+    p15: StackNavigator14
   },
   {
     headerMode: "none",
