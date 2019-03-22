@@ -15,7 +15,7 @@ import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
 import email from "react-native-email";
 
-export default class Info extends React.Component {
+export default class ReportProblem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,7 +39,7 @@ export default class Info extends React.Component {
     return (
       <View>
         <View style={styles.header}>
-          <Text style={styles.home}>Report a problem</Text>
+          <Text style={styles.home}>Feedback</Text>
           <View
             style={{
               flexDirection: "row",

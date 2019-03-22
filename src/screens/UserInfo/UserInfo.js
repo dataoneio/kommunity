@@ -87,8 +87,17 @@ export default class UserInfo extends React.Component {
   }
 
   goback() {
+    var {navigation}=this.props
+    var screen=navigation.getParam("screen","")
+    if(!(screen ==""))
+    {
+      const { navigate } = this.props.navigation;
+    navigate("CityUsers");
+    }
+    else{
     const { navigate } = this.props.navigation;
     navigate("Home");
+    }
   }
   handlenavigation() {
     const { navigate } = this.props.navigation;

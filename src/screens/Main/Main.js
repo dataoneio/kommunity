@@ -1,7 +1,17 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View, AsyncStorage } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  AsyncStorage,
+  Image,
+  Dimensions
+} from "react-native";
 import ContentLoader from "react-native-content-loader";
 import { Circle, Rect } from "react-native-svg";
+const win = Dimensions.get("window");
+
 export default class Main extends Component {
   constructor(props) {
     super(props);
@@ -12,11 +22,15 @@ export default class Main extends Component {
   }
   isToken() {
     if (this.state.getToken === null) {
-      console.log("no value");
-      this.props.navigation.navigate("Login");
+      setTimeout(() => {
+        console.log("value already stored");
+        this.props.navigation.navigate("Login");
+      }, 3000);
     } else {
-      console.log("value already stored");
-      this.props.navigation.navigate("HomeNavigator");
+      setTimeout(() => {
+        console.log("value already stored");
+        this.props.navigation.navigate("HomeNavigator");
+      }, 3000);
     }
   }
   componentDidMount() {
@@ -32,19 +46,19 @@ export default class Main extends Component {
 
   render() {
     return (
-      <View style={{ flex:1 }}>
-         <ContentLoader height={300}>
-            <Circle cx="30" cy="30" r="30" />
-            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-            <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
-          </ContentLoader>
-          <ContentLoader height={300}>
-            <Circle cx="30" cy="30" r="30" />
-            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-            <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
-          </ContentLoader>
+      <View
+        style={{
+          flex: 1,
+          //   backgroundColor: "red",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <Image
+          resizeMode="contain"
+          style={styles.Image}
+          source={require("../../assets/App_logo.png")}
+        />
       </View>
     );
   }
@@ -56,5 +70,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF"
+  },
+  Image: {
+    width: win.width,
+    height: win.height / 3,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

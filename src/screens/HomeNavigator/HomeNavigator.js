@@ -7,11 +7,14 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  ScrollView,BackHandler
+  ScrollView,
+  BackHandler,
+  AsyncStorage
 } from "react-native";
 import styles from "./HomeNavigatorStyle";
+import { Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
-
+import Dialog from "react-native-dialog";
 const win = Dimensions.get("window");
 
 const instructions = Platform.select({
@@ -40,6 +43,24 @@ export default class HomeNavigator extends React.Component {
   onpressf = text => {
     alert(text);
   };
+  handleBackPress = () => {
+    BackHandler.exitApp(); // works best when the goBack is async
+    return true;
+  };
+  onblur() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  onfocus() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  logout() {
+    AsyncStorage.removeItem("token");
+    this.props.navigation.navigate("Login");
+  }
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
   render() {
     return (
       <View>
@@ -48,7 +69,6 @@ export default class HomeNavigator extends React.Component {
           onDidBlur={this.onblur.bind(this)}
         />
         <View style={styles.header}>
-          <View />
           <Text style={styles.home}>Home</Text>
           <View
             style={{
@@ -56,6 +76,20 @@ export default class HomeNavigator extends React.Component {
               justifyContent: "space-between"
             }}
           />
+          <View style={{ paddingTop: 2 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.logout();
+              }}
+            >
+              <Icon
+                name="power-off"
+                type="font-awesome"
+                color="white"
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={{ paddingBottom: 100 }}>
           <ScrollView>
@@ -97,7 +131,7 @@ export default class HomeNavigator extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  this.onpressf("3");
+                  this.props.navigation.navigate("BloodBook");
                 }}
               >
                 <View style={styles.card}>
@@ -106,12 +140,12 @@ export default class HomeNavigator extends React.Component {
                     style={styles.Image}
                     source={require("../../assets/blood.png")}
                   />
-                  <Text style={styles.cardTitle}>Blood Group</Text>
+                  <Text style={styles.cardTitle}>Blood Book</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  this.onpressf("4");
+                  this.props.navigation.navigate("Home", { txt: "Job" });
                 }}
               >
                 <View style={styles.card}>
@@ -126,7 +160,7 @@ export default class HomeNavigator extends React.Component {
 
               <TouchableOpacity
                 onPress={() => {
-                  this.onpressf("5");
+                  this.props.navigation.navigate("ReportProblem");
                 }}
               >
                 <View style={styles.card}>
@@ -140,7 +174,7 @@ export default class HomeNavigator extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  this.onpressf("6");
+                  this.props.navigation.navigate("Search");
                 }}
               >
                 <View style={styles.card}>

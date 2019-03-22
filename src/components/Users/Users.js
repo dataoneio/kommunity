@@ -30,6 +30,7 @@ export default class Users extends React.Component {
   render() {
     return (
       <View style={{ marginHorizontal:10,borderColor: "#dddce2", borderRadius: 5, borderWidth: 2 }}>
+      <TouchableOpacity onPress={this.props.viewUser}>
         <View style={{ flexDirection: "row", justifyContent:"flex-start" ,padding: 10 }}>
           <Image
             style={styles.ImageContainer1}
@@ -47,6 +48,7 @@ export default class Users extends React.Component {
 
           </View>
         </View>
+        </TouchableOpacity>
       </View>
     );
   }

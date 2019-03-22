@@ -32,6 +32,7 @@ import { Circle, Rect } from "react-native-svg";
 import RNShake from "react-native-shake";
 import renderIf from "../../components/ViewFeed/renderIf";
 import Dialog from "react-native-dialog";
+import styles from "./HomeStyle";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -58,7 +59,8 @@ export default class Home extends React.Component {
   }
 
   // handleBackPress = () => {
-  //   BackHandler.exitApp(); // works best when the goBack is async
+  //   thi
+  //   // BackHandler.exitApp(); // works best when the goBack is async
   //   return true;
   // };
   showDialog = () => {
@@ -79,15 +81,26 @@ export default class Home extends React.Component {
   // }
 
   componentDidMount() {
-    //BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.getValueLocally();
     var { screenProps } = this.props;
     const { navigation } = this.props;
     // this.getDataFromFirebase();
-    this.getcustomData();
     var category = navigation.getParam("txt", "No text");
-    console.log("category-------" + category);
-    this.setState({ searchInput: category }, () => this.searchByPost());
+    if (category == "All") {
+      this.setState({ searchInput: category }, () =>
+        this.getDataFromFirebase()
+      );
+    } else {
+      this.setState({ searchInput: category, onFilter: false }, () =>
+        this.getDataFromFirebase()
+      );
+    }
+  }
+  componentWillMount() {
+    RNShake.addEventListener("ShakeEvent", () => {
+      alert("shaked");
+    });
   }
   getcustomData() {
     const { navigation } = this.props;
@@ -194,15 +207,19 @@ export default class Home extends React.Component {
           url1: result[4].toString(),
           userId: result[7].toString()
         });
-        this.setState({ initialVals: arr1 });
+        this.setState({ initialVals: arr1 }, () => {
+          this.searchByPost();
+        });
         this.setState({ feeds: arr1 });
         this.setState({ isLoading: false });
-       
       });
   }
 
   searchByPost() {
     //alert(this.state.searchInput);
+    console.log(
+      "CHECKING INITIAL VALUE" + JSON.stringify(this.state.initialVals)
+    );
     var arr2 = this.state.initialVals;
     var result = arr2.filter(search => {
       let v1 = search.description.toUpperCase();
@@ -210,12 +227,12 @@ export default class Home extends React.Component {
       let v3 = search.category.toUpperCase();
       let s1 = this.state.searchInput.toUpperCase();
       if (v3.includes(s1)) {
-        //alert("sucess");
+        // alert("sucess");
         return v1;
       }
     });
     this.setState({ searchResult: result });
-    console.log("result" + JSON.stringify(result));
+    console.log("result ------" + JSON.stringify(this.state.searchResult));
   }
 
   viewDetail(uid, title, desc, imgurl) {
@@ -345,88 +362,7 @@ export default class Home extends React.Component {
           <Text style={styles.home}>Parkar Samaaj</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            {/* <TouchableOpacity title="">
-            <Icon name="list" color="#3394C6" size={30} />
-          </TouchableOpacity> */}
-
-            {/* <View>
-              <Menu>
-                <MenuTrigger>
-                  <Icon
-                    name="filter"
-                    type="font-awesome"
-                    color="white"
-                    size={30}
-                  />
-                </MenuTrigger>
-                <MenuOptions
-                  style={{ backgroundColor: "white" }}
-                  optionsContainerStyle={{
-                    marginTop: 30,
-                    borderColor: "#dddce2",
-                    borderWidth: 3
-                  }}
-                >
-                  <ScrollView
-                    style={{ maxHeight: 120 }}
-                    showsVerticalScrollIndicator={true}
-                    indicatorStyle={{
-                      color: "red",
-                      backgroundColor: "yellow"
-                    }}
-                  >
-                    <MenuOption
-                      onSelect={this.onpress.bind(this, "All")}
-                      // text="Party"
-                    >
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        ALL
-                      </Text>
-                    </MenuOption>
-                    <MenuOption
-                      onSelect={this.onpress.bind(this, "Party")}
-                      // text="Party"
-                    >
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Party
-                      </Text>
-                    </MenuOption>
-                    <MenuOption onSelect={this.onpress.bind(this, "Meet-up")}>
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Meet-up
-                      </Text>
-                    </MenuOption>
-                    <MenuOption
-                      onSelect={this.onpress.bind(this, "Announcement")}
-                    >
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Announcement
-                      </Text>
-                    </MenuOption>
-
-                    <MenuOption onSelect={this.onpress.bind(this, "Business")}>
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Business
-                      </Text>
-                    </MenuOption>
-                    <MenuOption onSelect={this.onpress.bind(this, "Education")}>
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Education
-                      </Text>
-                    </MenuOption>
-                    <MenuOption
-                      onSelect={this.onpress.bind(this, "Birthday/Anniversary")}
-                    >
-                      <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Birthday/Anniversary
-                      </Text>
-                    </MenuOption>
-                  </ScrollView>
-                </MenuOptions>
-              </Menu>
-            </View> */}
-          </View>
+          />
         </View>
         <ScrollView
           refreshControl={
@@ -552,60 +488,3 @@ export default class Home extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "#2F497E",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  logoStyle: {
-    //position: "relative",
-    height: 50,
-    width: 50,
-    alignSelf: "flex-start"
-  },
-  home: {
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 24,
-    color: "white"
-  },
-  drawerHeader: {
-    paddingVertical: 20,
-    borderTopRightRadius: 10,
-    backgroundColor: "#2f497e",
-    //alignItems: "center",
-    //justifyContent: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "white",
-    padding: 10
-    // flexDirection: "column",
-    // justifyContent: "space-between"
-  },
-  drawerOptions: {
-    paddingVertical: 20,
-    padding: 10,
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontSize: 18,
-    color: "white"
-    //backgroundColor:"#676761"
-  },
-  drawer: {
-    paddingTop: 10,
-    //paddingLeft:5,
-    fontFamily: "lucida grande",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "white"
-    //backgroundColor:"#676761"
-  }
-});

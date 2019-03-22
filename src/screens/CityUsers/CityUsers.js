@@ -11,7 +11,9 @@ import {
   TouchableOpacity,
   Button,
   Image,
-  Dimensions,ScrollView
+  Icon,
+  Dimensions,
+  ScrollView
 } from "react-native";
 import Users from "../../components/Users/Users";
 // import { TextInput } from "react-native-paper";
@@ -19,6 +21,17 @@ import firebase from "../../../Firebase";
 const win = Dimensions.get("window");
 
 export default class CityUsers extends React.Component {
+  viewUser(userId) {
+    //alert("aaaa"+userId)
+    this.props.navigation.navigate("UserInfo", {
+      UserId: userId,
+      screen: "CityUsers"
+    });
+  }
+  goback() {
+    const { navigate } = this.props.navigation;
+    navigate("AddressBook");
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +62,7 @@ export default class CityUsers extends React.Component {
           gender: data.toJSON().Gender,
           Profile_image: data.toJSON().Profile_photo,
           userId: data.key,
-          city:data.toJSON().City
+          city: data.toJSON().City
         });
         this.setState({ CityUserData: arr1 });
         this.setState({ loading: false });
@@ -60,17 +73,17 @@ export default class CityUsers extends React.Component {
     let vals = this.state.CityUserData.map((val, key) => {
       return (
         <View key={key}>
-         <View
+          <View
             style={{
-              padding:5,
+              padding: 5
             }}
-          ></View>
+          />
           <Users
             name={val.name}
             gender={val.gender}
             image={val.Profile_image}
             city={val.city}
-            viewUser={()=>this.viewUser(val.userId)}
+            viewUser={() => this.viewUser(val.userId)}
           />
           {/* <Text>{val.name}</Text>
           <Text>{val.gender}</Text>
@@ -81,8 +94,7 @@ export default class CityUsers extends React.Component {
     return (
       <View>
         <ScrollView>
-        {/* <Text>CityUsers page</Text> */}
-        <View>{vals}</View>
+          <View>{vals}</View>
         </ScrollView>
       </View>
     );
@@ -118,6 +130,13 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  home: {
+    fontFamily: "lucida grande",
+    justifyContent: "center",
+    fontWeight: "bold",
+    fontSize: 22,
+    color: "white"
   },
   sendButton: {
     color: "white",

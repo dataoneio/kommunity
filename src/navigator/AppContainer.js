@@ -22,11 +22,12 @@ import AboutUs from "../screens/AboutUs/AboutUs";
 import ReportProblem from "../screens/ReportProblem/ReportProblem";
 import UserJoiningRequests from "../screens/UserJoiningRequests/UserJoiningRequests";
 import Broadcast from "../screens/Broadcast/Broadcast";
-import HomeNavigator from "../screens/HomeNavigator/HomeNavigator";
+ import HomeNavigator from "../screens/HomeNavigator/HomeNavigator";
 import News from "../screens/News/News";
-import CityUsers from "../screens/CityUsers/CityUsers"
 //import Homescreen from "../screens/HomeNavigator/HomeNavigator";
-import AddressBook from "../screens/AddressBook/AddressBook"
+import BloodBook from "../screens/BloodBook/BloodBook";
+import AddressBook from "../screens/AddressBook/AddressBook";
+import CityUsers from "../screens/CityUsers/CityUsers"
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -40,7 +41,7 @@ const StackNavigator = createStackNavigator(
     }
   }
 );
-const StackNavigator15= createStackNavigator(
+const StackNavigator15 = createStackNavigator(
   {
     AddressBook: {
       screen: AddressBook
@@ -52,8 +53,7 @@ const StackNavigator15= createStackNavigator(
       headerVisible: false
     }
   }
-
-)
+);
 const StackNavigator2 = createStackNavigator(
   {
     MyPosts: {
@@ -172,7 +172,7 @@ const StackNavigator10 = createStackNavigator(
     }
   }
 );
-const StackNavigator17 = createStackNavigator(
+const StackNavigator16 = createStackNavigator(
   {
     CityUsers: {
       screen: CityUsers
@@ -213,6 +213,34 @@ const StackNavigator12 = createStackNavigator(
     }
   }
 );
+const StackNavigator13 = createStackNavigator(
+  {
+    Search: {
+      screen: Search
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator14 = createStackNavigator(
+  {
+    BloodBook: {
+      screen: BloodBook
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
 const StackNavigator1 = createStackNavigator(
   {
     Login: Login,
@@ -238,16 +266,16 @@ const TabNavigator = createBottomTabNavigator(
         showIcon: true
       }
     },
-    Search: {
-      screen: Search,
-      navigationOptions: {
-        tabBarIcon: (tintColor, focused) => (
-          <Icon name="search" size={30} color={focused ? "#288DCF" : "white"} />
-        ),
-        showIcon: true,
-        tabBarVisible: false
-      }
-    },
+    // Search: {
+    //   screen: Search,
+    //   navigationOptions: {
+    //     tabBarIcon: (tintColor, focused) => (
+    //       <Icon name="search" size={30} color={focused ? "#288DCF" : "white"} />
+    //     ),
+    //     showIcon: true,
+    //     tabBarVisible: false
+    //   }
+    // },
 
     AddEvent: {
       screen: AddEvent,
@@ -306,7 +334,6 @@ const TabNavigator = createBottomTabNavigator(
 );
 const RootNavigator = createStackNavigator(
   {
-  
     p0: StackNavigator6,
     p1: StackNavigator1,
     p2: TabNavigator,
@@ -321,8 +348,10 @@ const RootNavigator = createStackNavigator(
     p11: StackNavigator10,
     p12: StackNavigator11,
     p13: StackNavigator12,
-    p16:StackNavigator15,
-    p17:StackNavigator17
+    p14: StackNavigator13,
+    p15: StackNavigator14,
+    p16: StackNavigator15,
+    p17: StackNavigator16
   },
   {
     headerMode: "none",
