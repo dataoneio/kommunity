@@ -135,7 +135,7 @@ export default class UserNotification extends React.Component {
     alert("navigated");
   }
   goback() {
-    this.props.navigation.navigate("Home");
+    this.props.navigation.navigate("HomeNavigator");
   }
   getDataFromFirebase() {
     let arr1 = [];
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     color: "white"
   },
   header: {
-    backgroundColor: "#2f497e",
+    backgroundColor: "#C60C31",
     borderBottomWidth: 2,
     borderBottomColor: "white",
     padding: 10,

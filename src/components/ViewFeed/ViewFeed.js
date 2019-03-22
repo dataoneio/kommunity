@@ -193,7 +193,7 @@ export default class ViewFeed extends React.Component {
               {/* <View
                 style={{
                   padding: 10,
-                  backgroundColor: "#2f497e",
+                  backgroundColor: "#C60C31",
                   width:30,
                   height: 30,
                   borderRadius:15
@@ -222,7 +222,7 @@ export default class ViewFeed extends React.Component {
               value={this.state.mycomment}
               style={{
                 padding: 3,
-                backgroundColor: "#2f497e",
+                backgroundColor: "#C60C31",
                 color: "white",
                 fontSize: 16,
                 paddingVertical: 14

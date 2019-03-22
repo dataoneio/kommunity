@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native";
 const win = Dimensions.get("window");
 export default (styles = StyleSheet.create({
   header: {
-    backgroundColor: "#2F497E",
+    backgroundColor: "#C60C31",
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,
@@ -27,7 +27,7 @@ export default (styles = StyleSheet.create({
   drawerHeader: {
     paddingVertical: 20,
     borderTopRightRadius: 10,
-    backgroundColor: "#2f497e",
+    backgroundColor: "#C60C31",
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,

@@ -16,7 +16,7 @@ import { StyleSheet } from 'react-native';
     borderLeftColor: "white"
   },
     header: {
-      backgroundColor: "#2f497e",
+      backgroundColor: "#C60C31",
       //alignItems: "center",
       //justifyContent: "center",
       borderBottomWidth: 2,

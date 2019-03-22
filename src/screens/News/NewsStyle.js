@@ -41,7 +41,7 @@ export default (styles = StyleSheet.create({
     marginBottom: 5
   },
   header: {
-    backgroundColor: "#2f497e",
+    backgroundColor: "#C60C31",
     borderBottomWidth: 2,
     borderBottomColor: "white",
     padding: 10,

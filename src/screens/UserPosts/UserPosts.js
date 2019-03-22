@@ -178,14 +178,14 @@ export default class MyPosts extends React.Component {
             >
               <View style={{ flex: 1 }}>
                 <Button
-                  color="#456097"
+                  color="#f2264f"
                   title="Info"
                   onPress={() => this.props.navigation.navigate("UserInfo")}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Button
-                  color="#2f497e"
+                  color="#C60C31"
                   title="Posts"
                   onPress={() => this.props.navigation.navigate("UserPosts")}
                 />

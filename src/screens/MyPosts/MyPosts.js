@@ -16,7 +16,7 @@ import {
   Button
 } from "react-native";
 import firebase from "../../../Firebase";
-
+import styles from "./MyPostsStyle"
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "react-native-fetch-blob";
 import fs from "react-native-fs";
@@ -140,6 +140,7 @@ export default class MyPosts extends React.Component {
       );
     });
     return (
+    
       <View>
         <View>
           <View style={styles.header}>
@@ -156,6 +157,16 @@ export default class MyPosts extends React.Component {
               }}
             />
           </View>
+          <View style={{paddingTop:20,alignItems:"center" }}>
+                <Image
+                  borderRadius={50}
+                  style={styles.ImageContainer1}
+                  source={{
+                    uri:imageurl
+                  }}
+                  indicator={Progress.Circle}
+                />
+              </View>
           <ScrollView style={{ padding: 10, backgroundColor: "white" }}>
             <View
               style={{
@@ -164,7 +175,7 @@ export default class MyPosts extends React.Component {
                 backgroundColor: "white"
               }}
             >
-              <View style={{ justifyContent: "center" }}>
+              {/* <View style={{ justifyContent: "center" }}>
                 <Image
                   borderRadius={50}
                   style={styles.ImageContainer1}
@@ -173,7 +184,7 @@ export default class MyPosts extends React.Component {
                   }}
                   indicator={Progress.Circle}
                 />
-              </View>
+              </View> */}
             </View>
             <View
               style={{
@@ -185,14 +196,14 @@ export default class MyPosts extends React.Component {
             >
               <View style={{ flex: 1 }}>
                 <Button
-                  color="#456097"
+                  color="#f2264f"
                   title="Info"
                   onPress={() => this.props.navigation.navigate("Info")}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Button
-                  color="#2f497e"
+                  color="#C60C31"
                   title="Posts"
                   onPress={() => this.props.navigation.navigate("MyPosts")}
                 />

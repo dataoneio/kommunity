@@ -233,7 +233,7 @@ export default class Broadcast extends React.Component {
   }
   goback() {
     const { navigate } = this.props.navigation;
-    navigate("Home");
+    navigate("HomeNavigator");
   }
   render() {
     var { screenProps } = this.props;
@@ -384,7 +384,7 @@ export default class Broadcast extends React.Component {
             </View>
           </View>
         </ScrollView>
-        <View style={{ flexDirection: "row", backgroundColor: "#2f497e" }}>
+        <View style={{ flexDirection: "row", backgroundColor: "#C60C31" }}>
           <TouchableOpacity
             title="image"
             style={{ padding: 10 }}

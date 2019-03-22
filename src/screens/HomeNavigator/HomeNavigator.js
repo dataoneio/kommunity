@@ -15,8 +15,10 @@ import styles from "./HomeNavigatorStyle";
 import { Icon } from "react-native-elements";
 import { NavigationEvents } from "react-navigation";
 import Dialog from "react-native-dialog";
-const win = Dimensions.get("window");
+import renderIf from "../../components/ViewFeed/renderIf";
+import firebase from "../../../Firebase";
 
+const win = Dimensions.get("window");
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
   android:
@@ -59,9 +61,42 @@ export default class HomeNavigator extends React.Component {
     this.props.navigation.navigate("Login");
   }
   componentDidMount() {
+    var { screenProps } = this.props;
+    AsyncStorage.getItem("token").then(value =>
+      this.setState({ getToken: value }, () => {
+        screenProps.user.number = this.state.getToken;
+
+        firebase
+          .database()
+          .ref("app/User")
+          .orderByChild("Contact_Number")
+          .equalTo(this.state.getToken)
+          .on("child_added", data => {
+            val1 = data.val();
+            console.log("hehehehehehheheheheh");
+            if (data.exists()) {
+              this.setState({ gender: val1.Gender });
+              this.setState({ State: val1.State });
+              this.setState({ city: val1.City });
+              console.log(
+                "yoyooo---" +
+                  val1.Gender +
+                  "------" +
+                  val1.City +
+                  "-------" +
+                  val1.State
+              );
+              screenProps.user.userphotourl = val1.Profile_photo;
+              screenProps.user.id = data.key;
+            }
+          });
+      })
+    );
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   render() {
+    var { screenProps } = this.props;
+
     return (
       <View>
         <NavigationEvents
@@ -186,6 +221,36 @@ export default class HomeNavigator extends React.Component {
                   <Text style={styles.cardTitle}>Search</Text>
                 </View>
               </TouchableOpacity>
+              {renderIf(screenProps.user.number == "919016211300")(
+              <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("UserJoiningRequests");
+              }}
+            >
+              <View style={styles.card}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.Image}
+                  source={require("../../assets/add_user.png")}
+                />
+                <Text style={styles.cardTitle}>User Requests</Text>
+              </View>
+            </TouchableOpacity>)}
+            {renderIf(screenProps.user.number == "919016211300")(
+            <TouchableOpacity
+            onPress={() => {alert("under construction")
+              //this.props.navigation.navigate("Broadcast");
+            }}
+          >
+            <View style={styles.card}>
+              <Image
+                resizeMode="contain"
+                style={styles.Image}
+                source={require("../../assets/broadcast.png")}
+              />
+              <Text style={styles.cardTitle}>Broadcast</Text>
+            </View>
+          </TouchableOpacity>)}
             </View>
           </ScrollView>
         </View>

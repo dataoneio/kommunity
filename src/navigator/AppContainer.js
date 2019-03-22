@@ -326,7 +326,7 @@ const TabNavigator = createBottomTabNavigator(
       },
       activeTintColor: "white",
       style: {
-        backgroundColor: "#2F497E"
+        backgroundColor: "#C60C31"
       }
       //tintColor: "black",
     }

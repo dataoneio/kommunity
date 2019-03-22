@@ -333,7 +333,7 @@ export default class AddEvent extends React.Component {
             </View>
           </View>
         </ScrollView>
-        <View style={{ flexDirection: "row", backgroundColor: "#2f497e" }}>
+        <View style={{ flexDirection: "row", backgroundColor: "#C60C31" }}>
           <TouchableOpacity
             title="image"
             style={{ padding: 10 }}

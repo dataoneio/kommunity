@@ -107,14 +107,14 @@ export default class Home extends React.Component {
 
     var category = navigation.getParam("txt", "No text");
     let arr1 = [];
-   
-    
-      firebase.database()
+
+    firebase
+      .database()
       .ref("app/Event details")
       .orderByChild("Category")
       .equalTo(category)
       .on("child_added", data => {
-        console.log(data.toJSON().UserId)       
+        console.log(data.toJSON().UserId);
         if (data.exists()) {
           arr1.push({
             date: data.toJSON().Date,
@@ -195,9 +195,10 @@ export default class Home extends React.Component {
           result.push(arr[i]);
         }
         //console.log("--------"+result[5].toString())
-
+        var combine=result[2].toString()+result[6].toString();
+        console.log("aaa----------"+combine);
         // if (result[5].toString() == "false") {
-        console.log("false");
+        // console.log("false");
         arr1.push({
           date: result[2].toString(),
           category: result[0].toString(),
@@ -217,9 +218,9 @@ export default class Home extends React.Component {
 
   searchByPost() {
     //alert(this.state.searchInput);
-    console.log(
-      "CHECKING INITIAL VALUE" + JSON.stringify(this.state.initialVals)
-    );
+    // console.log(
+    //   "CHECKING INITIAL VALUE" + JSON.stringify(this.state.initialVals)
+    // );
     var arr2 = this.state.initialVals;
     var result = arr2.filter(search => {
       let v1 = search.description.toUpperCase();
@@ -350,14 +351,14 @@ export default class Home extends React.Component {
         /> */}
         <View style={styles.header}>
           <View>
-            <TouchableOpacity title="" onPress={() => this.openDrawer()}>
+            {/* <TouchableOpacity title="" onPress={() => this.openDrawer()}>
               <Icon
                 name="align-justify"
                 type="font-awesome"
                 color="white"
                 size={30}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <Text style={styles.home}>Parkar Samaaj</Text>
           <View
@@ -386,7 +387,7 @@ export default class Home extends React.Component {
                 style={{
                   flex: 1,
                   width: 250,
-                  backgroundColor: "#2f497e",
+                  backgroundColor: "#C60C31",
                   borderBottomRightRadius: 10,
                   borderTopRightRadius: 10
                 }}
@@ -411,7 +412,7 @@ export default class Home extends React.Component {
                   >
                     <Text style={styles.drawerOptions}>Report A Problem</Text>
                   </TouchableOpacity>
-                  {renderIf(screenProps.user.number == "917878580099")(
+                  {renderIf(screenProps.user.number == "919016211300")(
                     <TouchableOpacity
                       onPress={this.gotojoiningRequests.bind(this)}
                       style={{
@@ -422,7 +423,7 @@ export default class Home extends React.Component {
                       <Text style={styles.drawerOptions}>User Requests</Text>
                     </TouchableOpacity>
                   )}
-                  {renderIf(screenProps.user.number == "917878580099")(
+                  {renderIf(screenProps.user.number == "919016211300")(
                     <TouchableOpacity
                       onPress={this.gotoBroadcast.bind(this)}
                       style={{

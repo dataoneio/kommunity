@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 export default (styles = StyleSheet.create({
   header: {
-    backgroundColor: "#2f497e",
+    backgroundColor: "#C60C31",
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,
@@ -42,7 +42,7 @@ export default (styles = StyleSheet.create({
     zIndex: 11,
     right: 20,
     bottom: 55,
-    backgroundColor: "#676261", //"#2f497e",
+    backgroundColor: "#676261", //"#C60C31",
     width: 70,
     height: 70,
     borderRadius: 35,

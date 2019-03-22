@@ -71,7 +71,6 @@ export default class BloodBook extends React.Component {
             title="request"
             onPress={() => {
               // alert(this.state.City);
-
               this.props.navigation.navigate("Search", {
                 txt: this.state.BloodGroup,
                 city: this.state.City
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
     color: "white"
   },
   header: {
-    backgroundColor: "#2f497e",
+    backgroundColor: "#C60C31",
     borderBottomWidth: 2,
     borderBottomColor: "white",
     padding: 10,

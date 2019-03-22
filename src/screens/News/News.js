@@ -37,7 +37,7 @@ export default class NewsScreen extends React.Component {
             <TouchableOpacity
               title=""
               onPress={() => {
-                this.props.navigation.navigate("Homescreen");
+                this.props.navigation.navigate("HomeNavigator");
               }}
             >
               <Icon name="arrow-back" color="white" size={30} />

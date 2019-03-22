@@ -231,11 +231,18 @@ export default class Feed extends Component {
     } else {
       return (
         <View key={this.props.keyval} style={styles.note}>
-          <View>
-            <View />
-
+          {renderIf(this.props.val.userId == "-L_D3IzXaaaXjmQPWk4Q")(
+            <View style={{position:"absolute",top:5,right:10,paddingRight:10,paddingTop:5}}>
+            {/* <Icon
+              name="bookmark"
+              color="red"
+              size={30}
+            /> */}
+            <Text style={{color:"#47d147",paddingHorizontal:8,paddingVertical:2,borderColor:"#47d147" ,borderWidth:2,borderRadius:5}}>Admin</Text>
+            </View>
+          )}
             <TouchableOpacity onPress={this.props.viewDetailsMethod}>
-              <View
+              <View 
                 style={{
                   flexDirection: "row",
                   justifyContent: "flex-start",
@@ -327,7 +334,6 @@ export default class Feed extends Component {
               <View style={{ flexDirection: "row" }} />
             </TouchableOpacity>
           </View>
-        </View>
       );
     }
   }

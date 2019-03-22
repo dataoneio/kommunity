@@ -29,7 +29,7 @@ export default (styles = StyleSheet.create({
 
   Image: {
     width: win.width / 3,
-    height: win.height / 4.8,
+    height: win.height /7.3,//4.8
     alignSelf: "center"
   },
   welcome: {
@@ -38,7 +38,7 @@ export default (styles = StyleSheet.create({
     margin: 10
   },
   header: {
-    backgroundColor: "#2F497E",
+    backgroundColor: "#C60C31",//C60C31
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,

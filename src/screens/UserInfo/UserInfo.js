@@ -311,14 +311,14 @@ export default class UserInfo extends React.Component {
             >
               <View style={{ flex: 1 }}>
                 <Button
-                  color="#2f497e"
+                  color="#C60C31"
                   title="Info"
                   onPress={() => this.props.navigation.navigate("UserInfo")}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Button
-                  color="#456097"
+                  color="#f2264f"
                   title="Posts"
                   onPress={() =>
                     this.props.navigation.navigate("UserPosts", {
@@ -441,7 +441,7 @@ export default class UserInfo extends React.Component {
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
-                  color="#2f497e"
+                  color="#C60C31"
                 />
               </View>
             </View>
