@@ -58,3 +58,5 @@ package-lock.json
 keys.js
 # Firebase
 Firebase.js
+# gradle.properties
+gradle.properties

@@ -45,7 +45,6 @@ export default class Users extends React.Component {
             <Text style={{ paddingLeft:10}}>{this.props.name}</Text>
             <Text style={{ paddingTop:5,paddingLeft:10}}>{this.props.gender}</Text>
             <Text style={{ paddingTop:5,paddingLeft:10}}>{this.props.city}</Text>
-
           </View>
         </View>
         </TouchableOpacity>

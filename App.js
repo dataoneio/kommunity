@@ -18,7 +18,10 @@ export default class App extends Component {
       user: {
         id: "amoli",
         number: "johndoe123",
-        name: "john@doe.com"
+        name: "john@doe.com",
+        city:"",
+        state:"",
+        gender:"",
       }
     };
     return (

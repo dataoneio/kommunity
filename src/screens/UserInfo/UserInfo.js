@@ -89,7 +89,13 @@ export default class UserInfo extends React.Component {
   goback() {
     var {navigation}=this.props
     var screen=navigation.getParam("screen","")
-    if(!(screen ==""))
+    if(screen ==="BroadcastedPost")
+    {
+      //alert("back")
+      const { navigate } = this.props.navigation;
+    navigate("BroadcastedPost");
+    }
+    else if(!(screen ==""))
     {
       const { navigate } = this.props.navigation;
     navigate("CityUsers");

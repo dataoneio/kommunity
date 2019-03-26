@@ -54,11 +54,18 @@ export default class ViewFeed extends React.Component {
   }
   goback() {
     const { navigation } = this.props;
+    var backto=navigation.getParam("backto","no")
     var fromSearch = navigation.getParam("fromSearch", "no");
-    if (fromSearch == "no") {
-      this.props.navigation.navigate("Home");
-    } else {
+    if (fromSearch != "no") {
       this.props.navigation.navigate("Search");
+    }
+    else if(backto =="News")
+    {
+      this.props.navigation.navigate("BroadcastedPost");
+
+    }
+     else {
+      this.props.navigation.navigate("Home");
     }
   }
   Activatecomment() {

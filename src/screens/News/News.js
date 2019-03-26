@@ -76,6 +76,18 @@ export default class NewsScreen extends React.Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>this.props.navigation.navigate("BroadcastedPost")}
+              >
+                <View style={styles.card}>
+                  <Image
+                    resizeMode="contain"
+                    style={styles.Image}
+                    source={require("../../assets/all_news.png")}
+                  />
+                  <Text style={styles.cardTitle}>Broadcasted</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() => {
                   this.categorize("Good");
                 }}

@@ -28,6 +28,7 @@ import News from "../screens/News/News";
 import BloodBook from "../screens/BloodBook/BloodBook";
 import AddressBook from "../screens/AddressBook/AddressBook";
 import CityUsers from "../screens/CityUsers/CityUsers"
+import BroadcastedPost from "../screens/BroadcastedPost/BroadcastedPost"
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -241,6 +242,20 @@ const StackNavigator14 = createStackNavigator(
     }
   }
 );
+const StackNavigator17 = createStackNavigator(
+  {
+    BroadcastedPost: {
+      screen: BroadcastedPost
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
 const StackNavigator1 = createStackNavigator(
   {
     Login: Login,
@@ -351,7 +366,8 @@ const RootNavigator = createStackNavigator(
     p14: StackNavigator13,
     p15: StackNavigator14,
     p16: StackNavigator15,
-    p17: StackNavigator16
+    p17: StackNavigator16,
+    p18:StackNavigator17
   },
   {
     headerMode: "none",

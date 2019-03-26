@@ -29,7 +29,7 @@ export default (styles = StyleSheet.create({
 
   Image: {
     width: win.width / 3,
-    height: win.height /7.3,//4.8
+    height: win.height/4.8,
     alignSelf: "center"
   },
   welcome: {

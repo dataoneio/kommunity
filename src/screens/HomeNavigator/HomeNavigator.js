@@ -78,14 +78,18 @@ export default class HomeNavigator extends React.Component {
               this.setState({ gender: val1.Gender });
               this.setState({ State: val1.State });
               this.setState({ city: val1.City });
-              console.log(
-                "yoyooo---" +
-                  val1.Gender +
-                  "------" +
-                  val1.City +
-                  "-------" +
-                  val1.State
-              );
+              // console.log(
+              //   "yoyooo---" +
+              //     val1.Gender +
+              //     "------" +
+              //     val1.City +
+              //     "-------" +
+              //     val1.State
+              // );
+              screenProps.user.gender=val1.Gender;
+              screenProps.user.city=val1.City;
+              screenProps.user.state=val1.State;
+              console.log("----"+screenProps.user.gender+"-----"+screenProps.user.city+"-----"+screenProps.user.state)
               screenProps.user.userphotourl = val1.Profile_photo;
               screenProps.user.id = data.key;
             }
@@ -221,7 +225,7 @@ export default class HomeNavigator extends React.Component {
                   <Text style={styles.cardTitle}>Search</Text>
                 </View>
               </TouchableOpacity>
-              {renderIf(screenProps.user.number == "919016211300")(
+              {renderIf(screenProps.user.number == "917878580099")(
               <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("UserJoiningRequests");
@@ -236,10 +240,10 @@ export default class HomeNavigator extends React.Component {
                 <Text style={styles.cardTitle}>User Requests</Text>
               </View>
             </TouchableOpacity>)}
-            {renderIf(screenProps.user.number == "919016211300")(
+            {renderIf(screenProps.user.number == "917878580099")(
             <TouchableOpacity
-            onPress={() => {alert("under construction")
-              //this.props.navigation.navigate("Broadcast");
+            onPress={() => {
+              this.props.navigation.navigate("Broadcast");
             }}
           >
             <View style={styles.card}>

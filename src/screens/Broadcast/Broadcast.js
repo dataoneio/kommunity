@@ -218,12 +218,13 @@ export default class Broadcast extends React.Component {
           .set({
             gender: this.state.genderFilter,
             state: this.state.stateFilter,
-            city: this.state.cityFilter
+            city: this.state.cityFilter,
+            type:post_view,
           });
       } else {
         console.log("default visible to all");
       }
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("HomeNavigator");
       this.setState({
         title: "",
         descInput: "",

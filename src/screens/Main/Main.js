@@ -46,19 +46,20 @@ export default class Main extends Component {
 
   render() {
     return (
-      // <View
-      //   style={{
-      //     padding:0
-      //     //   backgroundColor: "red",
-      //     // justifyContent: "center",
-      //     // alignItems: "center"
-      //   }}
-      // >
+      <View
+        style={{
+          flex:1,
+          padding:0,
+           backgroundColor: "#C60C31",
+          justifyContent: "flex-end",
+          alignItems: "center"
+        }}
+      >
         <Image
           style={styles.Image}
-          source={require("../../assets/splash.jpg")}
+          source={require("../../assets/main.png")}
         />
-      // {/* </View> */}
+       </View> 
     );
   }
 }
@@ -66,14 +67,15 @@ export default class Main extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    //justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "black"
   },
   Image: {
     marginLeft:0,
-    justifyContent:"flex-start",
-    width: win.width,
-    height: win.height
+    justifyContent: "center",
+    justifyContent:"flex-end",
+    width: win.width/2+50,
+    height: win.height/2,
   }
 });
