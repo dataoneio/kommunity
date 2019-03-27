@@ -101,15 +101,14 @@ export default class HomeNavigator extends React.Component {
         this.setState({ isAdmin: true });
         return true;
       } else {
-        console.log("false");
         this.setState({ isAdmin: false });
-        return true;
       }
       console.log(
         JSON.stringify(this.state.Admins[i]) + " these are for loop admins"
       );
     }
   }
+
   componentDidMount() {
     var { screenProps } = this.props;
     AsyncStorage.getItem("token").then(value =>
@@ -156,6 +155,9 @@ export default class HomeNavigator extends React.Component {
     this.getAdminsfromfirebase();
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  componentWillUnmount() {
+    this.setState({ isAdmin: false });
   }
 
   render() {
@@ -284,6 +286,7 @@ export default class HomeNavigator extends React.Component {
                   <Text style={styles.cardTitle}>Search</Text>
                 </View>
               </TouchableOpacity>
+              {console.log("Isadmin state" + this.state.isAdmin)}
               {renderIf(this.state.isAdmin)(
                 <TouchableOpacity
                   onPress={() => {
