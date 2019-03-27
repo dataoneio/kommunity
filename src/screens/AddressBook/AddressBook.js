@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import AddressBookComponent from "../../components/AddressBookComponent/AddressBookComponent";
 import firebase from "../../../Firebase";
+import { ScrollView } from "react-native-gesture-handler";
 export default class AddressBook extends React.Component {
   constructor(props) {
     super(props);
@@ -22,10 +23,10 @@ export default class AddressBook extends React.Component {
     };
   }
   getCityUserDetails(city) {
-      this.props.navigation.navigate("CityUsers",{city:city})
+    this.props.navigation.navigate("CityUsers", { city: city });
     //alert("---" + city);
   }
-  componentDidMount() {
+  componentWillMount() {
     var arr2 = [];
     firebase
       .database()
@@ -37,7 +38,7 @@ export default class AddressBook extends React.Component {
         this.setState({ alldata: false });
       });
   }
-
+  componentWillUnmount() {}
   render() {
     if (this.state.alldata) {
       return (
@@ -91,10 +92,10 @@ export default class AddressBook extends React.Component {
         <View key={key}>
           <View
             style={{
-              padding: 10,
+              padding: 5,
               borderRadius: 5,
               flexDirection: "row",
-              justifyContent: "space-between"
+              justifyContent: "space-evenly"
             }}
           >
             <AddressBookComponent
@@ -110,15 +111,27 @@ export default class AddressBook extends React.Component {
 
     return (
       <View style={{}}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            flexWrap: "wrap"
-          }}
-        >
-          {mapping}
+        <View style={styles.header}>
+          <Text style={styles.home}>AddressBook</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }}
+          />
         </View>
+        <ScrollView>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              flexWrap: "wrap",
+              paddingBottom: 55
+            }}
+          >
+            {mapping}
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -144,7 +157,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "white",
     padding: 10,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "center"
   },
   sendButton: {
     color: "white",

@@ -29,7 +29,7 @@ import BloodBook from "../screens/BloodBook/BloodBook";
 import AddressBook from "../screens/AddressBook/AddressBook";
 import CityUsers from "../screens/CityUsers/CityUsers"
 import BroadcastedPost from "../screens/BroadcastedPost/BroadcastedPost"
-import BloodBankUser from "../screens/BloodBankUsers/BloodBankUsers"
+import BloodBankUsers from "../screens/BloodBankUsers/BloodBankUsers"
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -259,8 +259,8 @@ const StackNavigator17 = createStackNavigator(
 );
 const StackNavigator18 = createStackNavigator(
   {
-    BloodBankUser: {
-      screen: BloodBankUser
+    BloodBankUsers: {
+      screen: BloodBankUsers
     }
   },
 

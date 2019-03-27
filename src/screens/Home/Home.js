@@ -201,9 +201,9 @@ export default class Home extends React.Component {
           result.push(arr[i]);
         }
         //console.log("--------"+result[5].toString())
-       // var combine=result[2].toString()+result[6].toString();
+        //var combine=result[2].toString()+result[6].toString();
         //console.log("aaa----------"+combine);
-         if (result[5].toString() == "false") {
+        if (result[5].toString() == "false") {
         // console.log("false");
         arr1.push({
           date: result[2].toString(),

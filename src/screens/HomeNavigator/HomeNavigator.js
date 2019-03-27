@@ -27,20 +27,25 @@ const instructions = Platform.select({
 });
 
 export default class HomeNavigator extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      admins: [],
+      isAdmin: "false"
+    };
+  }
   handleBackPress = () => {
     BackHandler.exitApp(); // works best when the goBack is async
     return true;
   };
-   onblur() {
+  onblur() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
   onfocus() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-  componentDidMount()
-  {
-        BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   onpressf = text => {
     alert(text);
@@ -59,6 +64,51 @@ export default class HomeNavigator extends React.Component {
   logout() {
     AsyncStorage.removeItem("token");
     this.props.navigation.navigate("Login");
+  }
+  getAdminsfromfirebase() {
+    let arr1 = [];
+    var d = new Date();
+    //var eventid="";
+    var flag = 1;
+    firebase
+      .database()
+      .ref("app/Admins")
+      .on("child_added", data => {
+        var result = [];
+        var key1 = [];
+        key1.push(data.key);
+        let arr = data.toJSON();
+
+        for (var i in arr) {
+          result.push(arr[i]);
+        }
+        arr1.push(result[1].toString());
+        console.log("Admins are " + JSON.stringify(arr1));
+        this.setState({ Admins: arr1 }, () => {
+          this.checkAdmin();
+        });
+        this.setState({ isLoading: false });
+      });
+  }
+  checkAdmin() {
+    var { screenProps } = this.props;
+    console.log("CHCEK ADMINNNNN" + screenProps.user.number);
+    var a = JSON.stringify(screenProps.user.number);
+    console.log("a" + a);
+    for (let i = 0; i < this.state.Admins.length; i++) {
+      if (JSON.stringify(this.state.Admins[i]) == a) {
+        //console.log("true");
+        this.setState({ isAdmin: true });
+        return true;
+      } else {
+       // console.log("false");
+        this.setState({ isAdmin: false });
+        //return true;
+      }
+      console.log(
+        JSON.stringify(this.state.Admins[i]) + " these are for loop admins"
+      );
+    }
   }
   componentDidMount() {
     var { screenProps } = this.props;
@@ -86,18 +136,28 @@ export default class HomeNavigator extends React.Component {
               //     "-------" +
               //     val1.State
               // );
-              screenProps.user.gender=val1.Gender;
-              screenProps.user.city=val1.City;
-              screenProps.user.state=val1.State;
-              console.log("----"+screenProps.user.gender+"-----"+screenProps.user.city+"-----"+screenProps.user.state)
+              screenProps.user.gender = val1.Gender;
+              screenProps.user.city = val1.City;
+              screenProps.user.state = val1.State;
+              console.log(
+                "----" +
+                  screenProps.user.gender +
+                  "-----" +
+                  screenProps.user.city +
+                  "-----" +
+                  screenProps.user.state
+              );
               screenProps.user.userphotourl = val1.Profile_photo;
               screenProps.user.id = data.key;
             }
           });
       })
     );
+    this.getAdminsfromfirebase();
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+
   render() {
     var { screenProps } = this.props;
 
@@ -155,7 +215,7 @@ export default class HomeNavigator extends React.Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                 onPress={() => {
+                onPress={() => {
                   this.props.navigation.navigate("AddressBook");
                 }}
               >
@@ -196,7 +256,6 @@ export default class HomeNavigator extends React.Component {
                   <Text style={styles.cardTitle}>Job</Text>
                 </View>
               </TouchableOpacity>
-
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.navigate("ReportProblem");
@@ -225,36 +284,38 @@ export default class HomeNavigator extends React.Component {
                   <Text style={styles.cardTitle}>Search</Text>
                 </View>
               </TouchableOpacity>
-              {renderIf(screenProps.user.number == "917878580099")(
-              <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("UserJoiningRequests");
-              }}
-            >
-              <View style={styles.card}>
-                <Image
-                  resizeMode="contain"
-                  style={styles.Image}
-                  source={require("../../assets/add_user.png")}
-                />
-                <Text style={styles.cardTitle}>User Requests</Text>
-              </View>
-            </TouchableOpacity>)}
-            {renderIf(screenProps.user.number == "917878580099")(
-            <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("Broadcast");
-            }}
-          >
-            <View style={styles.card}>
-              <Image
-                resizeMode="contain"
-                style={styles.Image}
-                source={require("../../assets/broadcast.png")}
-              />
-              <Text style={styles.cardTitle}>Broadcast</Text>
-            </View>
-          </TouchableOpacity>)}
+              {renderIf(this.state.isAdmin)(
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("UserJoiningRequests");
+                  }}
+                >
+                  <View style={styles.card}>
+                    <Image
+                      resizeMode="contain"
+                      style={styles.Image}
+                      source={require("../../assets/add_user.png")}
+                    />
+                    <Text style={styles.cardTitle}>User Requests</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              {renderIf(this.state.isAdmin)(
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("Broadcast");
+                  }}
+                >
+                  <View style={styles.card}>
+                    <Image
+                      resizeMode="contain"
+                      style={styles.Image}
+                      source={require("../../assets/broadcast.png")}
+                    />
+                    <Text style={styles.cardTitle}>Broadcast</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
           </ScrollView>
         </View>

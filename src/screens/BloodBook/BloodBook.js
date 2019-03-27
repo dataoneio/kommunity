@@ -70,7 +70,6 @@ export default class BloodBook extends React.Component {
           <TouchableOpacity
             title="request"
             onPress={() => {
-              // alert(this.state.City);
               this.props.navigation.navigate("BloodBankUsers", {
                 txt: this.state.BloodGroup,
                 city: this.state.City
