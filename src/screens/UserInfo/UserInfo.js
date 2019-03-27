@@ -100,6 +100,10 @@ export default class UserInfo extends React.Component {
       const { navigate } = this.props.navigation;
     navigate("Search");
     }
+    else if(screen =="BloodBank"){
+      const { navigate } = this.props.navigation;
+    navigate("BloodBankUsers");
+    }
     else if(!(screen ==""))
     {
       const { navigate } = this.props.navigation;

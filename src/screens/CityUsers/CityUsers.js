@@ -93,6 +93,25 @@ export default class CityUsers extends React.Component {
     });
     return (
       <View>
+        <View style={styles.header}>
+            <View>
+              <TouchableOpacity
+                title=""
+                onPress={() => {
+                  this.props.navigation.goBack(null);
+                }}
+              >
+                <Icon name="arrow-back" color="white" size={30} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.home}>Users</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            />
+          </View>
         <ScrollView>
           <View>{vals}</View>
         </ScrollView>

@@ -257,7 +257,6 @@ export default class Search extends React.Component {
             style={{
               padding: 1,
               borderRadius: 5,
-
               backgroundColor: "transparent"
             }}
           >

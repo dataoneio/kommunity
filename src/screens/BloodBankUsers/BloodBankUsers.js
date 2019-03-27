@@ -11,14 +11,21 @@ import {
   TouchableOpacity,
   Button
 } from "react-native";
-import firebase from "../../../Firebase"
+import firebase from "../../../Firebase";
+import Users from "../../components/Users/Users";
+
 export default class BloodBankUsers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       test: "",
       Subject: "",
-      description: ""
+      description: "",
+      flag: false,
+      searchResult1:[],
+      bloodgroup:"",
+      city:"",
+      UserArray:[],
     };
   }
   componentDidMount() {
@@ -35,15 +42,15 @@ export default class BloodBankUsers extends React.Component {
             this.getUserDataFromFirebase();
           }
         );
-
-        // this.setState({ bloodgroup: bloodgroup }, () => {
-        //   this.searchByUser1();
-        // });
       }
     });
-
-    // this.getDataFromFirebase();
-    // this.getUserDataFromFirebase();
+  }
+  viewUser(userId) {
+    //alert("aaaa"+userId)
+    this.props.navigation.navigate("UserInfo", {
+      UserId: userId,
+      screen: "BloodBank"
+    });
   }
   getUserDataFromFirebase() {
     let arr1 = [];
@@ -53,59 +60,79 @@ export default class BloodBankUsers extends React.Component {
       .database()
       .ref("app/User").orderByChild("Blood_Group").equalTo(this.state.bloodgroup)
       .on("child_added", data => {
-        
+        ///console.log("eeee----"+this.state.city)
+        if(this.state.city === "")
+        {
         arr1.push({
           name: data.toJSON().Name,
           gender: data.toJSON().Gender,
           Profile_image: data.toJSON().Profile_photo,
           userId: data.key,
-          city: data.toJSON().City
+          City: data.toJSON().City
         });
-        //console.log("blooddddd"+data.toJSON().Blood_Group)
-        // if (this.state.flag) {
-        //   this.setState({ UserArray: arr3 }, () => {
-        //     this.searchByUser1();
-        //   });
-        // } else {
-        //   this.setState({ UserArray: arr3 });
-        // }
-        // console.log("aaawwww" + JSON.stringify(arr3));
-
-        // console.log("aaa" + JSON.stringify(this.state.UserArray));
-      });
-  }
-  searchByUser1() {
-    // alert(this.state.UserArray);
-    //console.log("BLOOOOOOOOOOOOOOOOOD" + this.state.bloodgroup);
-    var arr4 = this.state.UserArray;
-    var result1 = arr4.filter(search => {
-      let r1 = search.Blood_Group.toUpperCase();
-
-      let st1 = this.state.bloodgroup.toUpperCase();
-      if (r1.includes(st1)) {
-        return true;
-      }
-    });
-    if (this.state.city != "") {
-      var result2 = result1.filter(search => {
-        let r1 = search.City.toUpperCase();
-        let st1 = this.state.city.toUpperCase();
-        if (r1.includes(st1)) {
-          return true;
+          this.setState({ UserArray: arr1 })
         }
-      });
-      this.setState({ searchResult1: result2 });
-    } else {
-      this.setState({ searchResult1: result1 });
-    }
-
-    console.log("result1" + JSON.stringify(result1));
+        else{
+          if(data.toJSON().City === this.state.city)
+          {
+            arr1.push({
+              name: data.toJSON().Name,
+              gender: data.toJSON().Gender,
+              Profile_image: data.toJSON().Profile_photo,
+              userId: data.key,
+              City: data.toJSON().City
+            });
+            this.setState({ UserArray: arr1 })
+          }
+        }
+        })
+      
   }
+ 
 
   render() {
+    let vals=this.state.UserArray.map((val,key)=>{
+      console.log("eeeee"+val.name)
+      return(
+        <View key={key}>
+          <View
+            style={{
+              padding: 5
+            }}
+          />
+          <Users
+            name={val.name}
+            gender={val.gender}
+            image={val.Profile_image}
+            city={val.city}
+            viewUser={() => this.viewUser(val.userId)}
+          />
+          </View>
+
+      )
+    })
     return (
       <View>
-        <Text>USersssss</Text>
+        <View style={styles.header}>
+            <View>
+              <TouchableOpacity
+                title=""
+                onPress={() => {
+                  this.props.navigation.goBack(null);
+                }}
+              >
+                <Icon name="arrow-back" color="white" size={30} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.home}>Users</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            />
+          </View>
+        <View>{vals}</View>
       </View>
     );
   }
