@@ -46,6 +46,23 @@ export default class Broadcast extends React.Component {
     };
   }
 
+  handleChangeState = stateFilters =>
+  {
+    this.setState({ stateFilter:stateFilters, city: "" }, () => {console.log("eeee"+this.state.stateFilter) ,this.findcity()});
+
+  }
+  findcity()
+  {
+    var arr3=[];
+    firebase.database().ref("app/country/2/states/"+this.state.stateFilter).on("child_added",data =>{
+      console.log("rrreeerr---"+data.val())
+      arr3.push({
+        value: data.val()
+      });
+      this.setState({cityArray:arr3})
+    })
+    console.log("-------city")
+  }
   componentDidMount() {
     const { screenProps } = this.props;
     console.log("gegegegeg" + screenProps.user.number);
@@ -335,9 +352,9 @@ export default class Broadcast extends React.Component {
                 label="State"
                 labelColor="#676261"
                 data={this.state.stateArray}
-                //onChangeText={this.handleChangeState.bind(this)}
+                onChangeText={this.handleChangeState.bind(this)}
                 value={this.state.stateFilter}
-                onChangeText={stateFilter => this.setState({ stateFilter })}
+                //onChangeText={stateFilter => this.setState({ stateFilter })}
                 // value={"None"}
               />
             </View>
@@ -345,7 +362,7 @@ export default class Broadcast extends React.Component {
               <Dropdown
                 label="city"
                 labelColor="#676261"
-                data={data1}
+                data={this.state.cityArray}
                 onChangeText={cityFilter => this.setState({ cityFilter })}
                 // value={"None"}
               />

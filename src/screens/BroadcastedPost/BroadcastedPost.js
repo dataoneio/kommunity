@@ -207,22 +207,6 @@ export default class BroadcastedPost extends React.Component {
       <View>
         <View style={styles.header}>
           <Text style={styles.home}>Broadcasted Post</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}
-          />
-         
-          {/* <TouchableOpacity
-            title="request"
-          >
-            <View style={{ flexDirection: "row" }}>
-              <View>
-                <Text style={styles.sendButton}>Send</Text>
-              </View>
-            </View>
-          </TouchableOpacity> */}
         </View>
         <View>{broadcastPosts}</View>
       </View>
@@ -238,6 +222,7 @@ const styles = StyleSheet.create({
   },
 
   home: {
+    textAlign:"center",
     fontFamily: "lucida grande",
     justifyContent: "center",
     fontWeight: "bold",

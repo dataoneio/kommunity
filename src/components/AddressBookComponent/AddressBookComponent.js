@@ -32,7 +32,7 @@ export default class AddressBookComponent extends React.Component {
         style={{
           width: win.width / 2 - 20,
           height:win.height/5,
-          backgroundColor: "#dddce2",
+          backgroundColor: "#DBC7D0",
           padding: 5,
           borderWidth: 2,
           borderRadius:10,

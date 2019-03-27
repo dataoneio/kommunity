@@ -29,6 +29,7 @@ import BloodBook from "../screens/BloodBook/BloodBook";
 import AddressBook from "../screens/AddressBook/AddressBook";
 import CityUsers from "../screens/CityUsers/CityUsers"
 import BroadcastedPost from "../screens/BroadcastedPost/BroadcastedPost"
+import BloodBankUser from "../screens/BloodBankUsers/BloodBankUsers"
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -256,6 +257,20 @@ const StackNavigator17 = createStackNavigator(
     }
   }
 );
+const StackNavigator18 = createStackNavigator(
+  {
+    BloodBankUser: {
+      screen: BloodBankUser
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
 const StackNavigator1 = createStackNavigator(
   {
     Login: Login,
@@ -367,7 +382,8 @@ const RootNavigator = createStackNavigator(
     p15: StackNavigator14,
     p16: StackNavigator15,
     p17: StackNavigator16,
-    p18:StackNavigator17
+    p18:StackNavigator17,
+    p19:StackNavigator18
   },
   {
     headerMode: "none",

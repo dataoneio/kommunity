@@ -71,7 +71,7 @@ export default class BloodBook extends React.Component {
             title="request"
             onPress={() => {
               // alert(this.state.City);
-              this.props.navigation.navigate("Search", {
+              this.props.navigation.navigate("BloodBankUsers", {
                 txt: this.state.BloodGroup,
                 city: this.state.City
               });

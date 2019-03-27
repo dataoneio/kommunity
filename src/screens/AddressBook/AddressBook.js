@@ -36,11 +36,6 @@ export default class AddressBook extends React.Component {
         this.setState({ cityAr: arr2 });
         this.setState({ alldata: false });
       });
-
-    var arr3 = [];
-    console.log("qqqoooo" + JSON.stringify(arr3));
-    this.setState({ cityAr: arr3 });
-    this.setState({ alldata: false });
   }
 
   render() {

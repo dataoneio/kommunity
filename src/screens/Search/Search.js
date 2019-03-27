@@ -203,7 +203,7 @@ export default class Search extends React.Component {
     this.props.navigation.navigate("UserInfo", { EventId: uid });
   }
   onUserIconPress(uid) {
-    this.props.navigation.navigate("UserInfo", { UserId: uid });
+    this.props.navigation.navigate("UserInfo", { UserId: uid ,screen:"Search"});
   }
   render() {
     let searchval = this.state.searchResult.map((val, key) => {
@@ -223,9 +223,7 @@ export default class Search extends React.Component {
               padding: 1,
               borderRadius: 5,
               backgroundColor: "transparent"
-              // borderBottomWidth: 0.5,
-              // borderBottomColor: "white",
-              // backgroundColor: "red"
+             
             }}
           >
             <Feed
@@ -284,7 +282,7 @@ export default class Search extends React.Component {
               title="back"
               style={{ paddingTop: 7 }}
               onPress={() => {
-                this.props.navigation.navigate("Homescreen");
+                this.props.navigation.navigate("HomeNavigator");
               }}
             >
               <Icon name="arrow-back" size={30} color="#cccccc" />

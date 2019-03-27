@@ -48,18 +48,27 @@ export default class Main extends Component {
     return (
       <View
         style={{
-          flex:1,
-          padding:0,
-           backgroundColor: "#C60C31",
+          flex: 1,
+          padding: 0,
+          backgroundColor: "#C60C31",
           justifyContent: "flex-end",
           alignItems: "center"
         }}
       >
-        <Image
-          style={styles.Image}
-          source={require("../../assets/main.png")}
-        />
-       </View> 
+        <View
+          style={{
+            width: 150,
+            height: 150,
+            //borderRadius: 150,
+            //backgroundColor: "white",
+            justifyContent: "center"
+          }}
+        >
+        <Image  style={styles.logoStyle} source={require("../../assets/SplashLogo.png")} />
+
+        </View>
+        <Image style={styles.Image} source={require("../../assets/main.png")} />
+      </View>
     );
   }
 }
@@ -71,11 +80,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black"
   },
+  logoStyle:{
+    alignSelf:"center",
+    // position: "relative",
+    height: 200,
+    width: 200,
+    //top:10,
+  },
   Image: {
-    marginLeft:0,
+    marginLeft: 0,
     justifyContent: "center",
-    justifyContent:"flex-end",
-    width: win.width/2+50,
-    height: win.height/2,
+    justifyContent: "flex-end",
+    width: win.width / 2 + 150,
+    height: win.height / 2+40
   }
 });
