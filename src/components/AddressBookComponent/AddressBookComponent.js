@@ -9,7 +9,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button,Dimensions
+  Button,
+  Dimensions
 } from "react-native";
 // import { TextInput } from "react-native-paper";
 // import firebase from "../../../Firebase";
@@ -21,31 +22,29 @@ export default class AddressBookComponent extends React.Component {
     this.state = {
       test: "",
       Subject: "",
-      description: "",
+      description: ""
     };
   }
-
 
   render() {
     return (
       <View
         style={{
           width: win.width / 2 - 20,
-          height:win.height/5,
-          backgroundColor: "#dddce2",
+          height: win.height / 5,
+          backgroundColor: "#fce3a7",
           padding: 5,
           borderWidth: 2,
-          borderRadius:10,
+          borderRadius: 10,
           borderColor: "white",
-          justifyContent:"space-evenly"
+          justifyContent: "space-evenly"
         }}
       >
-      <TouchableOpacity onPress={this.props.getCityUserDetails}>
-        <Text style={styles.city}>{this.props.city}</Text>
-        <Text style={styles.occurance}>{this.props.occurance}</Text>
+        <TouchableOpacity onPress={this.props.getCityUserDetails}>
+          <Text style={styles.city}>{this.props.city}</Text>
+          <Text style={styles.occurance}>{this.props.occurance}</Text>
         </TouchableOpacity>
       </View>
-
     );
   }
 }
@@ -56,18 +55,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCFF"
   },
-  occurance:{
+  occurance: {
     fontFamily: "lucida grande",
-    textAlign:"center",
+    textAlign: "center",
     justifyContent: "center",
     fontWeight: "bold",
     fontSize: 16,
     color: "black"
-
   },
   city: {
     fontFamily: "lucida grande",
-    textAlign:"center",
+    textAlign: "center",
     justifyContent: "center",
     fontWeight: "bold",
     fontSize: 22,
