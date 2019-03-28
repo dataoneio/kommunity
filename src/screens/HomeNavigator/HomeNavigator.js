@@ -196,8 +196,9 @@ export default class HomeNavigator extends React.Component {
           <ScrollView>
             <View
               style={{
+                backgroundColor: "#f2f2f2",
                 flexDirection: "row",
-                justifyContent: "space-between",
+                justifyContent: "space-around",
                 flexWrap: "wrap",
                 padding: 10
               }}

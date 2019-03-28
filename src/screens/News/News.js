@@ -76,13 +76,15 @@ export default class NewsScreen extends React.Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>this.props.navigation.navigate("BroadcastedPost")}
+                onPress={() =>
+                  this.props.navigation.navigate("BroadcastedPost")
+                }
               >
                 <View style={styles.card}>
                   <Image
                     resizeMode="contain"
                     style={styles.Image}
-                    source={require("../../assets/all_news.png")}
+                    source={require("../../assets/broadcast.png")}
                   />
                   <Text style={styles.cardTitle}>Broadcasted</Text>
                 </View>
@@ -152,7 +154,7 @@ export default class NewsScreen extends React.Component {
                   <Image
                     resizeMode="contain"
                     style={styles.Image}
-                    source={require("../../assets/sports.jpg")}
+                    source={require("../../assets/sports.png")}
                   />
                   <Text style={styles.cardTitle}>Sports</Text>
                 </View>
@@ -222,7 +224,7 @@ export default class NewsScreen extends React.Component {
                   <Image
                     resizeMode="contain"
                     style={styles.Image}
-                    source={require("../../assets/birthday.jpeg")}
+                    source={require("../../assets/birthday.png")}
                   />
                   <Text style={styles.cardTitle}>Birthday</Text>
                 </View>

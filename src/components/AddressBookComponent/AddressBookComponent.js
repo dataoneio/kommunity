@@ -32,7 +32,7 @@ export default class AddressBookComponent extends React.Component {
         style={{
           width: win.width / 2 - 20,
           height: win.height / 5,
-          backgroundColor: "#fce3a7",
+          backgroundColor: "white",
           padding: 5,
           borderWidth: 2,
           borderRadius: 10,
@@ -43,7 +43,7 @@ export default class AddressBookComponent extends React.Component {
         <TouchableOpacity onPress={this.props.getCityUserDetails}>
           <Text style={styles.city}>{this.props.city}</Text>
           <Text style={styles.occurance}>{this.props.occurance}</Text>
-        </TouchableOpacity>
+         </TouchableOpacity>
       </View>
     );
   }
@@ -59,12 +59,12 @@ const styles = StyleSheet.create({
     fontFamily: "lucida grande",
     textAlign: "center",
     justifyContent: "center",
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontSize: 16,
     color: "black"
   },
   city: {
-    fontFamily: "lucida grande",
+    fontFamily: "avenir",
     textAlign: "center",
     justifyContent: "center",
     fontWeight: "bold",

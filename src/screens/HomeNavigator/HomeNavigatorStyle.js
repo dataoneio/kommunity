@@ -15,12 +15,12 @@ export default (styles = StyleSheet.create({
     fontWeight: "bold"
   },
   card: {
-    marginVertical: 10,
+    marginVertical: 5,
     width: win.width / 2 - 20,
     backgroundColor: "white",
     padding: 5,
     borderColor: "#d9d9d9",
-    borderWidth: 2,
+    borderWidth: 0,
     borderRadius: 10,
     shadowOffset: { width: 10, height: 10 },
     shadowColor: "black",
@@ -28,8 +28,9 @@ export default (styles = StyleSheet.create({
   },
 
   Image: {
-    width: win.width / 3,
-    height: win.height/4.8,
+    padding: 1,
+    width: win.width / 4,
+    height: win.height / 4.8,
     alignSelf: "center"
   },
   welcome: {
@@ -38,7 +39,7 @@ export default (styles = StyleSheet.create({
     margin: 10
   },
   header: {
-    backgroundColor: "#C60C31",//C60C31
+    backgroundColor: "#C60C31", //C60C31
     //alignItems: "center",
     //justifyContent: "center",
     borderBottomWidth: 2,

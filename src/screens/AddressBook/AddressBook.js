@@ -126,7 +126,8 @@ export default class AddressBook extends React.Component {
               flexDirection: "row",
               justifyContent: "space-evenly",
               flexWrap: "wrap",
-              paddingBottom: 55
+              paddingBottom: 55,
+              backgroundColor: "#f2f2f2"
             }}
           >
             {mapping}
