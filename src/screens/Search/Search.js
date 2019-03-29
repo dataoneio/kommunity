@@ -203,7 +203,10 @@ export default class Search extends React.Component {
     this.props.navigation.navigate("UserInfo", { EventId: uid });
   }
   onUserIconPress(uid) {
-    this.props.navigation.navigate("UserInfo", { UserId: uid ,screen:"Search"});
+    this.props.navigation.navigate("UserInfo", {
+      UserId: uid,
+      screen: "Search"
+    });
   }
   render() {
     let searchval = this.state.searchResult.map((val, key) => {
@@ -223,7 +226,6 @@ export default class Search extends React.Component {
               padding: 1,
               borderRadius: 5,
               backgroundColor: "transparent"
-             
             }}
           >
             <Feed
@@ -277,7 +279,7 @@ export default class Search extends React.Component {
       <View style={{ flex: 1 }}>
         <View style={styles.header}>
           <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               title="back"
               style={{ paddingTop: 7 }}
               onPress={() => {
@@ -285,14 +287,14 @@ export default class Search extends React.Component {
               }}
             >
               <Icon name="arrow-back" size={30} color="#cccccc" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TextInput
               style={{
                 paddingRight: 10,
                 color: "white"
               }}
               placeholder="Enter to search"
-              placeholderTextColor="#A4AAC1"
+              placeholderTextColor="#f2f2f2"
               onChangeText={this.handleChangeText}
               autoFocus={true}
               returnKeyType="search"
@@ -308,7 +310,7 @@ export default class Search extends React.Component {
                 name="close"
                 type="material-community"
                 size={30}
-                color="#cccccc"
+                color="#f2f2f2"
                 style={{ paddingTop: 7 }}
               />
             </TouchableOpacity>

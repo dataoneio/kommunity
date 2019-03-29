@@ -299,6 +299,34 @@ const StackNavigator20 = createStackNavigator(
     }
   }
 );
+const StackNavigator21 = createStackNavigator(
+  {
+    AddEvent: {
+      screen: AddEvent
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator22 = createStackNavigator(
+  {
+    Home: {
+      screen: Home
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
 
 const StackNavigator1 = createStackNavigator(
   {
@@ -314,88 +342,88 @@ const StackNavigator1 = createStackNavigator(
   }
 );
 
-const TabNavigator = createBottomTabNavigator(
-  {
-    Home: {
-      screen: Home,
-      navigationOptions: {
-        tabBarIcon: (tintColor, focused, active) => (
-          <Icon name="home" size={30} color={focused ? "#288DCF" : "white"} />
-        ),
-        showIcon: true
-      }
-    },
-    // Search: {
-    //   screen: Search,
-    //   navigationOptions: {
-    //     tabBarIcon: (tintColor, focused) => (
-    //       <Icon name="search" size={30} color={focused ? "#288DCF" : "white"} />
-    //     ),
-    //     showIcon: true,
-    //     tabBarVisible: false
-    //   }
-    // },
+// const TabNavigator = createBottomTabNavigator(
+//   {
+//     Home: {
+//       screen: Home,
+//       navigationOptions: {
+//         tabBarIcon: (tintColor, focused, active) => (
+//           <Icon name="home" size={30} color={focused ? "#288DCF" : "white"} />
+//         ),
+//         showIcon: true
+//       }
+//     }
+//     // Search: {
+//     //   screen: Search,
+//     //   navigationOptions: {
+//     //     tabBarIcon: (tintColor, focused) => (
+//     //       <Icon name="search" size={30} color={focused ? "#288DCF" : "white"} />
+//     //     ),
+//     //     showIcon: true,
+//     //     tabBarVisible: false
+//     //   }
+//     // },
 
-    AddEvent: {
-      screen: AddEvent,
-      navigationOptions: {
-        tabBarIcon: (tintColor, focused) => (
-          <Icon
-            name="add-box"
-            size={30}
-            color={focused ? "#288DCF" : "white"}
-          />
-        ),
-        showIcon: true,
-        tabBarVisible: false
-      }
-    }
-    // Notification: {
-    //   screen: UserNotification,
-    //   navigationOptions: {
-    //     tabBarIcon: ({ tintColor, focused }) => (
-    //       <Icon
-    //         name="notifications"
-    //         size={30}
-    //         color={focused ? "white" : "white"}
-    //       />
-    //     ),
-    //     showIcon: true
-    //   }
-    // }
-    // Info: {
-    //   screen: Info,
-    //   navigationOptions: {
-    //     tabBarIcon: (tintColor, focused) => (
-    //       <Icon name="info" size={30} color={focused ? "#288DCF" : "white"} />
-    //     ),
-    //     showIcon: true,
-    //     tabBarVisible: false
-    //   }
-    // }
-  },
-  {
-    initialRouteName: "Home",
-    tabBarOptions: {
-      labelStyle: {
-        fontSize: 14
+//     // AddEvent: {
+//     //   screen: AddEvent,
+//     //   navigationOptions: {
+//     //     tabBarIcon: (tintColor, focused) => (
+//     //       <Icon
+//     //         name="add-box"
+//     //         size={30}
+//     //         color={focused ? "#288DCF" : "white"}
+//     //       />
+//     //     ),
+//     //     showIcon: true,
+//     //     tabBarVisible: false
+//     //   }
+//     // }
+//     // Notification: {
+//     //   screen: UserNotification,
+//     //   navigationOptions: {
+//     //     tabBarIcon: ({ tintColor, focused }) => (
+//     //       <Icon
+//     //         name="notifications"
+//     //         size={30}
+//     //         color={focused ? "white" : "white"}
+//     //       />
+//     //     ),
+//     //     showIcon: true
+//     //   }
+//     // }
+//     // Info: {
+//     //   screen: Info,
+//     //   navigationOptions: {
+//     //     tabBarIcon: (tintColor, focused) => (
+//     //       <Icon name="info" size={30} color={focused ? "#288DCF" : "white"} />
+//     //     ),
+//     //     showIcon: true,
+//     //     tabBarVisible: false
+//     //   }
+//     // }
+//   },
+//   {
+//     initialRouteName: "Home",
+//     tabBarOptions: {
+//       labelStyle: {
+//         fontSize: 14
 
-        //lineHeight: 20,
-        //fontFamily: "CircularStd-Book"
-      },
-      activeTintColor: "white",
-      style: {
-        backgroundColor: "#C60C31"
-      }
-      //tintColor: "black",
-    }
-  }
-);
+//         //lineHeight: 20,
+//         //fontFamily: "CircularStd-Book"
+//       },
+//       activeTintColor: "white",
+//       style: {
+//         backgroundColor: "#C60C31"
+//       }
+//       //tintColor: "black",
+//     }
+//   }
+// );
 const RootNavigator = createStackNavigator(
   {
     p0: StackNavigator6,
     p1: StackNavigator1,
-    p2: TabNavigator,
+    p2: StackNavigator22,
     P3: StackNavigator,
     p4: StackNavigator2,
     p5: StackNavigator3,
@@ -414,7 +442,8 @@ const RootNavigator = createStackNavigator(
     p18: StackNavigator17,
     p19: StackNavigator18,
     p20: StackNavigator19,
-    p21: StackNavigator20
+    p21: StackNavigator20,
+    p22: StackNavigator21
   },
   {
     headerMode: "none",
