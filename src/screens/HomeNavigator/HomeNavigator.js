@@ -31,7 +31,8 @@ export default class HomeNavigator extends React.Component {
     super(props);
     this.state = {
       admins: [],
-      isAdmin: "false"
+      isAdmin: "false",
+      getToken: ""
     };
   }
   handleBackPress = () => {
@@ -63,7 +64,9 @@ export default class HomeNavigator extends React.Component {
 
   logout() {
     AsyncStorage.removeItem("token");
-    this.props.navigation.navigate("Login");
+    this.setState({ isAdmin: false }, () => {
+      this.props.navigation.navigate("Login");
+    });
   }
   getAdminsfromfirebase() {
     let arr1 = [];
@@ -93,7 +96,7 @@ export default class HomeNavigator extends React.Component {
   checkAdmin() {
     var { screenProps } = this.props;
     console.log("CHCEK ADMINNNNN" + screenProps.user.number);
-    var a = JSON.stringify(screenProps.user.number);
+    var a = JSON.stringify(this.state.getToken);
     console.log("a" + a);
     for (let i = 0; i < this.state.Admins.length; i++) {
       if (JSON.stringify(this.state.Admins[i]) == a) {
@@ -114,6 +117,7 @@ export default class HomeNavigator extends React.Component {
     AsyncStorage.getItem("token").then(value =>
       this.setState({ getToken: value }, () => {
         screenProps.user.number = this.state.getToken;
+        this.getAdminsfromfirebase();
 
         firebase
           .database()
@@ -152,13 +156,12 @@ export default class HomeNavigator extends React.Component {
           });
       })
     );
-    this.getAdminsfromfirebase();
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-  componentWillUnmount() {
-    this.setState({ isAdmin: false });
-  }
+  // componentWillUnmount() {
+  //   this.setState({ isAdmin: false });
+  // }
 
   render() {
     var { screenProps } = this.props;
@@ -170,13 +173,23 @@ export default class HomeNavigator extends React.Component {
           onDidBlur={this.onblur.bind(this)}
         />
         <View style={styles.header}>
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Info");
+              }}
+            >
+              <Icon
+                name="info-circle"
+                type="font-awesome"
+                color="white"
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
+
           <Text style={styles.home}>Home</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}
-          />
+
           <View style={{ paddingTop: 2 }}>
             <TouchableOpacity
               onPress={() => {
@@ -192,7 +205,7 @@ export default class HomeNavigator extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ paddingBottom: 100 }}>
+        <View style={{ paddingBottom: 100, backgroundColor: "#f2f2f2" }}>
           <ScrollView>
             <View
               style={{

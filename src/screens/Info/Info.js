@@ -288,7 +288,12 @@ export default class Info extends React.Component {
       <View>
         <View style={styles.header}>
           <View>
-            <TouchableOpacity title="" onPress={this.goback.bind(this)}>
+            <TouchableOpacity
+              title=""
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+            >
               <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>

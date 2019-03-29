@@ -33,23 +33,7 @@ export default class NewsScreen extends React.Component {
     return (
       <View>
         <View style={styles.header}>
-          <View>
-            <TouchableOpacity
-              title=""
-              onPress={() => {
-                this.props.navigation.navigate("HomeNavigator");
-              }}
-            >
-              <Icon name="arrow-back" color="white" size={30} />
-            </TouchableOpacity>
-          </View>
           <Text style={styles.home}>News</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}
-          />
         </View>
         <View style={{ paddingBottom: 100 }}>
           <ScrollView>

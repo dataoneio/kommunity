@@ -46,13 +46,13 @@ export default (styles = StyleSheet.create({
     borderBottomColor: "white",
     padding: 10,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "center"
   },
   home: {
     fontFamily: "lucida grande",
     justifyContent: "center",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 24,
     color: "white"
   }
 }));

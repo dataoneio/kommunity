@@ -22,14 +22,14 @@ import AboutUs from "../screens/AboutUs/AboutUs";
 import ReportProblem from "../screens/ReportProblem/ReportProblem";
 import UserJoiningRequests from "../screens/UserJoiningRequests/UserJoiningRequests";
 import Broadcast from "../screens/Broadcast/Broadcast";
- import HomeNavigator from "../screens/HomeNavigator/HomeNavigator";
+import HomeNavigator from "../screens/HomeNavigator/HomeNavigator";
 import News from "../screens/News/News";
 //import Homescreen from "../screens/HomeNavigator/HomeNavigator";
 import BloodBook from "../screens/BloodBook/BloodBook";
 import AddressBook from "../screens/AddressBook/AddressBook";
-import CityUsers from "../screens/CityUsers/CityUsers"
-import BroadcastedPost from "../screens/BroadcastedPost/BroadcastedPost"
-import BloodBankUsers from "../screens/BloodBankUsers/BloodBankUsers"
+import CityUsers from "../screens/CityUsers/CityUsers";
+import BroadcastedPost from "../screens/BroadcastedPost/BroadcastedPost";
+import BloodBankUsers from "../screens/BloodBankUsers/BloodBankUsers";
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -271,6 +271,20 @@ const StackNavigator18 = createStackNavigator(
     }
   }
 );
+const StackNavigator19 = createStackNavigator(
+  {
+    Info: {
+      screen: Info
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
 const StackNavigator1 = createStackNavigator(
   {
     Login: Login,
@@ -333,17 +347,17 @@ const TabNavigator = createBottomTabNavigator(
         ),
         showIcon: true
       }
-    },
-    Info: {
-      screen: Info,
-      navigationOptions: {
-        tabBarIcon: (tintColor, focused) => (
-          <Icon name="info" size={30} color={focused ? "#288DCF" : "white"} />
-        ),
-        showIcon: true,
-        tabBarVisible: false
-      }
     }
+    // Info: {
+    //   screen: Info,
+    //   navigationOptions: {
+    //     tabBarIcon: (tintColor, focused) => (
+    //       <Icon name="info" size={30} color={focused ? "#288DCF" : "white"} />
+    //     ),
+    //     showIcon: true,
+    //     tabBarVisible: false
+    //   }
+    // }
   },
   {
     initialRouteName: "Home",
@@ -382,8 +396,9 @@ const RootNavigator = createStackNavigator(
     p15: StackNavigator14,
     p16: StackNavigator15,
     p17: StackNavigator16,
-    p18:StackNavigator17,
-    p19:StackNavigator18
+    p18: StackNavigator17,
+    p19: StackNavigator18,
+    p20: StackNavigator19
   },
   {
     headerMode: "none",
