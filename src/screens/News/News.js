@@ -12,6 +12,7 @@ import {
 import { Card } from "react-native-elements";
 import { Icon } from "react-native-elements";
 import styles from "./NewsStyle";
+import AddEvent from "../AddEvent/AddEvent";
 const win = Dimensions.get("window");
 
 const instructions = Platform.select({
@@ -29,11 +30,46 @@ export default class NewsScreen extends React.Component {
     // alert(txt);
     this.props.navigation.navigate("Home", { txt: txt });
   }
+  logout() {
+    AsyncStorage.removeItem("token");
+    this.setState({ isAdmin: false }, () => {
+      this.props.navigation.navigate("Login");
+    });
+  }
   render() {
     return (
       <View>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <Text style={styles.home}>News</Text>
+        </View> */}
+
+        <View style={styles.header}>
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Info");
+              }}
+            >
+              <Icon
+                name="info-circle"
+                type="font-awesome"
+                color="white"
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.home}>News</Text>
+
+          <View style={{ paddingTop: 2 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("AddEvent");
+              }}
+            >
+              <Icon name="plus" type="antdesign" color="white" size={30} />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={{ paddingBottom: 100 }}>
           <ScrollView>

@@ -160,7 +160,7 @@ export default class AddEvent extends React.Component {
               Comments: "",
               UserId: this.state.UserId
             });
-          this.props.navigation.navigate("Home");
+          this.props.navigation.navigate("News");
           this.setState({
             title: "",
             descInput: "",
@@ -189,7 +189,7 @@ export default class AddEvent extends React.Component {
             Comments: "",
             UserId: this.state.UserId
           });
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("News");
         this.setState({
           title: "",
           descInput: "",
@@ -259,7 +259,12 @@ export default class AddEvent extends React.Component {
           <View>
             <View style={styles.header}>
               <View>
-                <TouchableOpacity title="" onPress={this.goback.bind(this)}>
+                <TouchableOpacity
+                  title=""
+                  onPress={() => {
+                    this.props.navigation.goBack(null);
+                  }}
+                >
                   <Icon name="arrow-back" color="white" size={30} />
                 </TouchableOpacity>
               </View>

@@ -223,7 +223,12 @@ export default class UserNotification extends React.Component {
       <View style={{ flex: 1, backgroundColor: "yellow" }}>
         <View style={styles.header}>
           <View>
-            <TouchableOpacity title="" onPress={this.goback.bind(this)}>
+            <TouchableOpacity
+              title=""
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+            >
               <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>

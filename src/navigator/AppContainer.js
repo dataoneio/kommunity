@@ -285,6 +285,21 @@ const StackNavigator19 = createStackNavigator(
     }
   }
 );
+const StackNavigator20 = createStackNavigator(
+  {
+    Notification: {
+      screen: UserNotification
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+
 const StackNavigator1 = createStackNavigator(
   {
     Login: Login,
@@ -334,20 +349,20 @@ const TabNavigator = createBottomTabNavigator(
         showIcon: true,
         tabBarVisible: false
       }
-    },
-    Notification: {
-      screen: UserNotification,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor, focused }) => (
-          <Icon
-            name="notifications"
-            size={30}
-            color={focused ? "white" : "white"}
-          />
-        ),
-        showIcon: true
-      }
     }
+    // Notification: {
+    //   screen: UserNotification,
+    //   navigationOptions: {
+    //     tabBarIcon: ({ tintColor, focused }) => (
+    //       <Icon
+    //         name="notifications"
+    //         size={30}
+    //         color={focused ? "white" : "white"}
+    //       />
+    //     ),
+    //     showIcon: true
+    //   }
+    // }
     // Info: {
     //   screen: Info,
     //   navigationOptions: {
@@ -398,7 +413,8 @@ const RootNavigator = createStackNavigator(
     p17: StackNavigator16,
     p18: StackNavigator17,
     p19: StackNavigator18,
-    p20: StackNavigator19
+    p20: StackNavigator19,
+    p21: StackNavigator20
   },
   {
     headerMode: "none",

@@ -87,31 +87,24 @@ export default class UserInfo extends React.Component {
   }
 
   goback() {
-    var {navigation}=this.props
-    var screen=navigation.getParam("screen","")
-    if(screen ==="BroadcastedPost")
-    {
+    var { navigation } = this.props;
+    var screen = navigation.getParam("screen", "");
+    if (screen === "BroadcastedPost") {
       //alert("back")
       const { navigate } = this.props.navigation;
-    navigate("BroadcastedPost");
-    }
-    else if(screen == "Search")
-    {
+      navigate("BroadcastedPost");
+    } else if (screen == "Search") {
       const { navigate } = this.props.navigation;
-    navigate("Search");
-    }
-    else if(screen =="BloodBank"){
+      navigate("Search");
+    } else if (screen == "BloodBank") {
       const { navigate } = this.props.navigation;
-    navigate("BloodBankUsers");
-    }
-    else if(!(screen ==""))
-    {
+      navigate("BloodBankUsers");
+    } else if (!(screen == "")) {
       const { navigate } = this.props.navigation;
-    navigate("CityUsers");
-    }
-    else{
-    const { navigate } = this.props.navigation;
-    navigate("Home");
+      navigate("CityUsers");
+    } else {
+      const { navigate } = this.props.navigation;
+      navigate("Home");
     }
   }
   handlenavigation() {
@@ -271,8 +264,16 @@ export default class UserInfo extends React.Component {
       <View>
         <View style={styles.header}>
           <View>
-            <TouchableOpacity title="" onPress={this.goback.bind(this)}>
-              <Icon name="arrow-back" color="white" size={30} />
+            <TouchableOpacity
+              title=""
+              onPress={this.businessDetails.bind(this)}
+            >
+              <Icon
+                name="briefcase"
+                type="font-awesome"
+                color="white"
+                size={30}
+              />
             </TouchableOpacity>
           </View>
           <Text style={styles.home}>Info</Text>
@@ -287,7 +288,7 @@ export default class UserInfo extends React.Component {
               onPress={this.shareToWhatsAppWithContact.bind(this)}
               style={{
                 backgroundColor: "#25d366",
-                padding: 3,
+                // padding: 3,
                 paddingHorizontal: 6,
                 borderRadius: 30
               }}
@@ -296,7 +297,7 @@ export default class UserInfo extends React.Component {
                 name="whatsapp"
                 color="white"
                 type="font-awesome"
-                size={30}
+                size={25}
               />
             </TouchableOpacity>
           </View>
@@ -444,7 +445,7 @@ export default class UserInfo extends React.Component {
                 />
               </View>
 
-              <View style={{ padding: 10 }}>
+              <View style={{ padding: 10, paddingBottom: 90 }}>
                 <Dropdown
                   disabled={true}
                   label="city"
@@ -452,13 +453,13 @@ export default class UserInfo extends React.Component {
                   value={this.state.city}
                 />
               </View>
-              <View style={{ paddingBottom: 100 }}>
+              {/* <View style={{ paddingBottom: 100 }}>
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
                   color="#C60C31"
                 />
-              </View>
+              </View> */}
             </View>
           </View>
         </ScrollView>

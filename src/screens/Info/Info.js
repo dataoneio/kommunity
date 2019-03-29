@@ -290,11 +290,14 @@ export default class Info extends React.Component {
           <View>
             <TouchableOpacity
               title=""
-              onPress={() => {
-                this.props.navigation.goBack(null);
-              }}
+              onPress={this.businessDetails.bind(this)}
             >
-              <Icon name="arrow-back" color="white" size={30} />
+              <Icon
+                name="briefcase"
+                type="font-awesome"
+                color="white"
+                size={30}
+              />
             </TouchableOpacity>
           </View>
           <Text style={styles.home}>Info</Text>
@@ -308,7 +311,7 @@ export default class Info extends React.Component {
               title=""
               onPress={this.handlenavigation.bind(this)}
             >
-              <Icon name="edit" color="white" size={25} />
+              <Icon name="edit" color="white" size={30} />
             </TouchableOpacity>
           </View>
         </View>
@@ -334,14 +337,15 @@ export default class Info extends React.Component {
                 alignItems: "stretch"
               }}
             >
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, padding: 1 }}>
                 <Button
                   color="#C60C31"
                   title="Info"
                   onPress={() => this.props.navigation.navigate("Info")}
                 />
               </View>
-              <View style={{ flex: 1 }}>
+
+              <View style={{ flex: 1, padding: 1 }}>
                 <Button
                   color="#f2264f"
                   title="Posts"
@@ -452,7 +456,7 @@ export default class Info extends React.Component {
                 />
               </View>
 
-              <View style={{ padding: 10 }}>
+              <View style={{ padding: 10, paddingBottom: 90 }}>
                 <Dropdown
                   disabled={true}
                   label="city"
@@ -460,13 +464,13 @@ export default class Info extends React.Component {
                   value={this.state.city}
                 />
               </View>
-              <View style={{ paddingBottom: 100 }}>
+              {/* <View style={{ paddingBottom: 100 }}>
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
                   color="#C60C31"
                 />
-              </View>
+              </View> */}
             </View>
           </View>
         </ScrollView>

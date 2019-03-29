@@ -116,22 +116,22 @@ export default class Home extends React.Component {
       .on("child_added", data => {
         console.log(data.toJSON().UserId);
         if (data.exists()) {
-          if(result[5].toString()==="false"){
-          arr1.push({
-            date: data.toJSON().Date,
-            category: data.toJSON().Category,
-            description: data.toJSON().Description,
-            uid: data.key,
-            title: data.toJSON().Title,
-            url1: data.toJSON().Image,
-            userId: data.toJSON().UserId
-          });
-          this.setState({ initialVals: arr1 });
-          this.setState({ feeds: arr1 });
-          this.setState({ isLoading: false });
-          console.log("true-----");
+          if (result[5].toString() === "false") {
+            arr1.push({
+              date: data.toJSON().Date,
+              category: data.toJSON().Category,
+              description: data.toJSON().Description,
+              uid: data.key,
+              title: data.toJSON().Title,
+              url1: data.toJSON().Image,
+              userId: data.toJSON().UserId
+            });
+            this.setState({ initialVals: arr1 });
+            this.setState({ feeds: arr1 });
+            this.setState({ isLoading: false });
+            console.log("true-----");
+          }
         }
-      }
       });
     this.setState({ isLoading: false });
   }
@@ -172,10 +172,17 @@ export default class Home extends React.Component {
               //     "-------" +
               //     val1.State
               // );
-              screenProps.user.gender=val1.Gender;
-              screenProps.user.city=val1.City;
-              screenProps.user.state=val1.State;
-              console.log("----"+screenProps.user.gender+"-----"+screenProps.user.city+"-----"+screenProps.user.state)
+              screenProps.user.gender = val1.Gender;
+              screenProps.user.city = val1.City;
+              screenProps.user.state = val1.State;
+              console.log(
+                "----" +
+                  screenProps.user.gender +
+                  "-----" +
+                  screenProps.user.city +
+                  "-----" +
+                  screenProps.user.state
+              );
               screenProps.user.userphotourl = val1.Profile_photo;
               screenProps.user.id = data.key;
             }
@@ -204,20 +211,20 @@ export default class Home extends React.Component {
         //var combine=result[2].toString()+result[6].toString();
         //console.log("aaa----------"+combine);
         if (result[5].toString() == "false") {
-        // console.log("false");
-        arr1.push({
-          date: result[2].toString(),
-          category: result[0].toString(),
-          description: result[3].toString(),
-          uid: data.key,
-          title: result[6].toString(),
-          url1: result[4].toString(),
-          userId: result[7].toString()
-        });
-        this.setState({ initialVals: arr1 }, () => {
-          this.searchByPost();
-        });
-      }
+          // console.log("false");
+          arr1.push({
+            date: result[2].toString(),
+            category: result[0].toString(),
+            description: result[3].toString(),
+            uid: data.key,
+            title: result[6].toString(),
+            url1: result[4].toString(),
+            userId: result[7].toString()
+          });
+          this.setState({ initialVals: arr1 }, () => {
+            this.searchByPost();
+          });
+        }
         this.setState({ feeds: arr1 });
         this.setState({ isLoading: false });
       });
@@ -358,19 +365,36 @@ export default class Home extends React.Component {
         /> */}
         <View style={styles.header}>
           <View>
-            {/* <TouchableOpacity title="" onPress={() => this.openDrawer()}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Info");
+              }}
+            >
               <Icon
-                name="align-justify"
+                name="info-circle"
                 type="font-awesome"
                 color="white"
                 size={30}
               />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
+
           <Text style={styles.home}>Parkar Samaaj</Text>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          />
+
+          <View style={{ paddingTop: 2 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Notification");
+              }}
+            >
+              <Icon
+                name="notifications"
+                // type="font-awesome"
+                color="white"
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <ScrollView
           refreshControl={

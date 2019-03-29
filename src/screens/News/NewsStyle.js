@@ -46,7 +46,7 @@ export default (styles = StyleSheet.create({
     borderBottomColor: "white",
     padding: 10,
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "space-between"
   },
   home: {
     fontFamily: "lucida grande",
