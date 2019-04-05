@@ -11,10 +11,10 @@ import {
   TouchableOpacity,
   Button,
   Image,
-  Icon,
   Dimensions,
   ScrollView
 } from "react-native";
+import { Icon } from "react-native-elements";
 import Users from "../../components/Users/Users";
 // import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
@@ -94,8 +94,19 @@ export default class CityUsers extends React.Component {
     return (
       <View>
         <View style={styles.header}>
-          <View />
-          <Text style={styles.home}>Users</Text>
+          <View>
+            <TouchableOpacity
+              title=""
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+            >
+              <Icon name="arrow-back" color="white" size={30} />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text style={styles.home}>Users</Text>
+          </View>
           <View
             style={{
               flexDirection: "row",

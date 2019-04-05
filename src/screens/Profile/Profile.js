@@ -508,7 +508,7 @@ export default class Profile extends React.Component {
       <View>
         <View style={styles.header}>
           <View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               title=""
               onPress={this.businessDetails.bind(this)}
             >
@@ -518,6 +518,14 @@ export default class Profile extends React.Component {
                 color="white"
                 size={30}
               />
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              title=""
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+            >
+              <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>
           <Text style={styles.home}>Edit profile</Text>
@@ -662,14 +670,14 @@ export default class Profile extends React.Component {
                 />
               </View>
 
-              {/* <View style={{ paddingBottom: 100 }}>
+              <View style={{ paddingBottom: 100 }}>
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
                   color="#C60C31"
                   //accessibilityLabel="Learn more about this purple button"
                 />
-              </View> */}
+              </View>
             </View>
           </View>
         </ScrollView>

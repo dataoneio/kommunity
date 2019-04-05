@@ -61,13 +61,26 @@ export default class BloodBook extends React.Component {
       <View>
         <View style={styles.header}>
           <View>
-            <TouchableOpacity title="" onPress={() => {
-                  this.props.navigation.goBack(null)}}>
+            <TouchableOpacity
+              title=""
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+            >
               <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.home}>Blood Book</Text>
+          <View>
+            <Text style={styles.home}>Blood Book</Text>
+          </View>
           <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }}
+          />
+
+          {/* <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between"
@@ -75,7 +88,7 @@ export default class BloodBook extends React.Component {
           >
             <TouchableOpacity
             title="request"
-            onPress={() => {
+            onPress={() => {  
               this.props.navigation.navigate("BloodBankUsers", {
                 txt: this.state.BloodGroup,
                 city: this.state.City
@@ -88,7 +101,7 @@ export default class BloodBook extends React.Component {
               </View>
             </View>
           </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         <View style={{ padding: 10 }}>
           <Dropdown
@@ -107,6 +120,22 @@ export default class BloodBook extends React.Component {
             onChangeText={City => this.setState({ City })}
             // value={"None"}
           />
+        </View>
+        <View>
+          <View
+            style={{ paddingBottom: 100, paddingHorizontal: 150, padding: 20 }}
+          >
+            <Button
+              onPress={() => {
+                this.props.navigation.navigate("BloodBankUsers", {
+                  txt: this.state.BloodGroup,
+                  city: this.state.City
+                });
+              }}
+              title="Search"
+              color="#C60C31"
+            />
+          </View>
         </View>
       </View>
     );
@@ -136,7 +165,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   sendButton: {
-    color: "white",
+    color: "black",
     paddingRight: 10,
     padding: 4,
     paddingLeft: 15,

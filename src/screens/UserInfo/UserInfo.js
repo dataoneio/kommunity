@@ -266,14 +266,11 @@ export default class UserInfo extends React.Component {
           <View>
             <TouchableOpacity
               title=""
-              onPress={this.businessDetails.bind(this)}
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
             >
-              <Icon
-                name="briefcase"
-                type="font-awesome"
-                color="white"
-                size={30}
-              />
+              <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>
           <Text style={styles.home}>Info</Text>
@@ -453,13 +450,13 @@ export default class UserInfo extends React.Component {
                   value={this.state.city}
                 />
               </View>
-              {/* <View style={{ paddingBottom: 100 }}>
+              <View style={{ paddingBottom: 100 }}>
                 <Button
                   onPress={this.businessDetails.bind(this)}
                   title="Business Details"
                   color="#C60C31"
                 />
-              </View> */}
+              </View>
             </View>
           </View>
         </ScrollView>

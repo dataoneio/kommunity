@@ -279,17 +279,18 @@ export default class Search extends React.Component {
       <View style={{ flex: 1 }}>
         <View style={styles.header}>
           <View style={{ flexDirection: "row" }}>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               title="back"
               style={{ paddingTop: 7 }}
               onPress={() => {
-                this.props.navigation.navigate("HomeNavigator");
+                this.props.navigation.goBack(null);
               }}
             >
-              <Icon name="arrow-back" size={30} color="#cccccc" />
-            </TouchableOpacity> */}
+              <Icon name="arrow-back" size={30} color="#f2f2f2" />
+            </TouchableOpacity>
             <TextInput
               style={{
+                padding:10,
                 paddingRight: 10,
                 color: "white"
               }}

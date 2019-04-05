@@ -47,15 +47,10 @@ export default class NewsScreen extends React.Component {
           <View>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate("Info");
+                this.props.navigation.goBack(null);
               }}
             >
-              <Icon
-                name="info-circle"
-                type="font-awesome"
-                color="white"
-                size={30}
-              />
+              <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>
 

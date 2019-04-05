@@ -112,7 +112,19 @@ export default class AddressBook extends React.Component {
     return (
       <View style={{}}>
         <View style={styles.header}>
-          <Text style={styles.home}>AddressBook</Text>
+          <View>
+            <TouchableOpacity
+              title=""
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+            >
+              <Icon name="arrow-back" color="white" size={30} />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text style={styles.home}>Address Book</Text>
+          </View>
           <View
             style={{
               flexDirection: "row",
@@ -158,7 +170,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "white",
     padding: 10,
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "space-between"
   },
   sendButton: {
     color: "white",

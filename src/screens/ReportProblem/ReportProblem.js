@@ -39,23 +39,25 @@ export default class ReportProblem extends React.Component {
     return (
       <View>
         <View style={styles.header}>
-          <Text style={styles.home}>Feedback</Text>
+          <View>
+            <TouchableOpacity
+              title=""
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+            >
+              <Icon name="arrow-back" color="white" size={30} />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text style={styles.home}>Feedback</Text>
+          </View>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between"
             }}
           />
-          <TouchableOpacity
-            title="request"
-            onPress={this.handleEmail.bind(this)}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <View>
-                <Text style={styles.sendButton}>Send</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
         </View>
         <View style={{ padding: 10 }}>
           <TextInput
@@ -83,6 +85,15 @@ export default class ReportProblem extends React.Component {
             placeholder={"Your problem description"}
             placeholderTextColor="#908a89"
             value={this.state.description}
+          />
+        </View>
+        <View
+          style={{ paddingBottom: 100, paddingHorizontal: 150, padding: 20 }}
+        >
+          <Button
+            onPress={this.handleEmail.bind(this)}
+            title="Send"
+            color="#C60C31"
           />
         </View>
       </View>

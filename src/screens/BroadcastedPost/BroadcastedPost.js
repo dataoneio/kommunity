@@ -12,7 +12,7 @@ import {
   Button
 } from "react-native";
 import firebase from "../../../Firebase";
-import Feed from "../../components/Feed/Feed"
+import Feed from "../../components/Feed/Feed";
 import ContentLoader from "react-native-content-loader";
 import { Circle, Rect } from "react-native-svg";
 export default class BroadcastedPost extends React.Component {
@@ -57,12 +57,15 @@ export default class BroadcastedPost extends React.Component {
       Title: title,
       description: desc,
       url: imgurl,
-      backto:"News"
+      backto: "News"
     });
   }
   testing(uid) {
     //console.log("home it is" + uid);
-    this.props.navigation.navigate("UserInfo", { EventId: uid ,screen:"BroadcastedPost"});
+    this.props.navigation.navigate("UserInfo", {
+      EventId: uid,
+      screen: "BroadcastedPost"
+    });
   }
   componentDidMount() {
     var arr1 = [];
@@ -130,40 +133,42 @@ export default class BroadcastedPost extends React.Component {
               this.getDataForBroadcast(data.key, arr1);
             }
           }
+          this.setState({ isloading: false });
+
           //this.setState({ eventlist: arr1 });
           // console.log("arrrrrrr-----" + JSON.stringify(arr1));
           //  arr1.push({
           //  key: data.key
           //  })
         },
-        //this.setState({ isloading: false })
+        this.setState({ isloading: false })
       );
     //console.log("------"+JSON.stringify(arr1))
   }
 
   render() {
     if (this.state.isloading) {
-      return(
+      return (
         <View style={{ paddingLeft: 20, paddingTop: 30 }}>
-        <ContentLoader height={300}>
-          <Circle cx="30" cy="30" r="30" />
-          <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-          <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-          <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
-        </ContentLoader>
-        <ContentLoader height={300}>
-          <Circle cx="30" cy="30" r="30" />
-          <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-          <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-          <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
-        </ContentLoader>
-        <ContentLoader height={300}>
-          <Circle cx="30" cy="30" r="30" />
-          <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
-          <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
-          <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
-        </ContentLoader>
-      </View>
+          <ContentLoader height={300}>
+            <Circle cx="30" cy="30" r="30" />
+            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+            <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
+          </ContentLoader>
+          <ContentLoader height={300}>
+            <Circle cx="30" cy="30" r="30" />
+            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+            <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
+          </ContentLoader>
+          <ContentLoader height={300}>
+            <Circle cx="30" cy="30" r="30" />
+            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+            <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
+          </ContentLoader>
+        </View>
       );
     }
     var broadcastPosts = this.state.results.map((val, key) => {
@@ -222,7 +227,7 @@ const styles = StyleSheet.create({
   },
 
   home: {
-    textAlign:"center",
+    textAlign: "center",
     fontFamily: "lucida grande",
     justifyContent: "center",
     fontWeight: "bold",
