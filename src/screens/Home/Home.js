@@ -54,7 +54,8 @@ export default class Home extends React.Component {
       dialogVisible: false,
       gender: "",
       city: "",
-      State: ""
+      State: "",
+      referenceToOldestKey: ""
     };
   }
 
@@ -193,41 +194,208 @@ export default class Home extends React.Component {
 
   getDataFromFirebase() {
     let arr1 = [];
+
+    alert(this.state.referenceToOldestKey);
     var d = new Date();
     //var eventid="";
     var flag = 1;
-    firebase
-      .database()
-      .ref("app/Event details")
-      .on("child_added", data => {
-        var result = [];
-        var key1 = [];
-        key1.push(data.key);
-        let arr = data.toJSON();
-        for (var i in arr) {
-          result.push(arr[i]);
-        }
-        //console.log("--------"+result[5].toString())
-        //var combine=result[2].toString()+result[6].toString();
-        //console.log("aaa----------"+combine);
-        if (result[5].toString() == "false") {
-          // console.log("false");
-          arr1.push({
-            date: result[2].toString(),
-            category: result[0].toString(),
-            description: result[3].toString(),
-            uid: data.key,
-            title: result[6].toString(),
-            url1: result[4].toString(),
-            userId: result[7].toString()
+    // let referenceToOldestKey = "";
+    // firebase
+    //   .database()
+    //   .ref("app/Event details")
+    //   .on("child_added", data => {
+    //     var result = [];
+    //     var key1 = [];
+    //     key1.push(data.key);
+    //     let arr = data.toJSON();
+    //     for (var i in arr) {
+    //       result.push(arr[i]);
+    //     }
+    //     //console.log("--------"+result[5].toString())
+    //     //var combine=result[2].toString()+result[6].toString();
+    //     //console.log("aaa----------"+combine);
+    //     if (result[5].toString() == "false") {
+    //       // console.log("false");
+    //       arr1.push({
+    //         date: result[2].toString(),
+    //         category: result[0].toString(),
+    //         description: result[3].toString(),
+    //         uid: data.key,
+    //         title: result[6].toString(),
+    //         url1: result[4].toString(),
+    //         userId: result[7].toString()
+    //       });
+    //       this.setState({ initialVals: arr1 }, () => {
+    //         this.searchByPost();
+    //       });
+    //     }
+    //     this.setState({ feeds: arr1 });
+    //     this.setState({ isLoading: false });
+    //   });
+    if (!this.state.referenceToOldestKey) {
+      // if initial fetch
+      var key1 = [];
+      var index1 = 0;
+      firebase
+        .database()
+        .ref("app/Event details")
+        .orderByKey()
+        .limitToLast(5)
+        .once("value")
+        .then(snapshot => {
+          snapshot.forEach(function(childsnap) {
+            key1[index1] = childsnap.key;
+            index1++;
           });
-          this.setState({ initialVals: arr1 }, () => {
-            this.searchByPost();
+          // changing to reverse chronological order (latest first)
+          let arrayOfKeys = Object.keys(snapshot.val())
+            .sort()
+            .reverse();
+
+          // transforming to array
+          // console.log(JSON.stringify(snapshot.toJSON()) + "RRRRRRR");
+          let results = arrayOfKeys.map(key => snapshot.val()[key]);
+          var result = [];
+          // storing reference
+          this.setState({
+            referenceToOldestKey: arrayOfKeys[arrayOfKeys.length - 1]
           });
-        }
-        this.setState({ feeds: arr1 });
-        this.setState({ isLoading: false });
-      });
+          // referenceToOldestKey = arrayOfKeys[arrayOfKeys.length - 1];
+          console.log(JSON.stringify(results) + "chunkyyyyyyyyyy");
+          for (var i in results) {
+            result.push(results[i]);
+          }
+          console.log(JSON.stringify(result[1].Category) + "resultlllll");
+
+          // if (result[5].toString() == "false") {
+          // snapshot.forEach(function(child)){
+          //   key
+          // }
+          for (var i = 0; i < result.length; i++) {
+            console.log(JSON.stringify(snapshot.key) + "key snapshot");
+            arr1.push({
+              date: result[i].Date,
+              category: result[i].Category,
+              description: result[i].Description,
+              uid: key1[i],
+              title: result[i].Title,
+              url1: result[i].Image,
+              userId: result[i].UserId
+            });
+
+            // this.setState(
+            //   {
+            //     initialVals: [
+            //       ...initialVals,
+            //       {
+            //         date: result[i].Date,
+            //         category: result[i].Category,
+            //         description: result[i].Description,
+            //         uid: key1[i],
+            //         title: result[i].Title,
+            //         url1: result[i].Image,
+            //         userId: result[i].UserId
+            //       }
+            //     ]
+            //   },
+            //   () => {
+            //     // this.searchByPost();
+            //   }
+            // );
+            // }
+          }
+
+          this.setState({
+            initialVals: arr1
+          });
+          this.setState({ feeds: arr1 });
+          this.setState({ isLoading: false });
+
+          // Do what you want to do with the data, i.e.
+          // append to page or dispatch({ … }) if using redux
+        })
+        .catch(error => {});
+    } else {
+      var key = [];
+      var index = 0;
+      firebase
+        .database()
+        .ref("app/Event details")
+        .orderByKey()
+        .endAt(this.state.referenceToOldestKey)
+        .limitToLast(6)
+        .once("value")
+        .then(snapshot => {
+          snapshot.forEach(function(childsnap) {
+            key[index] = childsnap.key;
+            index++;
+          });
+          // changing to reverse chronological order (latest first)
+          // & removing duplicate
+          let arrayOfKeys = Object.keys(snapshot.val())
+            .sort()
+            .reverse()
+            .slice(1);
+          // transforming to array
+          let results = arrayOfKeys.map(key => snapshot.val()[key]);
+          var result1 = [];
+          // updating reference
+          this.setState({
+            referenceToOldestKey: arrayOfKeys[arrayOfKeys.length - 1]
+          });
+          // referenceToOldestKey = arrayOfKeys[arrayOfKeys.length - 1];
+          console.log(results + "ssssssss");
+
+          // Do what you want to do with the data, i.e.
+          // append to page or dispatch({ … }) if using redux
+          for (var i in results) {
+            result1.push(results[i]);
+          }
+
+          for (var i = 0; i < result1.length; i++) {
+            console.log(JSON.stringify(snapshot.key) + "key snapshot");
+            console.log(arr1);
+            // this.setState({
+            //   initialVals: [
+            //     ...initialVals,
+            //     {
+            //       date: result1[i].Date,
+            //       category: result1[i].Category,
+            //       description: result1[i].Description,
+            //       // uid: result[i].Id,
+            //       title: result1[i].Title,
+            //       url1: result1[i].Image,
+            //       userId: result1[i].UserId
+            //     }
+            //   ]
+            // });
+            let arr2 = [];
+            arr2.push({
+              date: result1[i].Date,
+              category: result1[i].Category,
+              description: result1[i].Description,
+              uid: key[i],
+              title: result1[i].Title,
+              url1: result1[i].Image,
+              userId: result1[i].UserId
+            });
+
+            this.setState(prevState => ({
+              initialVals: {
+                ...prevState.initialVals,
+                date: result1[i].Date,
+                category: result1[i].Category,
+                description: result1[i].Description,
+                uid: key[i],
+                title: result1[i].Title,
+                url1: result1[i].Image,
+                userId: result1[i].UserId
+              }
+            }));
+          }
+        })
+        .catch(error => {});
+    }
   }
 
   searchByPost() {
@@ -294,6 +462,7 @@ export default class Home extends React.Component {
     this.props.navigation.navigate("Broadcast");
   }
   render() {
+    console.log(this.state.initialVals);
     if (this.state.isLoading) {
       return (
         <View style={{ paddingLeft: 20, paddingTop: 30 }}>
@@ -503,12 +672,15 @@ export default class Home extends React.Component {
             <View
               style={{
                 flexWrap: "wrap-reverse",
-                flexDirection: "column-reverse",
+                flexDirection: "column",
                 backgroundColor: "#dddce2"
               }}
             >
               {searchval}
             </View>
+            <TouchableOpacity onPress={this.getDataFromFirebase.bind(this)}>
+              <Text>load more</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
