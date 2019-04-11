@@ -21,7 +21,7 @@ import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
 import styles from "./InfoStyle";
 import ImagePicker from "react-native-image-picker";
-import RNFetchBlob from "react-native-fetch-blob";
+import RNFetchBlob from "rn-fetch-blob";
 import fs from "react-native-fs";
 
 const Blob = RNFetchBlob.polyfill.Blob;

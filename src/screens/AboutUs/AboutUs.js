@@ -21,7 +21,6 @@ import {
 //import firebase from "../../../Firebase";
 // import styles from "./InfoStyle";
 //import ImagePicker from "react-native-image-picker";
-//import RNFetchBlob from "react-native-fetch-blob";
 //import fs from "react-native-fs";
 
 export default class Info extends React.Component {

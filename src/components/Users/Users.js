@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-
-// import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
-
-// import { Icon } from "react-native-elements";
 import {
   Platform,
   StyleSheet,

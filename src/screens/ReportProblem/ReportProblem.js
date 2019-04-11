@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-
-import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
-
+// import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import { Icon } from "react-native-elements";
 import {
   Platform,
@@ -21,9 +19,11 @@ export default class ReportProblem extends React.Component {
     this.state = {
       test: "",
       Subject: "",
-      description: ""
+      description: "",
+      height: 40
     };
   }
+
   handleEmail = () => {
     const to = ["communitysocialnetworkingapp@gmail.com"]; // string or array of email addresses
     email(to, {
@@ -33,9 +33,25 @@ export default class ReportProblem extends React.Component {
       subject: this.state.Subject,
       body: this.state.description
     }).catch(console.error);
+   
+    this.props.navigation.navigate("HomeNavigator");
+    this.setState({
+      Subject: "",
+      description: "",
+    });
+
   };
 
+  updateSize = (height) => {
+    this.setState({
+      height
+    });
+  }
+
   render() {
+
+    const { height} = this.state;
+
     return (
       <View>
         <View style={styles.header}>
@@ -70,7 +86,7 @@ export default class ReportProblem extends React.Component {
           />
         </View>
         <View style={{ padding: 10 }}>
-          <AutoGrowingTextInput
+          <TextInput
             label="Body"
             style={{
               padding: 10,
@@ -79,12 +95,15 @@ export default class ReportProblem extends React.Component {
               borderBottomWidth: 0.5,
               fontSize: 16
             }}
-            onChangeText={description => this.setState({ description })}
             maxLength={200}
-            // value={this.state.descInput.slice(0, 200)}
-            placeholder={"Your problem description"}
+            placeholder="Your problem description"
             placeholderTextColor="#908a89"
-            value={this.state.description}
+            onChangeText={(description) => this.setState({description})}
+            editable={true}
+            multiline={true}
+            // value={this.state.description.slice(0, 200)}
+            value={this.state.descInput}
+            onContentSizeChange={(e) => this.updateSize(e.nativeEvent.contentSize.height)}
           />
         </View>
         <View
@@ -133,3 +152,4 @@ const styles = StyleSheet.create({
     borderLeftColor: "white"
   }
 });
+

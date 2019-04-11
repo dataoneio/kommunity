@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
+// import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import { Dropdown } from "react-native-material-dropdown";
 import {
   Platform,
@@ -16,7 +16,7 @@ import { Icon } from "react-native-elements";
 import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
 import ImagePicker from "react-native-image-picker";
-import RNFetchBlob from "react-native-fetch-blob";
+import RNFetchBlob from "rn-fetch-blob";
 import fs from "react-native-fs";
 import styles from "./AddEventStyle";
 
@@ -33,11 +33,12 @@ export default class AddEvent extends React.Component {
       descInput: "",
       date: "",
       category: "",
-      imageurl: "",
+      imageurl: "https://firebasestorage.googleapis.com/v0/b/practice-82dce.appspot.com/o/images%2F1553285417988?alt=media&token=8b84b86d-0998-470a-8801-a0ccb0d17342",
       testing: "",
       UserId: "",
       testWidth: "99%",
-      locationFilter: ""
+      locationFilter: "",
+      height: 40
     };
   }
 
@@ -198,12 +199,23 @@ export default class AddEvent extends React.Component {
       }
     }
   }
+
   goback() {
     const { navigate } = this.props.navigation;
     navigate("Home");
   }
+
+  updateSize = (height) => {
+    this.setState({
+      height
+    });
+  }
+
   render() {
+
+    const { height} = this.state;
     var { screenProps } = this.props;
+    
     let data = [
       {
         value: "Birthday"
@@ -313,6 +325,7 @@ export default class AddEvent extends React.Component {
               />
             </View> */}
             <View style={{ padding: 10, paddingTop: 20 }}>
+{/* 
               <AutoGrowingTextInput
                 label="Description"
                 style={{
@@ -327,7 +340,29 @@ export default class AddEvent extends React.Component {
                 placeholder={"Your Message"}
                 placeholderTextColor="#908a89"
                 value={this.state.descInput}
+              /> */}
+
+              <TextInput
+                label="Description"
+                style={{
+                  padding: 10,
+                  width: this.state.testWidth,
+                  borderBottomColor: "#908a89",
+                  borderBottomWidth: 0.5,
+                  fontSize: 16
+                }}
+                maxLength={200}
+                placeholder="Your Message"
+                // placeholder={"Your problem description"}
+                placeholderTextColor="#908a89"
+                onChangeText={(descInput) => this.setState({descInput})}
+                editable={true}
+                multiline={true}
+                // value={this.state.descInput.slice(0, 200)}
+                value={this.state.descInput}
+                onContentSizeChange={(e) => this.updateSize(e.nativeEvent.contentSize.height)}
               />
+
             </View>
             <View style={{ justifyContent: "space-around" }}>
               <Image

@@ -18,7 +18,7 @@ import {
 import firebase from "../../../Firebase";
 import styles from "./MyPostsStyle";
 import ImagePicker from "react-native-image-picker";
-import RNFetchBlob from "react-native-fetch-blob";
+import RNFetchBlob from "rn-fetch-blob";
 import fs from "react-native-fs";
 //import { timingSafeEqual } from "crypto";
 const Blob = RNFetchBlob.polyfill.Blob;
