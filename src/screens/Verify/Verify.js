@@ -86,7 +86,7 @@ export default class App extends Component {
 	}
 
 	setValueLocally = () => {
-		AsyncStorage.setItem("token", this.state.phone);
+		AsyncStorage.setItem("token", "91"+this.state.phone);
 		//alert("Value Stored Successfully.")
 	};
 
