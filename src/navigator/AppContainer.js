@@ -14,6 +14,7 @@ import Search from "../screens/Search/Search";
 import React, { Component } from "react";
 import Info from "../screens/Info/Info";
 import Login from "../screens/Login/Login";
+import Verify from "../screens/Verify/Verify";
 import Request from "../screens/Request/Request";
 import UserInfo from "../screens/UserInfo/UserInfo";
 import UserPosts from "../screens/UserPosts/UserPosts";
@@ -386,6 +387,23 @@ const StackNavigator1 = createStackNavigator(
   }
 );
 
+const StackNavigator26 = createStackNavigator(
+  {
+    Verify: {
+      screen: Verify
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+
+
+
 // const TabNavigator = createBottomTabNavigator(
 //   {
 //     Home: {
@@ -468,30 +486,31 @@ const RootNavigator = createStackNavigator(
   {
     p0: StackNavigator6,
     p1: StackNavigator1,
-    p2: StackNavigator22,
-    P3: StackNavigator,
-    p4: StackNavigator2,
-    p5: StackNavigator3,
-    p6: StackNavigator4,
-    p7: StackNavigator5,
-    p8: StackNavigator7,
-    p9: StackNavigator8,
-    p10: StackNavigator9,
-    p11: StackNavigator10,
-    p12: StackNavigator11,
-    p13: StackNavigator12,
-    p14: StackNavigator13,
-    p15: StackNavigator14,
-    p16: StackNavigator15,
-    p17: StackNavigator16,
-    p18: StackNavigator17,
-    p19: StackNavigator18,
-    p20: StackNavigator19,
-    p21: StackNavigator20,
-    p22: StackNavigator21,
-    p23: StackNavigator23,
-    p24: StackNavigator24,
-    p25: StackNavigator25
+    p2: StackNavigator26,
+    p3: StackNavigator22,
+    P4: StackNavigator,
+    p5: StackNavigator2,
+    p6: StackNavigator3,
+    p7: StackNavigator4,
+    p8: StackNavigator5,
+    p9: StackNavigator7,
+    p10: StackNavigator8,
+    p11: StackNavigator9,
+    p12: StackNavigator10,
+    p13: StackNavigator11,
+    p14: StackNavigator12,
+    p15: StackNavigator13,
+    p16: StackNavigator14,
+    p17: StackNavigator15,
+    p18: StackNavigator16,
+    p19: StackNavigator17,
+    p20: StackNavigator18,
+    p21: StackNavigator19,
+    p22: StackNavigator20,
+    p23: StackNavigator21,
+    p24: StackNavigator23,
+    p25: StackNavigator24,
+    p26: StackNavigator25
   },
   {
     headerMode: "none",
