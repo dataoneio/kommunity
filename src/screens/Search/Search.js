@@ -339,8 +339,8 @@ export default class Search extends React.Component {
           <ScrollView>
             <View
               style={{
-                // flexWrap: "wrap-reverse",
-                // flexDirection: "column-reverse",
+                flexWrap: "wrap-reverse",
+                flexDirection: "column-reverse",
                 backgroundColor: "#dddce2"
               }}
             >

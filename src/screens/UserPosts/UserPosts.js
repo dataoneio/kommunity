@@ -20,7 +20,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
-  TextInput,RefreshControl
+  TextInput,
+  RefreshControl
 } from "react-native";
 // import { TextInput } from "react-native-paper";
 import firebase from "../../../Firebase";
@@ -45,13 +46,13 @@ export default class MyPosts extends React.Component {
       feeds: [],
       initialVals: [],
       searchResult: [],
-      searchInput: "",
+      // searchInput: "",
       onFilter: true,
       isLoading: true,
       gettingData: false,
       userId: "",
-      referenceToLatestKey:"",
-      referenceToOldestKey:""
+      referenceToLatestKey: "",
+      referenceToOldestKey1: "event"
     };
   }
 
@@ -69,9 +70,9 @@ export default class MyPosts extends React.Component {
       //   .on("child_added", snapshot => {
       //     this.setState({ referenceToLatestKey: snapshot.key }, () => {
       //       console.log("latest key" + this.state.referenceToLatestKey);
-            this.getCustomLastKey();
-        //  });
-       // });
+      this.getCustomLastKey();
+      //  });
+      // });
     });
   }
 
@@ -142,26 +143,39 @@ export default class MyPosts extends React.Component {
     var { screenProps } = this.props;
     firebase
       .database()
-      .ref("app/" + screenProps.user.CommunityName + "/Event details")
+      .ref("app/" + screenProps.user.CommunityName + "/Event details/")
       .orderByKey()
       .limitToFirst(1)
       .on("child_added", snapshot => {
         this.setState({ referenceToLatestKey: snapshot.key }, () => {
           console.log("latest key" + this.state.referenceToLatestKey);
-          firebase
-            .database()
-            .ref("app/" + screenProps.user.CommunityName + "/Event details")
-            .orderByChild("UserId")
-            .equalTo(this.state.userId)
-            .limitToLast(1)
-            .on("child_added", snapshot => {
-              this.setState({ referenceToOldestKey: snapshot.key }, () => {
-                console.log("oldest key" + this.state.referenceToOldestKey);
-                this.getCustomData();
-              });
-            });
+          this.getCustomData();
+          // firebase
+          //   .database()
+          //   .ref("app/" + screenProps.user.CommunityName + "/Event details/")
+          //   .orderByChild("UserId/"+this.state.userId)
+          //   // .equalTo(this.state.userId)
+          //   .limitToLast(1)
+          //   .once("child_added", snapshot => {
+          //     this.setState({ referenceToOldestKey: snapshot.key }, () => {
+          //       console.log("oldest key" + this.state.referenceToOldestKey);
+          //     //  this.getCustomData();
+          //     });
+          //  });
         });
       });
+    // firebase
+    //   .database()
+    //   .ref("app/" + screenProps.user.CommunityName + "/Event details/")
+    //   .orderByChild("UserId/" + this.state.userId)
+    //   // .equalTo(this.state.userId)
+    //   //.limitToLast(1)
+    //   .once("value", snapshot => {
+    //     this.setState({ referenceToOldestKey1: snapshot.key }, () => {
+    //       console.log("oldest key" + this.state.referenceToOldestKey1);
+    //       this.getCustomData();
+    //     });
+    //   });
   }
 
   getCustomData() {
@@ -177,17 +191,17 @@ export default class MyPosts extends React.Component {
       .database()
       .ref("app/" + screenProps.user.CommunityName + "/Event details")
       .orderByKey()
-      .endAt(this.state.referenceToOldestKey)
+      .endAt(this.state.referenceToOldestKey1)
       .limitToLast(10)
       .once("value")
       .then(snapshot => {
+        console.log("aaaaaaaaa"+this.state.referenceToOldestKey1)
         console.log(iter);
         iter = iter + 1;
         snapshot.forEach(function(childsnap) {
           key1[index1] = childsnap.key;
           index1++;
         });
-
         arrayOfKeys = Object.keys(snapshot.val())
           .sort()
           .reverse();
@@ -198,7 +212,7 @@ export default class MyPosts extends React.Component {
         var result = [];
 
         this.setState({
-          referenceToOldestKey: arrayOfKeys[arrayOfKeys.length - 1]
+          referenceToOldestKey1: arrayOfKeys[arrayOfKeys.length - 1]
         });
 
         for (var i in results) {
@@ -206,7 +220,10 @@ export default class MyPosts extends React.Component {
         }
 
         for (var i = 0; i < result.length - 1; i++) {
-          if (result[i].UserId.toString() === this.state.userId && result[i].Post_View.toString() == "false") {
+          if (
+            result[i].UserId.toString() === this.state.userId &&
+            result[i].Post_View.toString() == "false"
+          ) {
             arr1.push({
               date: result[i].Date.toString(),
               category: result[i].Category.toString(),
@@ -220,12 +237,12 @@ export default class MyPosts extends React.Component {
           }
         }
 
-        console.log("qwerty" + this.state.referenceToOldestKey);
+        console.log("qwerty" + this.state.referenceToOldestKey1);
         console.log("qwerty" + this.state.referenceToLatestKey);
 
         if (this.state.searchResult.length < 3) {
           if (
-            this.state.referenceToLatestKey == this.state.referenceToOldestKey
+            this.state.referenceToLatestKey == this.state.referenceToOldestKey1
           ) {
             console.log("same end it is ");
             return;
@@ -408,9 +425,9 @@ export default class MyPosts extends React.Component {
                 onRefresh={this._onRefresh}
               />
             }
-            style={{ backgroundColor: "white",padding:10 }}
+            style={{ backgroundColor: "white"}}
           >
-          {/* <ScrollView style={{ padding: 10, backgroundColor: "white" }}> */}
+            {/* <ScrollView style={{ padding: 10, backgroundColor: "white" }}> */}
             <View
               style={{
                 alignSelf: "center",

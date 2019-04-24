@@ -12,7 +12,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Button
+  Button,RefreshControl
 } from "react-native";
 import renderIf from "../../components/ViewFeed/renderIf";
 import firebase from "../../../Firebase";
@@ -31,7 +31,11 @@ export default class MyPosts extends React.Component {
       feeds: [],
       searchInput: "",
       onFilter: true,
-      isLoading: true
+      isLoading: true,
+      referenceToOldestKey1:"events",
+      referenceToLatestKey:"",
+      searchResult:[],
+      gettingData:false
     };
   }
   componentDidMount() {
@@ -40,9 +44,131 @@ export default class MyPosts extends React.Component {
       { imageurl: screenProps.user.userphotourl },
       console.log("dedededeee----" + screenProps.user.userphotourl)
     );
+    this.getCustomLastKey();
 
-    this.getDataFromFirebase();
+    //this.getDataFromFirebase();
     //console.log("wwww----"+screenProps.user.id)
+  }
+
+
+
+
+  getCustomLastKey() {
+    var { screenProps } = this.props;
+    firebase
+      .database()
+      .ref("app/" + screenProps.user.CommunityName + "/Event details/")
+      .orderByKey()
+      .limitToFirst(1)
+      .on("child_added", snapshot => {
+        this.setState({ referenceToLatestKey: snapshot.key }, () => {
+          console.log("latest key" + this.state.referenceToLatestKey);
+          this.getCustomData();
+          // firebase
+          //   .database()
+          //   .ref("app/" + screenProps.user.CommunityName + "/Event details/")
+          //   .orderByChild("UserId/"+this.state.userId)
+          //   // .equalTo(this.state.userId)
+          //   .limitToLast(1)
+          //   .once("child_added", snapshot => {
+          //     this.setState({ referenceToOldestKey: snapshot.key }, () => {
+          //       console.log("oldest key" + this.state.referenceToOldestKey);
+          //     //  this.getCustomData();
+          //     });
+          //  });
+        });
+      });
+    // firebase
+    //   .database()
+    //   .ref("app/" + screenProps.user.CommunityName + "/Event details/")
+    //   .orderByChild("UserId/" + this.state.userId)
+    //   // .equalTo(this.state.userId)
+    //   //.limitToLast(1)
+    //   .once("value", snapshot => {
+    //     this.setState({ referenceToOldestKey1: snapshot.key }, () => {
+    //       console.log("oldest key" + this.state.referenceToOldestKey1);
+    //       this.getCustomData();
+    //     });
+    //   });
+  }
+
+  getCustomData() {
+    let arr1 = this.state.searchResult;
+    let key1 = [];
+    var index1 = 0;
+    let arrayOfKeys = [];
+    let results = [];
+    let iter = 0;
+    const { navigation } = this.props;
+    var { screenProps } = this.props;
+    firebase
+      .database()
+      .ref("app/" + screenProps.user.CommunityName + "/Event details")
+      .orderByKey()
+      .endAt(this.state.referenceToOldestKey1)
+      .limitToLast(10)
+      .once("value")
+      .then(snapshot => {
+        console.log("aaaaaaaaa"+this.state.referenceToOldestKey1)
+        console.log(iter);
+        iter = iter + 1;
+        snapshot.forEach(function(childsnap) {
+          key1[index1] = childsnap.key;
+          index1++;
+        });
+        arrayOfKeys = Object.keys(snapshot.val())
+          .sort()
+          .reverse();
+
+        console.log(arrayOfKeys);
+
+        results = arrayOfKeys.map(key => snapshot.val()[key]);
+        var result = [];
+
+        this.setState({
+          referenceToOldestKey1: arrayOfKeys[arrayOfKeys.length - 1]
+        });
+
+        for (var i in results) {
+          result.push(results[i]);
+        }
+
+        for (var i = 0; i < result.length - 1; i++) {
+          if (
+            result[i].UserId.toString() === screenProps.user.id) {
+            arr1.push({
+              date: result[i].Date.toString(),
+              category: result[i].Category.toString(),
+              description: result[i].Description.toString(),
+              uid: arrayOfKeys[i],
+              title: result[i].Title.toString(),
+              url1: result[i].Image.toString(),
+              userId: result[i].UserId.toString()
+            });
+            this.setState({ searchResult: arr1 });
+          }
+        }
+
+        console.log("qwerty" + this.state.referenceToOldestKey1);
+        console.log("qwerty" + this.state.referenceToLatestKey);
+
+        if (this.state.searchResult.length < 3) {
+          if (
+            this.state.referenceToLatestKey == this.state.referenceToOldestKey1
+          ) {
+            console.log("same end it is ");
+            return;
+          } else {
+            console.log("callback");
+            this.getCustomData();
+          }
+        }
+
+        this.setState({ feeds: arr1 });
+        this.setState({ isLoading: false });
+        this.setState({ gettingData: false });
+      })
+      .catch(error => {});
   }
   goback() {
     const { navigate } = this.props.navigation;
@@ -170,7 +296,25 @@ export default class MyPosts extends React.Component {
               }}
             />
           </View>
-          <ScrollView style={{ padding: 10, backgroundColor: "white" }}>
+          {/* <ScrollView
+            onMomentumScrollBegin={() => {
+              console.log("outer scroll end");
+              if (!this.state.gettingData) {
+                console.log("inner scroll end");
+                this.setState({ gettingData: true }, () => {
+                  this.getCustomData();
+                });
+              }
+            }}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
+            style={{ backgroundColor: "white"}} */}
+          {/* > */}
+          {/* <ScrollView style={{ padding: 10, backgroundColor: "white" }}> */}
             <View style={{ paddingTop: 20, alignItems: "center" }}>
               <Image
                 borderRadius={50}
@@ -223,11 +367,30 @@ export default class MyPosts extends React.Component {
                 />
               </View>
             </View>
+
+            <ScrollView
+            onMomentumScrollBegin={() => {
+              console.log("outer scroll end");
+              if (!this.state.gettingData) {
+                console.log("inner scroll end");
+                this.setState({ gettingData: true }, () => {
+                  this.getCustomData();
+                });
+              }
+            }}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
+            style={{ backgroundColor: "white"}}
+          >
             <View
               style={{
-                paddingBottom: 150,
-                flexWrap: "wrap-reverse",
-                flexDirection: "column-reverse",
+                paddingBottom: 450,
+                // flexWrap: "wrap-reverse",
+                // flexDirection: "column-reverse",
                 backgroundColor: "#dddce2"
               }}
             >
