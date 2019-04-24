@@ -74,18 +74,25 @@ export default class MyPosts extends React.Component {
         var key1 = [];
         key1.push(data.key);
         let arr = data.toJSON();
-        for (var i in arr) {
-          result.push(arr[i]);
-        }
+        // for (var i in arr) {
+        //   result.push(arr[i]);
+        // }
 
         arr1.push({
-          date: result[2].toString(),
-          category: result[0].toString(),
-          description: result[3].toString(),
-          uid: data.key,
-          title: result[6].toString(),
-          url1: result[4].toString(),
-          userId: result[7].toString()
+          date: arr.Date,//result[2].toString(),
+          category: arr.Category,//result[0].toString(),
+          description: arr.Description,//result[3].toString(),
+          title: arr.Title,//result[6].toString(),
+          url1: arr.Image,//result[4].toString(),
+          userId: arr.UserId,//result[7].toString(),
+          uid: data.key
+          // date: //result[2].toString(),
+          // category: result[0].toString(),
+          // description: result[3].toString(),
+          // uid: data.key,
+          // title: result[6].toString(),
+          // url1: result[4].toString(),
+          // userId: result[7].toString()
         });
 
         this.setState({ feeds: arr1 });

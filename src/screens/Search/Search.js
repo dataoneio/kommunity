@@ -90,18 +90,20 @@ export default class Search extends React.Component {
         var result = [];
         var key2 = [];
         key2.push(data.key);
-        let arr = data.toJSON();
-        console.log("---" + JSON.stringify(arr));
-        for (var i in arr) {
-          result.push(arr[i]);
-        }
+        // let arr = data.toJSON();
+        // console.log("---" + JSON.stringify(arr));
+
+        // console.log("------------------"+data.toJSON().City)
+        //for (var i in arr) {
+        // result.push(arr[i]);
+        // }
 
         arr3.push({
-          Name: result[8].toString(),
-          profile_photo: result[10].toString(),
-          Blood_Group: result[1].toString(),
+          Name: data.toJSON().Name, // result[8].toString(),
+          profile_photo: data.toJSON().Profile_photo, //result[10].toString(),
+          Blood_Group: data.toJSON().Blood_Group, // result[1].toString(),
           userId: data.key,
-          City: result[3].toString()
+          City: data.toJSON().City //result[3].toString()
         });
         if (this.state.flag) {
           this.setState({ UserArray: arr3 }, () => {
@@ -134,12 +136,12 @@ export default class Search extends React.Component {
         }
 
         arr1.push({
-          date: result[2].toString(),
-          category: result[0].toString(),
-          description: result[3].toString(),
-          title: result[6].toString(),
-          url1: result[4].toString(),
-          userId: result[7].toString(),
+          date: arr.Date, //result[2].toString(),
+          category: arr.Category, //result[0].toString(),
+          description: arr.Description, //result[3].toString(),
+          title: arr.Title, //result[6].toString(),
+          url1: arr.Image, //result[4].toString(),
+          userId: arr.UserId, //result[7].toString(),
           uid: data.key
         });
 
@@ -157,12 +159,12 @@ export default class Search extends React.Component {
   };
   searchByUser() {
     // console.log("USERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-    console.log("BLOOOOOOOOOOOOOOOOOD" + this.state.bloodgroup);
+    // console.log("BLOOOOOOOOOOOOOOOOOD" + this.state.bloodgroup);
     var arr4 = this.state.UserArray;
     var result1 = arr4.filter(search => {
-      console.log(
-        search.Name.toUpperCase() + "lololololololoLLLLLLLLLLLLLLLLLLLLLLLLL"
-      );
+      // console.log(
+      //   search.Name.toUpperCase() + "lololololololoLLLLLLLLLLLLLLLLLLLLLLLLL"
+      // );
       let r1 = search.Name.toUpperCase();
       let st1 = this.state.searchInput.toUpperCase();
       if (r1.includes(st1)) {
@@ -170,13 +172,13 @@ export default class Search extends React.Component {
       }
     });
     this.setState({ searchResult1: result1 });
-    console.log("result1" + JSON.stringify(result1));
+    // console.log("result1" + JSON.stringify(result1));
   }
   clearSearch() {
     this.setState({ searchInput: "" });
   }
   viewDetail(uid, title, desc, imgurl) {
-    console.log("yoho------");
+    //console.log("yoho------");
     this.props.navigation.navigate("ViewFeed", {
       id: uid,
       Title: title,
@@ -197,7 +199,7 @@ export default class Search extends React.Component {
       }
     });
     this.setState({ searchResult: result });
-    console.log("result" + JSON.stringify(result));
+    // console.log("result" + JSON.stringify(result));
   }
 
   testing(uid) {

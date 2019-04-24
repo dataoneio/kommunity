@@ -24,7 +24,6 @@ import UserJoiningRequests from "../screens/UserJoiningRequests/UserJoiningReque
 import Broadcast from "../screens/Broadcast/Broadcast";
 import HomeNavigator from "../screens/HomeNavigator/HomeNavigator";
 import News from "../screens/News/News";
-//import Homescreen from "../screens/HomeNavigator/HomeNavigator";
 import BloodBook from "../screens/BloodBook/BloodBook";
 import AddressBook from "../screens/AddressBook/AddressBook";
 import CityUsers from "../screens/CityUsers/CityUsers";
@@ -32,11 +31,39 @@ import BroadcastedPost from "../screens/BroadcastedPost/BroadcastedPost";
 import BloodBankUsers from "../screens/BloodBankUsers/BloodBankUsers";
 import CommunityList from "../screens/CommunityList/CommunityList";
 import AddCommunity from "../screens/AddCommunity/AddCommunity";
-import AddAdmin from "../screens/AddAdmin/AddAdmin"
+import AddAdmin from "../screens/AddAdmin/AddAdmin";
+import Matrimonial from "../screens/Matrimonial/Matrimonial";
+import MatrimonialForm from "../screens/MatrimonialForm/MatrimonialForm"
 const StackNavigator = createStackNavigator(
   {
     Profile: {
       screen: Profile
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator27 = createStackNavigator(
+  {
+    Matrimonial: {
+      screen: Matrimonial
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator28 = createStackNavigator(
+  {
+    MatrimonialForm: {
+      screen: MatrimonialForm
     }
   },
   {
@@ -491,7 +518,9 @@ const RootNavigator = createStackNavigator(
     p22: StackNavigator21,
     p23: StackNavigator23,
     p24: StackNavigator24,
-    p25: StackNavigator25
+    p25: StackNavigator25,
+    p27: StackNavigator27,
+    p28: StackNavigator28,
   },
   {
     headerMode: "none",

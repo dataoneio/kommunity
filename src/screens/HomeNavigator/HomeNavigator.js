@@ -81,7 +81,6 @@ export default class HomeNavigator extends React.Component {
         var key1 = [];
         key1.push(data.key);
         let arr = data.toJSON();
-
         for (var i in arr) {
           result.push(arr[i]);
         }
@@ -124,7 +123,7 @@ export default class HomeNavigator extends React.Component {
       this.setState({ getToken: value }, () => {
         screenProps.user.number = this.state.getToken;
         this.getAdminsfromfirebase();
-        console.log("comm name " + screenProps.user.CommunityName);
+        console.log("comm name " + screenProps.user.number);
         firebase
           .database()
           .ref("app/" + screenProps.user.CommunityName + "/User")
@@ -145,6 +144,7 @@ export default class HomeNavigator extends React.Component {
               //     "-------" +
               //     val1.State
               // );
+              screenProps.user.id=data.key
               screenProps.user.gender = val1.Gender;
               screenProps.user.city = val1.City;
               screenProps.user.state = val1.State;
@@ -154,7 +154,7 @@ export default class HomeNavigator extends React.Component {
                   "-----" +
                   screenProps.user.city +
                   "-----" +
-                  screenProps.user.state
+                  screenProps.user.state+"--------"+screenProps.user.id
               );
               screenProps.user.userphotourl = val1.Profile_photo;
               screenProps.user.id = data.key;
@@ -264,6 +264,21 @@ export default class HomeNavigator extends React.Component {
                   <Text style={styles.cardTitle}>Blood Book</Text>
                 </View>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("Matrimonial");
+                }}
+              >
+                <View style={styles.card}>
+                  <Image
+                    resizeMode="contain"
+                    style={styles.Image}
+                    source={require("../../assets/matrimonial.png")}
+                  />
+                  <Text style={styles.cardTitle}>Matrimonial</Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.navigate("Home", { txt: "Job" });
@@ -278,20 +293,7 @@ export default class HomeNavigator extends React.Component {
                   <Text style={styles.cardTitle}>Job</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("ReportProblem");
-                }}
-              >
-                <View style={styles.card}>
-                  <Image
-                    resizeMode="contain"
-                    style={styles.Image}
-                    source={require("../../assets/feedback.png")}
-                  />
-                  <Text style={styles.cardTitle}>Feedback</Text>
-                </View>
-              </TouchableOpacity>
+             
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.navigate("Search");
@@ -304,6 +306,20 @@ export default class HomeNavigator extends React.Component {
                     source={require("../../assets/search.png")}
                   />
                   <Text style={styles.cardTitle}>Search</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("ReportProblem");
+                }}
+              >
+                <View style={styles.card}>
+                  <Image
+                    resizeMode="contain"
+                    style={styles.Image}
+                    source={require("../../assets/feedback.png")}
+                  />
+                  <Text style={styles.cardTitle}>Feedback</Text>
                 </View>
               </TouchableOpacity>
               {console.log("Isadmin state" + this.state.isAdmin)}
