@@ -50,30 +50,32 @@ export default class Matrimonial extends React.Component {
             }}
           />
         </View>
-        <View style={{paddingVertical:40,paddingHorizontal:20}}>
-        <TouchableOpacity style={{padding:4,borderRadius:5,borderWidth:0.5,}} on onPress={()=>{this.props.navigation.navigate("MatrimonialForm")}}>
-            <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
-            <Icon name="add" color="#c60c31" size={30} />
-            <Text style={styles.home1}>Update Matrimonial Details</Text>
-            </View>
-        </TouchableOpacity>
-        </View>
-        <View
-            style={{ paddingBottom: 100,alignSelf:"center", padding: 20 }}
+        <View style={{ paddingVertical: 40, paddingHorizontal: 20 }}>
+          <TouchableOpacity
+            style={{ padding: 4, borderRadius: 5, borderWidth: 0.5 }}
+            on
+            onPress={() => {
+              this.props.navigation.navigate("MatrimonialForm");
+            }}
           >
-            <Button
-              onPress={() => {
-                this.props.navigation.navigate("BloodBankUsers", {
-                  txt: this.state.BloodGroup,
-                  city: this.state.City
-                });
-              }}
-              title="Skip"
-              color="#C60C31"
-              style={styles.search}
-            />
-          </View>
-
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+            >
+              <Icon name="add" color="#c60c31" size={30} />
+              <Text style={styles.home1}>Update Matrimonial Details</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{ paddingBottom: 100, alignSelf: "center", padding: 20 }}>
+          <Button
+            onPress={() => {
+              this.props.navigation.navigate("BloodBankUsers");
+            }}
+            title="Skip"
+            color="#C60C31"
+            style={styles.search}
+          />
+        </View>
       </View>
     );
   }

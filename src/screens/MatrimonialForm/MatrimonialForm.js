@@ -25,7 +25,7 @@ export default class MatrimonialForm extends React.Component {
             this.setState({MaritalStatus:data.toJSON().Marital_Status})
             console.log("eeee"+data.toJSON().Fathers_Name)
         })
-        
+
     }
   SaveMatrimonialData() {
     const { screenProps } = this.props;
@@ -48,6 +48,7 @@ export default class MatrimonialForm extends React.Component {
         Fathers_Name: this.state.Fname,
         Highest_Qualification: this.state.Education
       });
+      this.props.navigation.navigate("Matrimonial")
   }
 
   constructor(props) {

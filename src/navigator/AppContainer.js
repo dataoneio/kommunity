@@ -14,6 +14,7 @@ import Search from "../screens/Search/Search";
 import React, { Component } from "react";
 import Info from "../screens/Info/Info";
 import Login from "../screens/Login/Login";
+import Verify from "../screens/Verify/Verify";
 import Request from "../screens/Request/Request";
 import UserInfo from "../screens/UserInfo/UserInfo";
 import UserPosts from "../screens/UserPosts/UserPosts";
@@ -413,6 +414,23 @@ const StackNavigator1 = createStackNavigator(
   }
 );
 
+const StackNavigator26 = createStackNavigator(
+  {
+    Verify: {
+      screen: Verify
+    }
+  },
+
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+
+
+
 // const TabNavigator = createBottomTabNavigator(
 //   {
 //     Home: {
@@ -519,6 +537,7 @@ const RootNavigator = createStackNavigator(
     p23: StackNavigator23,
     p24: StackNavigator24,
     p25: StackNavigator25,
+    p26:StackNavigator26,
     p27: StackNavigator27,
     p28: StackNavigator28,
   },
