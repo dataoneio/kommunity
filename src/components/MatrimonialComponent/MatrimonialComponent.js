@@ -7,26 +7,34 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button
+  Button,
+  Image
 } from "react-native";
-import { TextInput } from "react-native-paper";
-import firebase from "../../../Firebase";
-
 export default class MatrimonialComponent extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  updateSize = height => {
-    this.setState({
-      height
-    });
-  };
-
   render() {
-    const { height } = this.state;
-    
-    return <View />;
+    return (
+      <View key={this.props.key}>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={styles.ImageContainer1}
+            source={{
+              uri: this.props.val.Profile_photo
+            }}
+          />
+        </View>
+        <Text>{this.props.val.Name}</Text>
+        <Text>{this.props.val.DOB}</Text>
+        <Text>{this.props.val.age}</Text>
+        <Text>{this.props.val.Marital_Status}</Text>
+        <Text>{this.props.val.Highest_Qualification}</Text>
+        <Text>{this.props.val.State}</Text>
+        <Text>{this.props.val.City}</Text>
+      </View>
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -36,7 +44,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCFF"
   },
-
+  ImageContainer1: {
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.2)",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 150,
+    height: 150,
+    backgroundColor: "#fff"
+  },
   home: {
     fontFamily: "lucida grande",
     justifyContent: "center",

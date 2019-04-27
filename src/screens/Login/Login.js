@@ -107,48 +107,76 @@ export default class App extends Component {
 		} else {
 			console.log("eeee" + this.state.phone.length);
 			//var mobnumber="91"+this.state.phone;
-			var ref = firebase
+
+			firebase
 				.database()
-				.ref("app/" + screenProps.user.CommunityName + "/User");
-			ref.orderByChild("Contact_Number")
+				.ref("app/" + screenProps.user.CommunityName + "/Blocked_Users")
+				.orderByChild("Blocked_Number")
 				.equalTo(mobnumber)
 				.once("value", snapshot => {
 					if (snapshot.exists()) {
-						console.log("111111---" + this.state.phone);
-						this.loginProcess();
-						console.log("exists!");
+						alert(
+							"This number has been blocked. Please contact Admin for more information."
+						);
+						console.log("number is bloked!");
+						this.props.navigation.navigate("Login");
 					} else {
-						var ref2 = firebase
+						var ref = firebase
 							.database()
 							.ref(
 								"app/" +
 									screenProps.user.CommunityName +
-									"/Joining_Requests"
+									"/User"
 							);
-						ref2.orderByChild("Contact_Number")
+						ref.orderByChild("Contact_Number")
 							.equalTo(mobnumber)
-							.once("value", snapshot2 => {
-								if (snapshot2.exists()) {
-									console.log("exists in requests database.");
-									alert(
-										"Your Request is pending. Please wait for Admin to approve your request. Thank you!!"
-									);
+							.once("value", snapshot => {
+								if (snapshot.exists()) {
+									console.log("111111---" + this.state.phone);
+									this.loginProcess();
+									console.log("exists!");
 								} else {
-									this.setState({ phone: mobnumber }, () => {
-										console.log(
-											"mobnum-----" +
-												mobnumber +
-												"----" +
-												this.state.phone
+									var ref2 = firebase
+										.database()
+										.ref(
+											"app/" +
+												screenProps.user.CommunityName +
+												"/Joining_Requests"
 										);
-										this.props.navigation.navigate(
-											"Request",
-											{
-												phone1: this.state.phone
+									ref2.orderByChild("Contact_Number")
+										.equalTo(mobnumber)
+										.once("value", snapshot2 => {
+											if (snapshot2.exists()) {
+												console.log(
+													"exists in requests database."
+												);
+												alert(
+													"Your Request is pending. Please wait for Admin to approve your request. Thank you!!"
+												);
+											} else {
+												this.setState(
+													{ phone: mobnumber },
+													() => {
+														console.log(
+															"mobnum-----" +
+																mobnumber +
+																"----" +
+																this.state.phone
+														);
+														this.props.navigation.navigate(
+															"Request",
+															{
+																phone1: this
+																	.state.phone
+															}
+														);
+													}
+												),
+													console.log(
+														"doesn't exists!!"
+													);
 											}
-										);
-									}),
-										console.log("doesn't exists!!");
+										});
 								}
 							});
 					}
@@ -213,43 +241,43 @@ export default class App extends Component {
 	}
 
 	loginProcess() {
-		var myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/json");
-		body = {
-			api_key: keys.REACT_APP_OTP_API_KEY,
-			api_secret: keys.REACT_APP_OTP_SECRET_KEY,
-			number: "91" + this.state.phone,
-			brand: this.state.brand
-		};
-		fetch("https://api.nexmo.com/verify/json", {
-			method: "POST",
-			headers: myHeaders,
-			mode: "cors",
-			cache: "default",
-			body: JSON.stringify(body)
-		})
-			.then(response => response.json())
-			.then(responseJson => {
-				if (responseJson.status == 0) {
-					this.setState({
-						requestId: responseJson.request_id,
-						isToken: true,
-						isLogin: false
-					});
-					this.props.navigation.navigate("Verify", {
-						LoggedInNumber: this.state.phone,
-						request_id: responseJson.request_id
-					});
-				} else {
-					ToastAndroid.show(
-						responseJson.error_text,
-						ToastAndroid.SHORT
-					);
-				}
-			})
-			.catch(error => {
-				ToastAndroid.show("Login Gagal", ToastAndroid.SHORT);
-			});
+		// var myHeaders = new Headers();
+		// myHeaders.append("Content-Type", "application/json");
+		// body = {
+		// 	api_key: keys.REACT_APP_OTP_API_KEY,
+		// 	api_secret: keys.REACT_APP_OTP_SECRET_KEY,
+		// 	number: "91" + this.state.phone,
+		// 	brand: this.state.brand
+		// };
+		// fetch("https://api.nexmo.com/verify/json", {
+		// 	method: "POST",
+		// 	headers: myHeaders,
+		// 	mode: "cors",
+		// 	cache: "default",
+		// 	body: JSON.stringify(body)
+		// })
+		// 	.then(response => response.json())
+		// 	.then(responseJson => {
+		// 		if (responseJson.status == 0) {
+		// 			this.setState({
+		// 				requestId: responseJson.request_id,
+		// 				isToken: true,
+		// 				isLogin: false
+		// 			});
+		this.props.navigation.navigate("Verify", {
+			LoggedInNumber: this.state.phone
+			// request_id: responseJson.request_id
+		});
+		// 	} else {
+		// 		ToastAndroid.show(
+		// 			responseJson.error_text,
+		// 			ToastAndroid.SHORT
+		// 		);
+		// 	}
+		// })
+		// .catch(error => {
+		// 	ToastAndroid.show("Login Gagal", ToastAndroid.SHORT);
+		// });
 	}
 
 	render() {

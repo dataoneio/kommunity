@@ -86,59 +86,6 @@ export default class MyPosts extends React.Component {
     });
   }
 
-  // getDataFromFirebase(userId) {
-  //   var { screenProps } = this.props;
-
-  //   let arr1 = [];
-  //   var d = new Date();
-  //   console.log("date===" + d);
-  //   firebase
-  //     .database()
-  //     .ref("app/" + screenProps.user.CommunityName + "/Event details")
-  //     .orderByChild("UserId")
-  //     .equalTo(userId)
-  //     .on("child_added", data => {
-  //       console.log("aaaaa" + JSON.stringify(data.toJSON()));
-  //       var result = [];
-  //       var key1 = [];
-  //       key1.push(data.key);
-  //       let arr = data.toJSON();
-
-  //       for (var i in arr) {
-  //         result.push(arr[i]);
-  //       }
-
-  //       arr1.push({
-  //         date: result[2].toString(),
-  //         category: result[0].toString(),
-
-  //         description: result[3].toString(),
-  //         uid: data.key,
-  //         title: result[6].toString(),
-  //         url1: result[4].toString(),
-  //         userId: result[7].toString()
-  //       });
-
-  //       this.setState({ feeds: arr1 });
-  //       this.setState({ isLoading: false });
-  //     });
-  // }
-
-  // getCustomLastKey() {
-  //   let localArr = [];
-  //   console.log("getCustomLastKey called");
-  // 	var { screenProps } = this.props;
-  // 	firebase
-  // 		.database()
-  // 		.ref("app/" + screenProps.user.CommunityName + "/Event details")
-  //     //.orderByChild("UserId/"+this.state.userId)
-  //     .orderByKey()
-  //     .limitToFirst(1)
-  // 		.on("child_added", snapshot => {
-  //       console.log("aaaaaaaaa"+snapshot.key)
-  //   });
-  // }
-
   getCustomLastKey() {
     var { screenProps } = this.props;
     firebase

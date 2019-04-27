@@ -355,6 +355,22 @@ export default class HomeNavigator extends React.Component {
                   </View>
                 </TouchableOpacity>
               )}
+              {renderIf(this.state.isAdmin)(
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("DeleteUser");
+                  }}
+                >
+                  <View style={styles.card}>
+                    <Image
+                      resizeMode="contain"
+                      style={styles.Image}
+                      source={require("../../assets/delete_user.png")}
+                    />
+                    <Text style={styles.cardTitle}>Delete User</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
                {renderIf(screenProps.user.number == "919016211300")(
                 <TouchableOpacity
                   onPress={() => {
