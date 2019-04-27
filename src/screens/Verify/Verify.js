@@ -44,9 +44,9 @@ export default class App extends Component {
 	componentDidMount() {
 		const { navigation } = this.props;
 		var phone = navigation.getParam("LoggedInNumber", null);
-		// var requestId = navigation.getParam("request_id", null);
-		// this.setState({ phone: phone, requestId: requestId });
-		this.setState({ phone: phone });
+		var requestId = navigation.getParam("request_id", null);
+		this.setState({ phone: phone, requestId: requestId });
+		// this.setState({ phone: phone });
 		console.log(phone);
 		// console.log(requestId);
 	}
@@ -142,49 +142,49 @@ export default class App extends Component {
 	}
 
 	verifyToken() {
-		// BackHandler.removeEventListener(
-		// 	"hardwareBackPress",
-		// 	this.handleBackPress
-		// );
+		BackHandler.removeEventListener(
+			"hardwareBackPress",
+			this.handleBackPress
+		);
 
-		// if (!(this.state.token.length == 4)) {
-		// 	alert("4 digit otp only");
-		// } else {
+		if (!(this.state.token.length == 4)) {
+			alert("4 digit otp only");
+		} else {
 		 	this.setValueLocally();
-		// 	var myHeaders = new Headers();
-		// 	myHeaders.append("Content-Type", "application/json");
-		// 	body = {
-		// 		api_key: keys.REACT_APP_OTP_API_KEY,
-		// 		api_secret: keys.REACT_APP_OTP_SECRET_KEY,
-		// 		request_id: this.state.requestId,
-		// 		code: this.state.token
-		// 	};
-		// 	fetch("https://api.nexmo.com/verify/check/json", {
-		// 		method: "POST",
-		// 		headers: myHeaders,
-		// 		mode: "cors",
-		// 		cache: "default",
-		// 		body: JSON.stringify(body)
-		// 	})
-		// 		.then(response => response.json())
-		// 		.then(responseJson => {
-		// 			if (responseJson.status == 0) {
+			var myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/json");
+			body = {
+				api_key: keys.REACT_APP_OTP_API_KEY,
+				api_secret: keys.REACT_APP_OTP_SECRET_KEY,
+				request_id: this.state.requestId,
+				code: this.state.token
+			};
+			fetch("https://api.nexmo.com/verify/check/json", {
+				method: "POST",
+				headers: myHeaders,
+				mode: "cors",
+				cache: "default",
+				body: JSON.stringify(body)
+			})
+				.then(response => response.json())
+				.then(responseJson => {
+					if (responseJson.status == 0) {
 						this.props.navigation.navigate("HomeNavigator", {
 							LoggedInNumber: "91"+this.state.phone
 						});
-		// 				this.setState({ isToken: false });
-		// 				this.setState({ isLogin: true });
-		// 			} else {
-		// 				ToastAndroid.show(
-		// 					responseJson.error_text,
-		// 					ToastAndroid.SHORT
-		// 				);
-		// 			}
-		// 		})
-		// 		.catch(error => {
-		// 			ToastAndroid.show("Gagal", ToastAndroid.SHORT);
-		// 		});
-		// }
+						this.setState({ isToken: false });
+						this.setState({ isLogin: true });
+					} else {
+						ToastAndroid.show(
+							responseJson.error_text,
+							ToastAndroid.SHORT
+						);
+					}
+				})
+				.catch(error => {
+					ToastAndroid.show("Gagal", ToastAndroid.SHORT);
+				});
+		}
 	}
 
 	if(booleanValue) {

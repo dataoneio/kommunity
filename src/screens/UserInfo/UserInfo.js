@@ -679,7 +679,7 @@ export default class UserInfo extends React.Component {
 								/>
 							</View>
 						</View>
-						<View>
+						<View style={{paddingBottom:100}}>
 							<View>
 								<TextInput
 									label="Name"
@@ -801,65 +801,36 @@ export default class UserInfo extends React.Component {
 									value={this.state.city}
 								/>
 							</View>
-							{/* {renderIf(this.state.isAdmin)(
-								<View
-									style={{ padding: 10, paddingBottom: 100 }}
-								>
-									<Button
-										onPress={this.businessDetails.bind(
-											this
-										)}
-										title="Business Details"
-										color="#C60C31"
-									/>
-								</View>
-							)} */}
+							<View style={{ padding: 10, }}>
+								<Button
+									onPress={this.businessDetails.bind(this)}
+									title="Business Details"
+									color="#C60C31"
+								/>
+							</View>
+
 							{/* {renderIf(
 								this.state.isAdmin && this.state.isProfileAdmin
 							)(
-								<View>
-									<View style={{ padding: 10 }}>
-										<Button
-											onPress={this.businessDetails.bind(
-												this
-											)}
-											title="Business Details"
-											color="#C60C31"
-										/>
-									</View>
-									<View
-										style={{
-											padding: 10,
-											paddingBottom: 100
-										}}
-									>
-										<Button
-											onPress={this.deleteComments.bind(
-												this
-											)}
-											title="Delete User"
-											color="#C60C31"
-										/>
-									</View>
-								</View>
-							)} */}
-							{/* {renderIf(
-								this.state.isAdmin && !this.state.isProfileAdmin
-							)( */}
-							<View>
-								<View style={{ padding: 10 }}>
-									<Button
-										onPress={this.businessDetails.bind(
-											this
-										)}
-										title="Business Details"
-										color="#C60C31"
-									/>
-								</View>
 								<View
 									style={{
 										padding: 10,
 										paddingBottom: 100
+									}}
+								>
+									<Button
+										onPress={this.deleteComments.bind(this)}
+										title="Delete User"
+										color="#C60C31"
+									/>
+								</View>
+							)} */}
+							{renderIf(
+								this.state.isAdmin && !this.state.isProfileAdmin
+							)(
+								<View
+									style={{
+										padding: 10,
 									}}
 								>
 									<Button
@@ -868,8 +839,7 @@ export default class UserInfo extends React.Component {
 										color="#C60C31"
 									/>
 								</View>
-							</View>
-							{/* )} */}
+							)}
 						</View>
 					</View>
 				</ScrollView>
