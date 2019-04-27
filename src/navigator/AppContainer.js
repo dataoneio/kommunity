@@ -34,7 +34,9 @@ import CommunityList from "../screens/CommunityList/CommunityList";
 import AddCommunity from "../screens/AddCommunity/AddCommunity";
 import AddAdmin from "../screens/AddAdmin/AddAdmin";
 import Matrimonial from "../screens/Matrimonial/Matrimonial";
-import MatrimonialForm from "../screens/MatrimonialForm/MatrimonialForm"
+import MatrimonialForm from "../screens/MatrimonialForm/MatrimonialForm";
+import MatrimonialSearch from "../screens/MatrimonialSearch/MatrimonialSearch";
+import ViewMatrimonyProfile from "../screens/ViewMatimonyProfile/ViewMatrimonyProfile";
 const StackNavigator = createStackNavigator(
   {
     Profile: {
@@ -65,6 +67,32 @@ const StackNavigator28 = createStackNavigator(
   {
     MatrimonialForm: {
       screen: MatrimonialForm
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator29 = createStackNavigator(
+  {
+    MatrimonialSearch: {
+      screen: MatrimonialSearch
+    }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+const StackNavigator30 = createStackNavigator(
+  {
+    ViewMatrimonyProfile: {
+      screen: ViewMatrimonyProfile
     }
   },
   {
@@ -429,8 +457,6 @@ const StackNavigator26 = createStackNavigator(
   }
 );
 
-
-
 // const TabNavigator = createBottomTabNavigator(
 //   {
 //     Home: {
@@ -537,9 +563,11 @@ const RootNavigator = createStackNavigator(
     p23: StackNavigator23,
     p24: StackNavigator24,
     p25: StackNavigator25,
-    p26:StackNavigator26,
+    p26: StackNavigator26,
     p27: StackNavigator27,
     p28: StackNavigator28,
+    p29: StackNavigator29,
+    p30: StackNavigator30
   },
   {
     headerMode: "none",

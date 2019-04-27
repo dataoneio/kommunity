@@ -52,20 +52,6 @@ export default class Info extends React.Component {
       UserId: ""
     };
   }
-  // sendWhatsAppMessage = link => {
-  //   Linking.canOpenURL(link).then(supported => {
-  //     if (!supported) {
-  //       alert("Please install whats app to send direct message via whatsapp");
-  //     } else {
-  //       return Linking.openURL(link);
-  //     }
-  //   });
-
-  // };
-
-  // shareToWhatsAppWithContact = () => {
-  //   this.sendWhatsAppMessage("whatsapp://send?phone=918141080040");
-  // };
   componentDidMount() {
     var { screenProps } = this.props;
     screenProps.user.screenName = "Info";

@@ -7,26 +7,39 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button
+  Button,
+  Image,Dimensions
 } from "react-native";
-import { TextInput } from "react-native-paper";
-import firebase from "../../../Firebase";
-
+const win = Dimensions.get("window");
 export default class MatrimonialComponent extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  updateSize = height => {
-    this.setState({
-      height
-    });
-  };
-
   render() {
-    const { height } = this.state;
-    
-    return <View />;
+    return (
+      <View key={this.props.keyval} style={{backgroundColor:"white",borderRadius:5}}>
+      <TouchableOpacity onPress={this.props.ViewProfile}>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={styles.ImageContainer1}
+            source={{
+              uri: this.props.val.Profile_photo
+            }}
+          /> 
+        <View style={{ flexDirection:"column",justifyContent:"space-evenly" ,padding:10}}>
+        <Text style={styles.Data}>Name: {this.props.val.Name}</Text>
+        <Text style={styles.Data}>Age: {this.props.val.age}</Text>
+        <Text style={styles.Data}>Height: {this.props.val.Height}</Text>
+        <Text style={styles.Data}>Gender: {this.props.val.Gender}</Text>
+        <Text style={styles.Data}>City: {this.props.val.City}</Text>
+        <Text style={styles.Data}>Marital Status: {this.props.val.Marital_Status}</Text>
+        <Text style={styles.Data}>Qualification: {this.props.val.Highest_Qualification}</Text>
+        </View>
+        </View>
+        </TouchableOpacity>
+      </View>
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -36,7 +49,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCFF"
   },
+  ImageContainer1: {
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.2)",
+    alignItems: "center",
+    justifyContent: "center",
+    width: win.width / 2 - 20,
+    height: win.width / 2 - 20,
+    backgroundColor: "#fff"
+  },
+  Data:{
+    fontFamily: "lucida grande",
+    fontSize:16,
+    color:"black"
 
+  },
   home: {
     fontFamily: "lucida grande",
     justifyContent: "center",
