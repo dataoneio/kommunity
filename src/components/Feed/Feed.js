@@ -30,30 +30,12 @@ export default class Feed extends Component {
       mypost: false,
       dialogVisible: false,
       title: "sample title",
-      data: ""
+      data: "",
+      Admins:[]
     };
   }
   componentDidMount() {
     this.getTitle();
-    var { screenProps } = this.props;
-    // console.log("my number----"+this.props.loggedinuser)
-    // firebase
-    //   .database()
-    //   .ref(
-    //     "app/" +this.props.comname+"/User/" +
-    //       this.props.val.userId
-    //   )
-    //   .on("value", data => {
-    //     name = data.toJSON().Name;
-    //     console.log("my number"+data.toJSON().Contact_Number)
-    //     this.setState({ username: data.toJSON().Name });
-    //     this.setState({ UserImage: data.toJSON().Profile_photo });
-    //     this.setState({ contact_number: data.toJSON().Contact_Number }, () => {
-    //       if (this.props.loggedinuser === this.state.contact_number) {
-    //         this.setState({ mypost: true });
-    //       }
-    //     });
-    //   });
   }
 
   getTitle() {
@@ -232,7 +214,8 @@ export default class Feed extends Component {
     } else {
       return (
         <View key={this.props.keyval} style={styles.note}>
-          {renderIf(this.props.val.userId == "-L_D3IzXaaaXjmQPWk4Q")(
+          {renderIf(this.props.isAdmin
+          )(
             <View
               style={{
                 position: "absolute",

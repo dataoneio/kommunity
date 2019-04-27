@@ -20,18 +20,9 @@ import { NavigationEvents } from "react-navigation";
 import { Icon } from "react-native-elements";
 import firebase from "../../../Firebase";
 import Feed from "../../components/Feed/Feed";
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger
-} from "react-native-popup-menu";
 import ContentLoader from "react-native-content-loader";
-import Drawer from "react-native-circle-drawer";
 import { Circle, Rect } from "react-native-svg";
-import RNShake from "react-native-shake";
-import renderIf from "../../components/ViewFeed/renderIf";
-import Dialog from "react-native-dialog";
+// import Dialog from "react-native-dialog";
 import styles from "./HomeStyle";
 
 export default class Home extends React.Component {
@@ -58,7 +49,8 @@ export default class Home extends React.Component {
       referenceToOldestKey: "event",
       gettingData: false,
       databaseLength: 0,
-      referenceToLatestKey: ""
+      referenceToLatestKey: "",
+      Admins: []
     };
 
     this.getLastKey = this.getLastKey.bind(this);
@@ -81,7 +73,23 @@ export default class Home extends React.Component {
     this.getValueLocally();
     var { screenProps } = this.props;
     const { navigation } = this.props;
+    let arr1 = [];
+    var d = new Date();
+    firebase
+      .database()
+      .ref("app/" + screenProps.user.CommunityName + "/Admins")
+      .on("child_added", data => {
+        var result = [];
 
+        arr1.push(data.toJSON().Number);
+        console.log("Admins are---------------- " + JSON.stringify(arr1));
+        this.setState({ Admins: arr1 }),
+          () => {
+            this.checkAdmin();
+          };
+
+        this.setState({ isLoading: false });
+      });
     setTimeout(() => {
       this.setState({ isLoading: false }),
         console.log("making isloading false");
@@ -363,7 +371,7 @@ export default class Home extends React.Component {
         });
       });
     } else {
-      var {screenProps}=this.props
+      var { screenProps } = this.props;
       this.setState(
         { searchInput: category, onFilter: false, searchResult: [] },
         () => {
@@ -483,47 +491,28 @@ export default class Home extends React.Component {
         </View>
       );
     }
-    // if (search.length == 0) {
-    //   //this.setState({ isLoading: false });
-    //   return (
-    //     <View>
-    //     <View style={styles.header}>
-    //       <View>
-    //         <TouchableOpacity
-    //           onPress={() => {
-    //             this.props.navigation.goBack(null);
-    //           }}
-    //         >
-    //           <Icon name="arrow-back" color="white" size={30} />
-    //         </TouchableOpacity>
-    //       </View>
-
-    //       <Text style={styles.home}>Parkar Samaaj</Text>
-
-    //       <View style={{ paddingTop: 2 }}>
-    //         <TouchableOpacity
-    //           onPress={() => {
-    //             this.props.navigation.navigate("Notification");
-    //           }}
-    //         >
-    //           <Icon name="notifications" color="white" size={30} />
-    //         </TouchableOpacity>
-    //       </View>
-    //     </View>
-    //     <Text style={{padding:10,fontSize:16,fontWeight:"bold",textAlign:"center"}}>No Post of this category found...!!!</Text>
-
-    //     </View>
-    //   );
-    // }
     let searchval = search.map((val, key) => {
       let name = "";
       let profile = "";
+      var isAdmin = false;
+
       firebase
         .database()
         .ref("app/" + screenProps.user.CommunityName + "/User/" + val.userId)
         .on("value", data => {
           name = data.toJSON().Name;
           profile = data.toJSON().Profile_photo;
+          num = data.toJSON().Contact_Number;
+          a = num.toString();
+          console.log("num-----"+a)
+          for (let i = 0; i < this.state.Admins.length; i++) {
+            if (this.state.Admins[i].toString() == a) {
+              console.log(this.state.Admins[i])
+              console.log("true");
+              isAdmin = true;
+              return true;
+            } else console.log("false");
+          }
         });
       return (
         <View key={key} style={{ paddingHorizontal: 5, paddingVertical: 3 }}>
@@ -535,6 +524,9 @@ export default class Home extends React.Component {
             }}
           >
             <Feed
+              isAdmin={isAdmin}
+              Cname={screenProps.user.CommunityName}
+              num={num}
               name={name}
               profile={profile}
               key={key}
