@@ -86,7 +86,6 @@ export default class Matrimonial extends React.Component {
         <View style={styles.header}>
           <View>
             <TouchableOpacity
-              title=""
               onPress={() => {
                 this.props.navigation.goBack(null);
               }}
@@ -94,15 +93,18 @@ export default class Matrimonial extends React.Component {
               <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>
-          <View>
-            <Text style={styles.home}>Matrimonial</Text>
+
+          <Text style={styles.home}>Matrimonial</Text>
+
+          <View style={{ paddingTop: 1 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("MatrimonialForm");
+              }}
+            >
+              <Icon name="account-edit" type="material-community" color="white" size={30} />
+            </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}
-          />
         </View>
         <ScrollView>
           <View style={{ padding: 5 }}>

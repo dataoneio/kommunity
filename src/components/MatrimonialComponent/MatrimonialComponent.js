@@ -8,8 +8,14 @@ import {
   View,
   TouchableOpacity,
   Button,
+<<<<<<< HEAD
   Image
 } from "react-native";
+=======
+  Image,Dimensions
+} from "react-native";
+const win = Dimensions.get("window");
+>>>>>>> 53b099b967bfb63d3cb8810c1de2ac7b057ef960
 export default class MatrimonialComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -17,13 +23,19 @@ export default class MatrimonialComponent extends React.Component {
 
   render() {
     return (
+<<<<<<< HEAD
       <View key={this.props.key}>
+=======
+      <View key={this.props.keyval} style={{backgroundColor:"white",borderRadius:5}}>
+      <TouchableOpacity onPress={this.props.ViewProfile}>
+>>>>>>> 53b099b967bfb63d3cb8810c1de2ac7b057ef960
         <View style={{ flexDirection: "row" }}>
           <Image
             style={styles.ImageContainer1}
             source={{
               uri: this.props.val.Profile_photo
             }}
+<<<<<<< HEAD
           />
         </View>
         <Text>{this.props.val.Name}</Text>
@@ -33,6 +45,20 @@ export default class MatrimonialComponent extends React.Component {
         <Text>{this.props.val.Highest_Qualification}</Text>
         <Text>{this.props.val.State}</Text>
         <Text>{this.props.val.City}</Text>
+=======
+          /> 
+        <View style={{ flexDirection:"column",justifyContent:"space-evenly" ,padding:10}}>
+        <Text style={styles.Data}>Name: {this.props.val.Name}</Text>
+        <Text style={styles.Data}>Age: {this.props.val.age}</Text>
+        <Text style={styles.Data}>Height: {this.props.val.Height}</Text>
+        <Text style={styles.Data}>Gender: {this.props.val.Gender}</Text>
+        <Text style={styles.Data}>City: {this.props.val.City}</Text>
+        <Text style={styles.Data}>Marital Status: {this.props.val.Marital_Status}</Text>
+        <Text style={styles.Data}>Qualification: {this.props.val.Highest_Qualification}</Text>
+        </View>
+        </View>
+        </TouchableOpacity>
+>>>>>>> 53b099b967bfb63d3cb8810c1de2ac7b057ef960
       </View>
     );
   }
@@ -49,10 +75,23 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0,0,0,0.2)",
     alignItems: "center",
     justifyContent: "center",
+<<<<<<< HEAD
     width: 150,
     height: 150,
     backgroundColor: "#fff"
   },
+=======
+    width: win.width / 2 - 20,
+    height: win.width / 2 - 20,
+    backgroundColor: "#fff"
+  },
+  Data:{
+    fontFamily: "lucida grande",
+    fontSize:16,
+    color:"black"
+
+  },
+>>>>>>> 53b099b967bfb63d3cb8810c1de2ac7b057ef960
   home: {
     fontFamily: "lucida grande",
     justifyContent: "center",

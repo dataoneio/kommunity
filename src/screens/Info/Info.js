@@ -50,7 +50,6 @@ export default class Info extends React.Component {
 			UserId: ""
 		};
   }
-  
   componentDidMount() {
     var { screenProps } = this.props;
     screenProps.user.screenName = "Info";

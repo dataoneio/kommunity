@@ -20,679 +20,583 @@ import { NavigationEvents } from "react-navigation";
 import { Icon } from "react-native-elements";
 import firebase from "../../../Firebase";
 import Feed from "../../components/Feed/Feed";
-import {
-	Menu,
-	MenuOptions,
-	MenuOption,
-	MenuTrigger
-} from "react-native-popup-menu";
 import ContentLoader from "react-native-content-loader";
-import Drawer from "react-native-circle-drawer";
 import { Circle, Rect } from "react-native-svg";
-import RNShake from "react-native-shake";
-import renderIf from "../../components/ViewFeed/renderIf";
-import Dialog from "react-native-dialog";
+// import Dialog from "react-native-dialog";
 import styles from "./HomeStyle";
 
 export default class Home extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			ftitle: "",
-			fdescription: "",
-			fdate: "",
-			feeds: [],
-			initialVals: [],
-			searchResult: [],
-			searchInput: "",
-			onFilter: true,
-			isLoading: true,
-			LoggedInNumber: "",
-			refreshing: false,
-			drawerview: false,
-			UserId: "",
-			dialogVisible: false,
-			gender: "",
-			city: "",
-			State: "",
-			referenceToOldestKey: "event",
-			gettingData: false,
-			databaseLength: 0,
-			referenceToLatestKey: ""
-		};
+  constructor(props) {
+    super(props);
+    this.state = {
+      ftitle: "",
+      fdescription: "",
+      fdate: "",
+      feeds: [],
+      initialVals: [],
+      searchResult: [],
+      searchInput: "",
+      onFilter: true,
+      isLoading: true,
+      LoggedInNumber: "",
+      refreshing: false,
+      drawerview: false,
+      UserId: "",
+      dialogVisible: false,
+      gender: "",
+      city: "",
+      State: "",
+      referenceToOldestKey: "event",
+      gettingData: false,
+      databaseLength: 0,
+      referenceToLatestKey: "",
+      Admins: []
+    };
 
-		this.getLastKey = this.getLastKey.bind(this);
-		this.getDataFromFirebase = this.getDataFromFirebase.bind(this);
-		this.getCustomData = this.getCustomData.bind(this);
-	}
+    this.getLastKey = this.getLastKey.bind(this);
+    this.getDataFromFirebase = this.getDataFromFirebase.bind(this);
+    this.getCustomData = this.getCustomData.bind(this);
+  }
 
-	showDialog = () => {
-		this.setState({ dialogVisible: true });
-	};
+  showDialog = () => {
+    this.setState({ dialogVisible: true });
+  };
 
-	handleCancel = () => {
-		this.setState({ dialogVisible: false });
-	};
-	handleRed() {
-		this.setState({ dialogVisible: false });
-	}
+  handleCancel = () => {
+    this.setState({ dialogVisible: false });
+  };
+  handleRed() {
+    this.setState({ dialogVisible: false });
+  }
 
-	componentDidMount() {
-		this.getValueLocally();
-		var { screenProps } = this.props;
-		const { navigation } = this.props;
-
-		setTimeout(() => {
-			this.setState({ isLoading: false }),
-				console.log("making isloading false");
-		}, 4000);
-
-		var category = navigation.getParam("txt", "No text");
-		if (category == "All") {
-			this.setState({ searchInput: category }, () => this.getLastKey());
-		} else {
-			this.setState({ searchInput: category, onFilter: false }, () =>
-				this.getCustomLastKey()
-			);
-		}
-	}
-
-	getLastKey() {
-		var { screenProps } = this.props;
-		firebase
-			.database()
-			.ref("app/" + screenProps.user.CommunityName + "/Event details")
-			.orderByKey()
-			.limitToLast(1)
-			.on("child_added", snapshot => {
-				this.setState({ referenceToOldestKey: snapshot.key }, () => {
-					this.getDataFromFirebase();
-				});
-			});
-	}
-
-	getCustomLastKey() {
-		var { screenProps } = this.props;
-		firebase
-			.database()
-			.ref("app/" + screenProps.user.CommunityName + "/Event details")
-			.orderByKey()
-			.limitToFirst(1)
-			.on("child_added", snapshot => {
-				this.setState({ referenceToLatestKey: snapshot.key }, () => {
-					console.log("latest key" + this.state.referenceToLatestKey);
-					// firebase
-					// 	.database()
-					// 	.ref(
-					// 		"app/" +
-					// 			screenProps.user.CommunityName +
-					// 			"/Event details"
-					// 	)
-					// 	.orderByChild("Category")
-					// 	.equalTo(this.state.searchInput)
-					// 	.limitToLast(1)
-					// 	.on("child_added", snapshot => {
-					// 		this.setState(
-					// 			{ referenceToOldestKey: snapshot.key },
-					// 			() => {
-					// 				console.log(
-					// 					"oldest key" +
-					// 						this.state.referenceToOldestKey
-					// 				);
-					this.getCustomData();
-					//		}
-					//	);
-					//	});
-				});
-			});
-	}
-
-	getCustomData() {
-		let arr1 = this.state.searchResult;
-		let key1 = [];
-		var index1 = 0;
-		let arrayOfKeys = [];
-		let results = [];
-		let iter = 0;
-		const { navigation } = this.props;
-		var { screenProps } = this.props;
-		firebase
-			.database()
-			.ref("app/" + screenProps.user.CommunityName + "/Event details")
-			.orderByKey()
-			.endAt(this.state.referenceToOldestKey)
-			.limitToLast(10)
-			.once("value")
-			.then(snapshot => {
-				console.log("aaaaaaaaaaa" + this.state.referenceToOldestKey);
-				console.log(iter);
-				iter = iter + 1;
-				snapshot.forEach(function(childsnap) {
-					key1[index1] = childsnap.key;
-					index1++;
-				});
-
-				arrayOfKeys = Object.keys(snapshot.val())
-					.sort()
-					.reverse();
-
-				console.log(arrayOfKeys);
-
-				results = arrayOfKeys.map(key => snapshot.val()[key]);
-				var result = [];
-
-				this.setState({
-					referenceToOldestKey: arrayOfKeys[arrayOfKeys.length - 1]
-				});
-
-				for (var i in results) {
-					result.push(results[i]);
-				}
-
-				for (var i = 0; i < result.length - 1; i++) {
-					if (
-						result[i].Category.toString() ===
-							this.state.searchInput &&
-						result[i].Post_View.toString() == "false"
-					) {
-						arr1.push({
-							date: result[i].Date.toString(),
-							category: result[i].Category.toString(),
-							description: result[i].Description.toString(),
-							uid: arrayOfKeys[i],
-							title: result[i].Title.toString(),
-							url1: result[i].Image.toString(),
-							userId: result[i].UserId.toString()
-						});
-						this.setState({ searchResult: arr1 });
-					}
-				}
-
-				console.log("qwerty" + this.state.referenceToOldestKey);
-				console.log("qwerty" + this.state.referenceToLatestKey);
-
-				if (this.state.searchResult.length < 6) {
-					if (
-						this.state.referenceToLatestKey ==
-						this.state.referenceToOldestKey
-					) {
-						console.log("same end it is ");
-						return;
-					} else {
-						console.log("callback");
-						this.getCustomData();
-					}
-				}
-
-				this.setState({ feeds: arr1 });
-				this.setState({ isLoading: false });
-				this.setState({ gettingData: false });
-			})
-			.catch(error => {});
-	}
-
-	getValueLocally = () => {
-		var { screenProps } = this.props;
-		AsyncStorage.getItem("token").then(value =>
-			this.setState({ getToken: value }, () => {
-				screenProps.user.number = this.state.getToken;
-				firebase
-					.database()
-					.ref("app/" + screenProps.user.CommunityName + "/User")
-					.orderByChild("Contact_Number")
-					.equalTo(this.state.getToken)
-					.on("child_added", data => {
-						val1 = data.val();
-						console.log("hehehehehehheheheheh");
-						if (data.exists()) {
-							this.setState({ gender: val1.Gender });
-							this.setState({ State: val1.State });
-							this.setState({ city: val1.City });
-							// console.log(
-							//   "yoyooo---" +
-							//     val1.Gender +
-							//     "------" +
-							//     val1.City +
-							//     "-------" +
-							//     val1.State
-							// );
-							screenProps.user.gender = val1.Gender;
-							screenProps.user.city = val1.City;
-							screenProps.user.state = val1.State;
-							console.log(
-								"----" +
-									screenProps.user.gender +
-									"-----" +
-									screenProps.user.city +
-									"-----" +
-									screenProps.user.state
-							);
-							screenProps.user.userphotourl = val1.Profile_photo;
-							screenProps.user.id = data.key;
-						}
-					});
-			})
-		);
-	};
-
-	getDataFromFirebase() {
-		var key1 = [];
-		let arr1 = this.state.initialVals;
-		var index1 = 0;
-		var { screenProps } = this.props;
-		firebase
-			.database()
-			.ref("app/" + screenProps.user.CommunityName + "/Event details")
-			.orderByKey()
-			.endAt(this.state.referenceToOldestKey)
-			.limitToLast(5)
-			.once("value")
-			.then(snapshot => {
-				console.log(snapshot.val());
-				snapshot.forEach(function(childsnap) {
-					key1[index1] = childsnap.key;
-					index1++;
-				});
-
-				let arrayOfKeys = Object.keys(snapshot.val())
-					.sort()
-					.reverse();
-
-				let results = arrayOfKeys.map(key => snapshot.val()[key]);
-				var result = [];
-
-				this.setState({
-					referenceToOldestKey: arrayOfKeys[arrayOfKeys.length - 1]
-				});
-
-				for (var i in results) {
-					result.push(results[i]);
-				}
-
-				for (var i = 0; i < result.length - 1; i++) {
-					if (result[i].Post_View.toString() == "false") {
-						arr1.push({
-							date: result[i].Date.toString(),
-							category: result[i].Category.toString(),
-							description: result[i].Description.toString(),
-							uid: arrayOfKeys[i],
-							title: result[i].Title.toString(),
-							url1: result[i].Image.toString(),
-							userId: result[i].UserId.toString()
-						});
-						this.setState({ initialVals: arr1 });
-					}
-				}
-
-				console.log("aaaaaaaa" + arr1);
-				this.setState({ feeds: arr1 });
-				this.setState({ isLoading: false });
-				this.setState({ gettingData: false });
-				// Do what you want to do with the data, i.e.
-				// append to page or dispatch({ … }) if using redux
-			})
-			.catch(error => {});
-	}
-
-	viewDetail(uid, title, desc, imgurl) {
-		console.log("yoho------");
-		this.props.navigation.navigate("ViewFeed", {
-			id: uid,
-			Title: title,
-			description: desc,
-			url: imgurl
-		});
-	}
-
-	testing(uid) {
-		//console.log("home it is" + uid);
-		this.props.navigation.navigate("UserInfo", { EventId: uid });
-	}
-	_onRefresh = () => {
-		const { navigation } = this.props;
-		this.setState({ refreshing: true });
-
-		var category = navigation.getParam("txt", "No text");
-		if (category == "All") {
-			this.setState({ searchInput: category, initialVals: [] }, () => {
-				this.getLastKey();
-				this.setState({ isLoading: true }, () => {
-					setTimeout(() => {
-						this.setState({ isLoading: false }),
-							console.log("making isloading false");
-					}, 2000);
-				});
-			});
-		} else {
-			var { screenProps } = this.props;
-			this.setState(
-				{ searchInput: category, onFilter: false, searchResult: [] },
-				() => {
-					this.setState({ isLoading: true }, () => {
-						setTimeout(() => {
-							this.setState({ isLoading: false }),
-								console.log("making isloading false");
-						}, 2000);
-					});
-					firebase
-						.database()
-						.ref(
-							"app/" +
-								screenProps.user.CommunityName +
-								"/Event details"
-						)
-						.orderByChild("Category")
-						.equalTo(this.state.searchInput)
-						.limitToLast(1)
-						.on("child_added", snapshot => {
-							this.setState(
-								{ referenceToOldestKey: snapshot.key },
-								() => {
-									console.log(
-										"oldest key" +
-											this.state.referenceToOldestKey
-									);
-									this.getCustomData();
-								}
-							);
-						});
-				}
-			);
-		}
-
-		// this.getDataFromFirebase();
-		this.setState({ refreshing: false });
-	};
-	openDrawer() {
-		this.setState({ drawerview: true });
-	}
-
-	logout() {
-		this.setState({ drawerview: false });
-		AsyncStorage.removeItem("token");
-		this.props.navigation.navigate("Login");
-	}
-	gotoAboutus() {
-		this.setState({ drawerview: false });
-		this.props.navigation.navigate("AboutUs");
-	}
-	gotoReportProblem() {
-		this.setState({ drawerview: false });
-		this.props.navigation.navigate("ReportProblem");
-	}
-	gotojoiningRequests() {
-		this.setState({ drawerview: false });
-		this.props.navigation.navigate("UserJoiningRequests");
-	}
-	gotoBroadcast() {
-		this.setState({ drawerview: false });
-		this.props.navigation.navigate("Broadcast");
-	}
-	render() {
-		// console.log(this.state.feeds)
-		var loading = this.state.isLoading;
+  componentDidMount() {
+    this.getValueLocally();
     var { screenProps } = this.props;
     const { navigation } = this.props;
-		screenProps.user.screenName = "Home";
-		let search =
-			this.state.onFilter === true
-				? this.state.initialVals
-				: this.state.searchResult;
-		if (loading) {
-			return (
-				<View style={{ paddingLeft: 20, paddingTop: 30 }}>
-					<ContentLoader height={300}>
-						<Circle cx="30" cy="30" r="30" />
-						<Rect
-							x="75"
-							y="13"
-							rx="4"
-							ry="4"
-							width="100"
-							height="13"
-						/>
-						<Rect
-							x="75"
-							y="37"
-							rx="4"
-							ry="4"
-							width="50"
-							height="8"
-						/>
-						<Rect
-							x="0"
-							y="70"
-							rx="5"
-							ry="5"
-							width="400"
-							height="200"
-						/>
-					</ContentLoader>
-					<ContentLoader height={300}>
-						<Circle cx="30" cy="30" r="30" />
-						<Rect
-							x="75"
-							y="13"
-							rx="4"
-							ry="4"
-							width="100"
-							height="13"
-						/>
-						<Rect
-							x="75"
-							y="37"
-							rx="4"
-							ry="4"
-							width="50"
-							height="8"
-						/>
-						<Rect
-							x="0"
-							y="70"
-							rx="5"
-							ry="5"
-							width="900"
-							height="200"
-						/>
-					</ContentLoader>
-				</View>
-			);
-		}
-		if (search.length == 0) {
-			return (
-				<View>
-					<View style={styles.header}>
-						<View>
-							<TouchableOpacity
-								onPress={() => {
-									this.props.navigation.goBack(null);
-								}}
-							>
-								<Icon
-									name="arrow-back"
-									color="white"
-									size={30}
-								/>
-							</TouchableOpacity>
-						</View>
+    let arr1 = [];
+    var d = new Date();
+    firebase
+      .database()
+      .ref("app/" + screenProps.user.CommunityName + "/Admins")
+      .on("child_added", data => {
+        var result = [];
 
-						<Text style={styles.home}>Parkar Samaaj</Text>
+        arr1.push(data.toJSON().Number);
+        console.log("Admins are---------------- " + JSON.stringify(arr1));
+        this.setState({ Admins: arr1 }),
+          () => {
+            this.checkAdmin();
+          };
 
-						<View style={{ paddingTop: 2 }}>
-							<TouchableOpacity
-								onPress={() => {
-									this.props.navigation.navigate(
-										"Notification"
-									);
-								}}
-							>
-								<Icon
-									name="notifications"
-									color="white"
-									size={30}
-								/>
-							</TouchableOpacity>
-						</View>
-					</View>
-					<Text
-						style={{
-							padding: 10,
-							fontSize: 16,
-							fontWeight: "bold",
-							textAlign: "center"
-						}}
-					>
-						No Posts found...!!!
-					</Text>
-				</View>
-			);
-		}
-		// if (search.length == 0) {
-		//   //this.setState({ isLoading: false });
-		//   return (
-		//     <View>
-		//     <View style={styles.header}>
-		//       <View>
-		//         <TouchableOpacity
-		//           onPress={() => {
-		//             this.props.navigation.goBack(null);
-		//           }}
-		//         >
-		//           <Icon name="arrow-back" color="white" size={30} />
-		//         </TouchableOpacity>
-		//       </View>
+        this.setState({ isLoading: false });
+      });
+    setTimeout(() => {
+      this.setState({ isLoading: false }),
+        console.log("making isloading false");
+    }, 4000);
 
-		//       <Text style={styles.home}>Parkar Samaaj</Text>
+    var category = navigation.getParam("txt", "No text");
+    if (category == "All") {
+      this.setState({ searchInput: category }, () => this.getLastKey());
+    } else {
+      this.setState({ searchInput: category, onFilter: false }, () =>
+        this.getCustomLastKey()
+      );
+    }
+  }
 
-		//       <View style={{ paddingTop: 2 }}>
-		//         <TouchableOpacity
-		//           onPress={() => {
-		//             this.props.navigation.navigate("Notification");
-		//           }}
-		//         >
-		//           <Icon name="notifications" color="white" size={30} />
-		//         </TouchableOpacity>
-		//       </View>
-		//     </View>
-		//     <Text style={{padding:10,fontSize:16,fontWeight:"bold",textAlign:"center"}}>No Post of this category found...!!!</Text>
+  getLastKey() {
+    var { screenProps } = this.props;
 
-		//     </View>
-		//   );
-		// }
-		let searchval = search.map((val, key) => {
-			let name = "";
-			let profile = "";
-			firebase
-				.database()
-				.ref(
-					"app/" +
-						screenProps.user.CommunityName +
-						"/User/" +
-						val.userId
-				)
-				.on("value", data => {
-					var val1 = data.toJSON();
-					if (!val1) {
-						this.props.navigation.navigate("HomeNavigator");
-					} else {
-						name = data.toJSON().Name;
-						profile = data.toJSON().Profile_photo;
-					}
-					// name = data.toJSON().Name;
-					// profile = data.toJSON().Profile_photo;
-				});
-			return (
-				<View
-					key={key}
-					style={{ paddingHorizontal: 5, paddingVertical: 3 }}
-				>
-					<View
-						style={{
-							padding: 2,
-							borderRadius: 5,
-							backgroundColor: "#DDDCE2"
-						}}
-					>
-						<Feed
-							name={name}
-							profile={profile}
-							key={key}
-							keyval={key}
-							val={val}
-							testing={() => this.testing(val.uid)}
-							viewDetailsMethod={() =>
-								this.viewDetail(
-									val.uid,
-									val.title,
-									val.description,
-									val.url1
-								)
-							}
-						/>
-					</View>
-				</View>
-			);
-		});
+    firebase
+      .database()
+      .ref("app/" + screenProps.user.CommunityName + "/Event details")
+      .orderByKey()
+      .limitToLast(1)
+      .on("child_added", snapshot => {
+        this.setState({ referenceToOldestKey: snapshot.key }, () => {
+          this.getDataFromFirebase();
+        });
+      });
+  }
 
-		return (
-			<View
-				style={{
-					paddingBottom: 10,
-					backgroundColor: "#dddce2",
-					flex: 1
-				}}
-			>
-				<View style={styles.header}>
-					<View>
-						<TouchableOpacity
-							onPress={() => {
-								this.props.navigation.goBack(null);
-							}}
-						>
-							<Icon name="arrow-back" color="white" size={30} />
-						</TouchableOpacity>
-					</View>
+  getCustomLastKey() {
+    var { screenProps } = this.props;
+    firebase
+      .database()
+      .ref("app/" + screenProps.user.CommunityName + "/Event details")
+      .orderByKey()
+      .limitToFirst(1)
+      .on("child_added", snapshot => {
+        this.setState({ referenceToLatestKey: snapshot.key }, () => {
+          console.log("latest key" + this.state.referenceToLatestKey);
+          // firebase
+          // 	.database()
+          // 	.ref(
+          // 		"app/" +
+          // 			screenProps.user.CommunityName +
+          // 			"/Event details"
+          // 	)
+          // 	.orderByChild("Category")
+          // 	.equalTo(this.state.searchInput)
+          // 	.limitToLast(1)
+          // 	.on("child_added", snapshot => {
+          // 		this.setState(
+          // 			{ referenceToOldestKey: snapshot.key },
+          // 			() => {
+          // 				console.log(
+          // 					"oldest key" +
+          // 						this.state.referenceToOldestKey
+          // 				);
+          this.getCustomData();
+          //		}
+          //	);
+          //	});
+        });
+      });
+  }
 
-					<Text style={styles.home}>Parkar Samaaj</Text>
+  getCustomData() {
+    let arr1 = this.state.searchResult;
+    let key1 = [];
+    var index1 = 0;
+    let arrayOfKeys = [];
+    let results = [];
+    let iter = 0;
+    const { navigation } = this.props;
+    var { screenProps } = this.props;
+    firebase
+      .database()
+      .ref("app/" + screenProps.user.CommunityName + "/Event details")
+      .orderByKey()
+      .endAt(this.state.referenceToOldestKey)
+      .limitToLast(10)
+      .once("value")
+      .then(snapshot => {
+        console.log("aaaaaaaaaaa" + this.state.referenceToOldestKey);
+        console.log(iter);
+        iter = iter + 1;
+        snapshot.forEach(function(childsnap) {
+          key1[index1] = childsnap.key;
+          index1++;
+        });
 
-					<View style={{ paddingTop: 2 }}>
-						<TouchableOpacity
-							onPress={() => {
-								this.props.navigation.navigate("Notification");
-							}}
-						>
-							<Icon
-								name="notifications"
-								color="white"
-								size={30}
-							/>
-						</TouchableOpacity>
-					</View>
-				</View>
+        arrayOfKeys = Object.keys(snapshot.val())
+          .sort()
+          .reverse();
 
-				<ScrollView
-					onMomentumScrollBegin={() => {
-						console.log("outer scroll end");
-						if (!this.state.gettingData) {
-							console.log("inner scroll end");
-							this.setState({ gettingData: true }, () => {
-								if (this.state.onFilter) {
-									this.getDataFromFirebase();
-								} else {
-									this.getCustomData();
-								}
-							});
-						}
-					}}
-					refreshControl={
-						<RefreshControl
-							refreshing={this.state.refreshing}
-							onRefresh={this._onRefresh}
-						/>
-					}
-					style={{ backgroundColor: "#DDDCE2" }}
-				>
-					{/* <Modal
+        console.log(arrayOfKeys);
+
+        results = arrayOfKeys.map(key => snapshot.val()[key]);
+        var result = [];
+
+        this.setState({
+          referenceToOldestKey: arrayOfKeys[arrayOfKeys.length - 1]
+        });
+
+        for (var i in results) {
+          result.push(results[i]);
+        }
+
+        for (var i = 0; i < result.length - 1; i++) {
+          if (
+            result[i].Category.toString() === this.state.searchInput &&
+            result[i].Post_View.toString() == "false"
+          ) {
+            arr1.push({
+              date: result[i].Date.toString(),
+              category: result[i].Category.toString(),
+              description: result[i].Description.toString(),
+              uid: arrayOfKeys[i],
+              title: result[i].Title.toString(),
+              url1: result[i].Image.toString(),
+              userId: result[i].UserId.toString()
+            });
+            this.setState({ searchResult: arr1 });
+          }
+        }
+
+        console.log("qwerty" + this.state.referenceToOldestKey);
+        console.log("qwerty" + this.state.referenceToLatestKey);
+
+        if (this.state.searchResult.length < 3) {
+          if (
+            this.state.referenceToLatestKey == this.state.referenceToOldestKey
+          ) {
+            console.log("same end it is ");
+            return;
+          } else {
+            console.log("callback");
+            this.getCustomData();
+          }
+        }
+
+        this.setState({ feeds: arr1 });
+        this.setState({ isLoading: false });
+        this.setState({ gettingData: false });
+      })
+      .catch(error => {});
+  }
+
+  getValueLocally = () => {
+    var { screenProps } = this.props;
+    AsyncStorage.getItem("token").then(value =>
+      this.setState({ getToken: value }, () => {
+        screenProps.user.number = this.state.getToken;
+        firebase
+          .database()
+          .ref("app/" + screenProps.user.CommunityName + "/User")
+          .orderByChild("Contact_Number")
+          .equalTo(this.state.getToken)
+          .on("child_added", data => {
+            val1 = data.val();
+            console.log("hehehehehehheheheheh");
+            if (data.exists()) {
+              this.setState({ gender: val1.Gender });
+              this.setState({ State: val1.State });
+              this.setState({ city: val1.City });
+              // console.log(
+              //   "yoyooo---" +
+              //     val1.Gender +
+              //     "------" +
+              //     val1.City +
+              //     "-------" +
+              //     val1.State
+              // );
+              screenProps.user.gender = val1.Gender;
+              screenProps.user.city = val1.City;
+              screenProps.user.state = val1.State;
+              console.log(
+                "----" +
+                  screenProps.user.gender +
+                  "-----" +
+                  screenProps.user.city +
+                  "-----" +
+                  screenProps.user.state
+              );
+              screenProps.user.userphotourl = val1.Profile_photo;
+              screenProps.user.id = data.key;
+            }
+          });
+      })
+    );
+  };
+
+  getDataFromFirebase() {
+    var key1 = [];
+    let arr1 = this.state.initialVals;
+    var index1 = 0;
+    var { screenProps } = this.props;
+    firebase
+      .database()
+      .ref("app/" + screenProps.user.CommunityName + "/Event details")
+      .orderByKey()
+      .endAt(this.state.referenceToOldestKey)
+      .limitToLast(5)
+      .once("value")
+      .then(snapshot => {
+        console.log(snapshot.val());
+        snapshot.forEach(function(childsnap) {
+          key1[index1] = childsnap.key;
+          index1++;
+        });
+
+        let arrayOfKeys = Object.keys(snapshot.val())
+          .sort()
+          .reverse();
+
+        let results = arrayOfKeys.map(key => snapshot.val()[key]);
+        var result = [];
+
+        this.setState({
+          referenceToOldestKey: arrayOfKeys[arrayOfKeys.length - 1]
+        });
+
+        for (var i in results) {
+          result.push(results[i]);
+        }
+
+        for (var i = 0; i < result.length - 1; i++) {
+          if (result[i].Post_View.toString() == "false") {
+            arr1.push({
+              date: result[i].Date.toString(),
+              category: result[i].Category.toString(),
+              description: result[i].Description.toString(),
+              uid: arrayOfKeys[i],
+              title: result[i].Title.toString(),
+              url1: result[i].Image.toString(),
+              userId: result[i].UserId.toString()
+            });
+            this.setState({ initialVals: arr1 });
+          }
+        }
+
+        console.log("aaaaaaaa" + arr1);
+        this.setState({ feeds: arr1 });
+        this.setState({ isLoading: false });
+        this.setState({ gettingData: false });
+        // Do what you want to do with the data, i.e.
+        // append to page or dispatch({ … }) if using redux
+      })
+      .catch(error => {});
+  }
+
+  viewDetail(uid, title, desc, imgurl) {
+    console.log("yoho------");
+    this.props.navigation.navigate("ViewFeed", {
+      id: uid,
+      Title: title,
+      description: desc,
+      url: imgurl
+    });
+  }
+
+  testing(uid) {
+    //console.log("home it is" + uid);
+    this.props.navigation.navigate("UserInfo", { EventId: uid });
+  }
+  _onRefresh = () => {
+    const { navigation } = this.props;
+    this.setState({ refreshing: true });
+
+    var category = navigation.getParam("txt", "No text");
+    if (category == "All") {
+      this.setState({ searchInput: category, initialVals: [] }, () => {
+        this.getLastKey();
+        this.setState({ isLoading: true }, () => {
+          setTimeout(() => {
+            this.setState({ isLoading: false }),
+              console.log("making isloading false");
+          }, 2000);
+        });
+      });
+    } else {
+      var { screenProps } = this.props;
+      this.setState(
+        { searchInput: category, onFilter: false, searchResult: [] },
+        () => {
+          this.setState({ isLoading: true }, () => {
+            setTimeout(() => {
+              this.setState({ isLoading: false }),
+                console.log("making isloading false");
+            }, 2000);
+          });
+          firebase
+            .database()
+            .ref("app/" + screenProps.user.CommunityName + "/Event details")
+            .orderByChild("Category")
+            .equalTo(this.state.searchInput)
+            .limitToLast(1)
+            .on("child_added", snapshot => {
+              this.setState({ referenceToOldestKey: snapshot.key }, () => {
+                console.log("oldest key" + this.state.referenceToOldestKey);
+                this.getCustomData();
+              });
+            });
+        }
+      );
+    }
+
+    // this.getDataFromFirebase();
+    this.setState({ refreshing: false });
+  };
+  openDrawer() {
+    this.setState({ drawerview: true });
+  }
+
+  logout() {
+    this.setState({ drawerview: false });
+    AsyncStorage.removeItem("token");
+    this.props.navigation.navigate("Login");
+  }
+  gotoAboutus() {
+    this.setState({ drawerview: false });
+    this.props.navigation.navigate("AboutUs");
+  }
+  gotoReportProblem() {
+    this.setState({ drawerview: false });
+    this.props.navigation.navigate("ReportProblem");
+  }
+  gotojoiningRequests() {
+    this.setState({ drawerview: false });
+    this.props.navigation.navigate("UserJoiningRequests");
+  }
+  gotoBroadcast() {
+    this.setState({ drawerview: false });
+    this.props.navigation.navigate("Broadcast");
+  }
+  render() {
+    // console.log(this.state.feeds)
+    var loading = this.state.isLoading;
+    var { screenProps } = this.props;
+    screenProps.user.screenName = "Home";
+    let search =
+      this.state.onFilter === true
+        ? this.state.initialVals
+        : this.state.searchResult;
+    if (loading) {
+      return (
+        <View style={{ paddingLeft: 20, paddingTop: 30 }}>
+          <ContentLoader height={300}>
+            <Circle cx="30" cy="30" r="30" />
+            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+            <Rect x="0" y="70" rx="5" ry="5" width="400" height="200" />
+          </ContentLoader>
+          <ContentLoader height={300}>
+            <Circle cx="30" cy="30" r="30" />
+            <Rect x="75" y="13" rx="4" ry="4" width="100" height="13" />
+            <Rect x="75" y="37" rx="4" ry="4" width="50" height="8" />
+            <Rect x="0" y="70" rx="5" ry="5" width="900" height="200" />
+          </ContentLoader>
+        </View>
+      );
+    }
+    if (search.length == 0) {
+      return (
+        <View>
+          <View style={styles.header}>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.goBack(null);
+                }}
+              >
+                <Icon name="arrow-back" color="white" size={30} />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.home}>Parkar Samaaj</Text>
+
+            <View style={{ paddingTop: 2 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("Notification");
+                }}
+              >
+                <Icon name="notifications" color="white" size={30} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <Text
+            style={{
+              padding: 10,
+              fontSize: 16,
+              fontWeight: "bold",
+              textAlign: "center"
+            }}
+          >
+            No Posts found...!!!
+          </Text>
+        </View>
+      );
+    }
+    let searchval = search.map((val, key) => {
+      let name = "";
+      let profile = "";
+      var isAdmin = false;
+
+      firebase
+        .database()
+        .ref("app/" + screenProps.user.CommunityName + "/User/" + val.userId)
+        .on("value", data => {
+          name = data.toJSON().Name;
+          profile = data.toJSON().Profile_photo;
+          num = data.toJSON().Contact_Number;
+          a = num.toString();
+          console.log("num-----"+a)
+          for (let i = 0; i < this.state.Admins.length; i++) {
+            if (this.state.Admins[i].toString() == a) {
+              console.log(this.state.Admins[i])
+              console.log("true");
+              isAdmin = true;
+              return true;
+            } else console.log("false");
+          }
+        });
+      return (
+        <View key={key} style={{ paddingHorizontal: 5, paddingVertical: 3 }}>
+          <View
+            style={{
+              padding: 2,
+              borderRadius: 5,
+              backgroundColor: "#DDDCE2"
+            }}
+          >
+            <Feed
+              isAdmin={isAdmin}
+              Cname={screenProps.user.CommunityName}
+              num={num}
+              name={name}
+              profile={profile}
+              key={key}
+              keyval={key}
+              val={val}
+              testing={() => this.testing(val.uid)}
+              viewDetailsMethod={() =>
+                this.viewDetail(val.uid, val.title, val.description, val.url1)
+              }
+            />
+          </View>
+        </View>
+      );
+    });
+
+    return (
+      <View
+        style={{
+          paddingBottom: 10,
+          backgroundColor: "#dddce2",
+          flex: 1
+        }}
+      >
+        <View style={styles.header}>
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+            >
+              <Icon name="arrow-back" color="white" size={30} />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.home}>Parkar Samaaj</Text>
+
+          <View style={{ paddingTop: 2 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Notification");
+              }}
+            >
+              <Icon name="notifications" color="white" size={30} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <ScrollView
+          onMomentumScrollBegin={() => {
+            console.log("outer scroll end");
+            if (!this.state.gettingData) {
+              console.log("inner scroll end");
+              this.setState({ gettingData: true }, () => {
+                if (this.state.onFilter) {
+                  this.getDataFromFirebase();
+                } else {
+                  this.getCustomData();
+                }
+              });
+            }
+          }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+          style={{ backgroundColor: "#DDDCE2" }}
+        >
+          {/* <Modal
 						animationType="fade"
 						transparent={true}
 						visible={this.state.drawerview}

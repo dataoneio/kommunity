@@ -24,8 +24,12 @@ export default class MatrimonialSearch extends React.Component {
       Name: "",
       MatrimonialUserArray: [],
       MatrimonialMatches: []
-
     };
+  }
+
+  ViewProfile(uid,data)
+  {
+    this.props.navigation.navigate("ViewMatrimonyProfile",{uid:uid,data:data})
   }
   searchByInput() {
     searchresult = this.state.MatrimonialUserArray;
@@ -58,8 +62,12 @@ export default class MatrimonialSearch extends React.Component {
     });
   }
   componentDidMount() {
-    var date = new Date();
-    console.log("aaaaaqqqqq---" + date.getFullYear());
+    //alert("hello");
+    var date = new Date().toISOString();
+    console.log("ffff" + date);
+    var year = parseInt(date);
+
+    console.log("aaaaaqqqqq---" + year);
     const { navigation } = this.props;
     var { screenProps } = this.props;
     this.setState(
@@ -94,46 +102,46 @@ export default class MatrimonialSearch extends React.Component {
       .database()
       .ref("app/" + screenProps.user.CommunityName + "/User")
       .on("child_added", data => {
-        // console.log("999999----"+date1)
-
         console.log("aaaaaa" + data.key);
         if (
           data.toJSON().Matrimonial != null &&
           data.toJSON().Matrimonial.Marital_Status != "Married"
         ) {
-          var s1 = JSON.stringify(
-            data.toJSON().Matrimonial.DOB.replace(/-/g, "/")
-          );
-          s2 = s1.toString();
-          var d1 = new Date(s2).getFullYear();
-          var date = new Date().getFullYear();
-          (UserAge = date - d1),
-            arr1.push({
-              Blood_Group: data.toJSON().Blood_Group,
-              City: data.toJSON().City,
-              Contact_Number: data.toJSON().Contact_Number,
-              Email: data.toJSON().Email,
-              Gender: data.toJSON().Gender,
-              Name: data.toJSON().Name,
-              Profession: data.toJSON().Profession,
-              Profile_photo: data.toJSON().Profile_photo,
-              State: data.toJSON().State,
-              DOB: data.toJSON().Matrimonial.DOB.replace("-", "/"),
-              Fathers_Name: data.toJSON().Matrimonial.Fathers_Name,
-              Mothers_Name: data.toJSON().Matrimonial.Mothers_Name,
-              Marital_Status: data.toJSON().Matrimonial.Marital_Status,
-              Highest_Qualification: data.toJSON().Matrimonial
-                .Highest_Qualification,
-              age: UserAge
-            });
+          var s1 = JSON.stringify(data.toJSON().Matrimonial.DOB);
+          var years = s1.split("-");
+          console.log("years" + years[2].replace(/"/g, ""));
+          var d2 = years[2].replace(/"/g, "");
+          UserAge = year - d2;
+          arr1.push({
+            Blood_Group: data.toJSON().Blood_Group,
+            City: data.toJSON().City,
+            Contact_Number: data.toJSON().Contact_Number,
+            Email: data.toJSON().Email,
+            Gender: data.toJSON().Gender,
+            Name: data.toJSON().Name,
+            Profession: data.toJSON().Profession,
+            Profile_photo: data.toJSON().Profile_photo,
+            State: data.toJSON().State,
+            DOB: data.toJSON().Matrimonial.DOB.replace("-", "/"),
+            Fathers_Name: data.toJSON().Matrimonial.Fathers_Name,
+            Mothers_Name: data.toJSON().Matrimonial.Mothers_Name,
+            Marital_Status: data.toJSON().Matrimonial.Marital_Status,
+            Highest_Qualification: data.toJSON().Matrimonial
+              .Highest_Qualification,
+            age: UserAge,
+            Height:data.toJSON().Matrimonial.Height,
+            Weight:data.toJSON().Matrimonial.Weight,
+            Birth_Time:data.toJSON().Matrimonial.Birth_time,
+            Salary:data.toJSON().Matrimonial.Salary,
+            Hobbies:data.toJSON().Matrimonial.Hobbies,
+            Birth_Place:data.toJSON().Matrimonial.Birth_Place,
+            uid:data.key,
+          
+          });
           this.setState({ MatrimonialUserArray: arr1 }, () => {
             console.log("aaa---" + JSON.stringify(arr1));
             this.searchByInput();
           });
-          console.log(
-            "qqqq--" +
-              JSON.stringify(data.toJSON().Matrimonial.DOB.replace(/-/g, "/"))
-          );
         }
       });
   }
@@ -141,7 +149,7 @@ export default class MatrimonialSearch extends React.Component {
     let MatrimonialUsers = this.state.MatrimonialMatches.map((val, key) => {
       return (
         <View key={key} style={{ paddingHorizontal: 5, paddingVertical: 3 }}>
-          <MatrimonialComponent val={val} key={key} keyval={key} />
+          <MatrimonialComponent val={val} key={key} keyval={key} ViewProfile={()=>this.ViewProfile(val.uid,val)} />
         </View>
       );
     });
@@ -168,15 +176,14 @@ export default class MatrimonialSearch extends React.Component {
             }}
           />
         </View>
-        <ScrollView>
-        <View
-          style={{
-            backgroundColor: "#dddce2"
-          }}
-        >
-                <Text>helloooooaaaaa</Text>
-          {MatrimonialUsers}
-        </View>
+        <ScrollView style={{paddingBottom:100,marginBottom:50}}>
+          <View
+            style={{
+              backgroundColor: "#dddce2"
+            }}
+          >
+            {MatrimonialUsers}
+          </View>
         </ScrollView>
       </View>
     );
