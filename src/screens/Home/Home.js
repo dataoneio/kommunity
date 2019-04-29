@@ -1,37 +1,28 @@
 import React, { Component } from "react";
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Button,
-  ScrollView,
-  ActivityIndicator,
-  AsyncStorage,
-  BackHandler,
-  RefreshControl,
-  TouchableHighlight,
-  Modal,
-  Image,
-  Dimensions
+	Platform,
+	StyleSheet,
+	Text,
+	View,
+	TouchableOpacity,
+	Button,
+	ScrollView,
+	ActivityIndicator,
+	AsyncStorage,
+	BackHandler,
+	RefreshControl,
+	TouchableHighlight,
+	Modal,
+	Image,
+	Dimensions
 } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Icon } from "react-native-elements";
 import firebase from "../../../Firebase";
 import Feed from "../../components/Feed/Feed";
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger
-} from "react-native-popup-menu";
 import ContentLoader from "react-native-content-loader";
-import Drawer from "react-native-circle-drawer";
 import { Circle, Rect } from "react-native-svg";
-import RNShake from "react-native-shake";
-import renderIf from "../../components/ViewFeed/renderIf";
-import Dialog from "react-native-dialog";
+// import Dialog from "react-native-dialog";
 import styles from "./HomeStyle";
 
 export default class Home extends React.Component {
@@ -500,38 +491,6 @@ export default class Home extends React.Component {
         </View>
       );
     }
-    // if (search.length == 0) {
-    //   //this.setState({ isLoading: false });
-    //   return (
-    //     <View>
-    //     <View style={styles.header}>
-    //       <View>
-    //         <TouchableOpacity
-    //           onPress={() => {
-    //             this.props.navigation.goBack(null);
-    //           }}
-    //         >
-    //           <Icon name="arrow-back" color="white" size={30} />
-    //         </TouchableOpacity>
-    //       </View>
-
-    //       <Text style={styles.home}>Parkar Samaaj</Text>
-
-    //       <View style={{ paddingTop: 2 }}>
-    //         <TouchableOpacity
-    //           onPress={() => {
-    //             this.props.navigation.navigate("Notification");
-    //           }}
-    //         >
-    //           <Icon name="notifications" color="white" size={30} />
-    //         </TouchableOpacity>
-    //       </View>
-    //     </View>
-    //     <Text style={{padding:10,fontSize:16,fontWeight:"bold",textAlign:"center"}}>No Post of this category found...!!!</Text>
-
-    //     </View>
-    //   );
-    // }
     let searchval = search.map((val, key) => {
       let name = "";
       let profile = "";
@@ -784,17 +743,17 @@ export default class Home extends React.Component {
 							</View>
 						</View>
 					</Modal> */}
-          <View style={{ paddingVertical: 8 }}>
-            <View
-              style={{
-                backgroundColor: "#dddce2"
-              }}
-            >
-              {searchval}
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    );
-  }
+					<View style={{ paddingVertical: 8 }}>
+						<View
+							style={{
+								backgroundColor: "#dddce2"
+							}}
+						>
+							{searchval}
+						</View>
+					</View>
+				</ScrollView>
+			</View>
+		);
+	}
 }

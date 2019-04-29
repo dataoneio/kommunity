@@ -150,7 +150,7 @@ export default class App extends Component {
 		if (!(this.state.token.length == 4)) {
 			alert("4 digit otp only");
 		} else {
-			this.setValueLocally();
+		 	this.setValueLocally();
 			var myHeaders = new Headers();
 			myHeaders.append("Content-Type", "application/json");
 			body = {

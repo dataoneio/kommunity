@@ -13,44 +13,44 @@ import AppContainer from "./src/navigator/AppContainer";
 import { MenuProvider } from "react-native-popup-menu";
 
 export default class App extends Component {
-  render() {
-    const screenProps = {
-      user: {
-        id: "amoli",
-        number: "johndoe123",
-        name: "john@doe.com",
-        city:"",
-        state:"",
-        gender:"",
-        CommunityName:""
-      }
-    };
+	render() {
+		const screenProps = {
+			user: {
+				id: "amoli",
+				number: "johndoe123",
+				name: "john@doe.com",
+				city: "",
+				state: "",
+				gender: "",
+				CommunityName: ""
+			}
+		};
 
-    return (
-      <MenuProvider>
-        <AppContainer screenProps={screenProps} />
-      </MenuProvider>
-    );
-    
-  }
-  
+		return (
+			<MenuProvider>
+				<AppContainer screenProps={screenProps} />
+			</MenuProvider>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  }
+	container: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "#F5FCFF"
+	},
+	welcome: {
+		fontSize: 20,
+		textAlign: "center",
+		margin: 10
+	},
+	instructions: {
+		textAlign: "center",
+		color: "#333333",
+		marginBottom: 5
+	}
 });
+
+
