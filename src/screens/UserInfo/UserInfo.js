@@ -789,8 +789,8 @@ console.log("did mount")
                     </View>
                   </TouchableOpacity>
                   {renderIf(this.state.MatrimonialInfo)(
-                    <View>
-                      <View style={{ flexDirection: "row" }}>
+                    <View style={{paddingBottom:100}}>
+                      <View style={{ flexDirection: "row" ,paddingTop:10}}>
                         <Text
                           style={{
                             fontFamily: "lucida grande",
@@ -1061,7 +1061,7 @@ console.log("did mount")
                   </TouchableOpacity>
 
                   {renderIf(this.state.BusinessInfo)(
-                    <View>
+                    <View style={{paddingBottom:100}}>
                       <View>
                         <TextInput
                           label="Business Name"

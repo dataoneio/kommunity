@@ -68,7 +68,8 @@ export default class Info extends React.Component {
       height: "",
       weight: "",
       Hobbies: "",
-      BirthPlace: ""
+      BirthPlace: "",
+      date: ""
     };
   }
   componentDidMount() {
@@ -156,18 +157,18 @@ export default class Info extends React.Component {
     country,
     states,
     city,
-	Address_line1,
-	Mname,
-	Fname,
-	Education,
-	MaritalStatus,
-	maxdate,
-	time,
-	Salary,
-	height,
-	weight,
-	Hobbies,
-	BirthPlace
+    Address_line1,
+    date,
+    time,
+    BirthPlace,
+    height,
+    weight,
+    Fname,
+    Mname,
+    Hobbies,
+    MaritalStatus,
+    Education,
+    Salary,
   ) {
     this.setState({
       Name: Name,
@@ -181,19 +182,18 @@ export default class Info extends React.Component {
       states: states,
       city: city,
       addr_line1: Address_line1,
-	  isAdmin: false,
-	  Mname: Mname,
+      date: date,
+      Mname: Mname,
       Fname: Fname,
-      Education:Education,
+      Education: Education,
       MaritalStatus: MaritalStatus,
-      maxdate: maxdate,
       time: time,
       Salary: Salary,
       height: height,
       weight: weight,
-      Hobbies:Hobbies,
-      BirthPlace:BirthPlace
-	  
+      Hobbies: Hobbies,
+      BirthPlace: BirthPlace,
+      isAdmin: false   
     });
   }
   returnData1(name, mobile, type, Category, Address_line1, Address_line2) {
@@ -653,8 +653,8 @@ export default class Info extends React.Component {
                     </View>
                   </TouchableOpacity>
                   {renderIf(this.state.MatrimonialInfo)(
-                    <View>
-                      <View style={{ flexDirection: "row" }}>
+                    <View style={{paddingBottom:100}}>
+                      <View style={{ flexDirection: "row", paddingTop: 10 }}>
                         <Text
                           style={{
                             fontFamily: "lucida grande",
@@ -925,7 +925,7 @@ export default class Info extends React.Component {
                   </TouchableOpacity>
 
                   {renderIf(this.state.BusinessInfo)(
-                    <View>
+                    <View style={{paddingBottom:100}}>
                       <View>
                         <TextInput
                           label="Business Name"

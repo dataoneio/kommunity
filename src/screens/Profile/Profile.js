@@ -67,12 +67,16 @@ export default class Profile extends React.Component {
       height: "",
       weight: "",
       Hobbies: "",
-      BirthPlace: ""
+      BirthPlace: "",date:""
     };
   }
   componentDidMount() {
     var { screenProps } = this.props;
     this.setState({ UserId: screenProps.user.id });
+    var d = new Date();
+    var d1 = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+    console.log("aaaa" + d1);
+    this.setState({ maxdate: d1 });
     this.getData();
   }
 
@@ -202,8 +206,9 @@ export default class Profile extends React.Component {
         this.state.BusinessMobileNo,
         this.state.Type,
         this.state.BusinessCategory,
+        this.state.businessAddr_line1,
         this.state.businessAddr_line2,
-        this.state.businessAddr_line1
+
       );
       this.updateData();
     }
@@ -257,8 +262,7 @@ export default class Profile extends React.Component {
         console.log("hehheheheheh----" + this.state.BusinessMobileNo);
       });
 
-
-      firebase
+    firebase
       .database()
       .ref(
         "app/" + screenProps.user.CommunityName + "/User/" + screenProps.user.id
@@ -274,12 +278,12 @@ export default class Profile extends React.Component {
           this.setState({
             MaritalStatus: data.toJSON().Matrimonial.Marital_Status
           });
-          this.setState({height:data.toJSON().Matrimonial.Height})
-          this.setState({weight:data.toJSON().Matrimonial.Weight})
-          this.setState({time:data.toJSON().Matrimonial.Birth_time})
-          this.setState({Salary:data.toJSON().Matrimonial.Salary})
-          this.setState({Hobbies:data.toJSON().Matrimonial.Hobbies})
-          this.setState({BirthPlace:data.toJSON().Matrimonial.Birth_Place})
+          this.setState({ height: data.toJSON().Matrimonial.Height });
+          this.setState({ weight: data.toJSON().Matrimonial.Weight });
+          this.setState({ time: data.toJSON().Matrimonial.Birth_time });
+          this.setState({ Salary: data.toJSON().Matrimonial.Salary });
+          this.setState({ Hobbies: data.toJSON().Matrimonial.Hobbies });
+          this.setState({ BirthPlace: data.toJSON().Matrimonial.Birth_Place });
           console.log("eeee" + data.toJSON().Matrimonial.Fathers_Name);
         }
       });
@@ -433,33 +437,72 @@ export default class Profile extends React.Component {
           City: this.state.city,
           State: this.state.states,
           Address_line1: this.state.addr_line1
-
         });
 
 
-        firebase
-      .database()
-      .ref(
-        "app/" +
-          screenProps.user.CommunityName +
-          "/User/" +
-          screenProps.user.id +
-          "/Matrimonial" 
+        console.log(this.state.date+"---"+
+        this.state.MaritalStatus +"---"+
+        this.state.Mname +"---"+
+        this.state.Fname +"---"+
+        this.state.Education +"---"+
+        this.state.time +"---"+
+        this.state.height+"---"+
+        this.state.weight +"---"+
+        this.state.Hobbies +"---"+
+        this.state.Salary +"---"+
+        this.state.BirthPlace +"---")
+      if (
+        this.state.date == "" &&
+        this.state.MaritalStatus == "" &&
+        this.state.Mname == "" &&
+        this.state.Fname == "" &&
+        this.state.Education == "" &&
+        this.state.time == "" &&
+        this.state.height == "" &&
+        this.state.weight == "" &&
+        this.state.Hobbies == "" &&
+        this.state.Salary == "" &&
+        this.state.BirthPlace == ""
       )
-      .update({
-        DOB: this.state.date,
-        Marital_Status: this.state.MaritalStatus,
-        Mothers_Name: this.state.Mname,
-        Fathers_Name: this.state.Fname,
-        Highest_Qualification: this.state.Education,
-        Birth_time: this.state.time,
-        Height: this.state.height,
-        Weight: this.state.weight,
-        Hobbies: this.state.Hobbies,
-        Salary:this.state.Salary,
-        Birth_Place:this.state.BirthPlace
-      });
-
+      {
+        
+        console.log("empty vals")
+      }
+      else{
+        console.log(this.state.date+"---"+
+        this.state.MaritalStatus +"---"+
+        this.state.Mname +"---"+
+        this.state.Fname +"---"+
+        this.state.Education +"---"+
+        this.state.time +"---"+
+        this.state.height+"---"+
+        this.state.weight +"---"+
+        this.state.Hobbies +"---"+
+        this.state.Salary +"---"+
+        this.state.BirthPlace +"---")
+        firebase
+          .database()
+          .ref(
+            "app/" +
+              screenProps.user.CommunityName +
+              "/User/" +
+              screenProps.user.id +
+              "/Matrimonial"
+          )
+          .set({
+            DOB: this.state.date,
+            Marital_Status: this.state.MaritalStatus,
+            Mothers_Name: this.state.Mname,
+            Fathers_Name: this.state.Fname,
+            Highest_Qualification: this.state.Education,
+            Birth_time: this.state.time,
+            Height: this.state.height,
+            Weight: this.state.weight,
+            Hobbies: this.state.Hobbies,
+            Salary: this.state.Salary,
+            Birth_Place: this.state.BirthPlace
+          });
+        }
       firebase
         .database()
         .ref(
@@ -497,18 +540,17 @@ export default class Profile extends React.Component {
         this.state.states,
         this.state.city,
         this.state.addr_line1,
-
         this.state.date,
-        this.state.MaritalStatus,
-         this.state.Mname,
-        this.state.Fname,
-       this.state.Education,
-       this.state.time,
+        this.state.time,
+        this.state.BirthPlace,
         this.state.height,
         this.state.weight,
-         this.state.Hobbies,
+        this.state.Fname,
+        this.state.Mname,
+        this.state.Hobbies,
+        this.state.MaritalStatus,
+        this.state.Education,
         this.state.Salary,
-        this.state.BirthPlace,
         this.state.BusinessName,
         this.state.BusinessMobileNo,
         this.state.Type,
@@ -839,8 +881,6 @@ export default class Profile extends React.Component {
               </View>
             )}
 
-            
-
             <TouchableOpacity onPress={this.setMatrimonialInfo.bind(this)}>
               <View
                 style={{
@@ -870,8 +910,8 @@ export default class Profile extends React.Component {
             </TouchableOpacity>
 
             {renderIf(this.state.MatrimonialInfo)(
-              <View>
-                <View style={{ flexDirection: "row" }}>
+              <View style={{paddingBottom:100}}>
+                <View style={{ flexDirection: "row" ,paddingTop:10}}>
                   <Text
                     style={{
                       fontFamily: "lucida grande",
@@ -1100,7 +1140,7 @@ export default class Profile extends React.Component {
               </View>
             )}
 
-<TouchableOpacity onPress={this.setBusinessInfo.bind(this)}>
+            <TouchableOpacity onPress={this.setBusinessInfo.bind(this)}>
               <View
                 style={{
                   padding: 10,
@@ -1128,7 +1168,7 @@ export default class Profile extends React.Component {
               </View>
             </TouchableOpacity>
             {renderIf(this.state.BusinessInfo)(
-              <View>
+              <View style={{paddingBottom:100}}>
                 <View>
                   <TextInput
                     label="Business Name"
