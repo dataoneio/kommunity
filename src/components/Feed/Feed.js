@@ -36,6 +36,8 @@ export default class Feed extends Component {
   }
   componentDidMount() {
     this.getTitle();
+     
+
   }
 
   getTitle() {

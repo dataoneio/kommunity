@@ -15,6 +15,8 @@ import AddressBookComponent from "../../components/AddressBookComponent/AddressB
 import firebase from "../../../Firebase";
 import { ScrollView } from "react-native-gesture-handler";
 export default class AddressBook extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,6 +30,7 @@ export default class AddressBook extends React.Component {
   }
   componentWillMount() {
     var { screenProps } = this.props;
+    this._isMounted = true;
 
     var arr2 = [];
     firebase
@@ -36,11 +39,15 @@ export default class AddressBook extends React.Component {
       .orderByChild("City")
       .on("child_added", data => {
         arr2.push(data.toJSON().City);
+        if(this._isMounted){
         this.setState({ cityAr: arr2 });
-        this.setState({ alldata: false });
+        this.setState({ alldata: false });}
       });
   }
-  componentWillUnmount() {}
+  componentWillUnmount()
+  {
+    this._isMounted=false
+  }
   render() {
     if (this.state.alldata) {
       return (
@@ -60,6 +67,7 @@ export default class AddressBook extends React.Component {
         </View>
       );
     }
+    else{
     var a = [],
       b = [],
       prev;
@@ -87,6 +95,7 @@ export default class AddressBook extends React.Component {
         occurance: b[i]
       });
     }
+  }
     //console.log("ssssss"+this.state.cityAr)
     mapping = arr3.map((val, key) => {
       console.log("aaa--" + val.city + "----" + val.occurance);

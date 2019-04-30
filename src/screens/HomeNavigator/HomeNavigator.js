@@ -26,6 +26,10 @@ const instructions = Platform.select({
     "Shake or press menu button for dev menu"
 });
 
+
+
+
+
 export default class HomeNavigator extends React.Component {
   constructor(props) {
     super(props);

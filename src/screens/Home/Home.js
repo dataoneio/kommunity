@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import {
-	Platform,
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	Button,
-	ScrollView,
-	ActivityIndicator,
-	AsyncStorage,
-	BackHandler,
-	RefreshControl,
-	TouchableHighlight,
-	Modal,
-	Image,
-	Dimensions
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Button,
+  ScrollView,
+  ActivityIndicator,
+  AsyncStorage,
+  BackHandler,
+  RefreshControl,
+  TouchableHighlight,
+  Modal,
+  Image,
+  Dimensions
 } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Icon } from "react-native-elements";
@@ -75,6 +75,10 @@ export default class Home extends React.Component {
     const { navigation } = this.props;
     let arr1 = [];
     var d = new Date();
+    setTimeout(() => {
+      this.setState({ isLoading: false }),
+        console.log("making isloading false");
+    }, 4000);
     firebase
       .database()
       .ref("app/" + screenProps.user.CommunityName + "/Admins")
@@ -88,12 +92,12 @@ export default class Home extends React.Component {
             this.checkAdmin();
           };
 
-        this.setState({ isLoading: false });
+       // this.setState({ isLoading: false });
       });
-    setTimeout(() => {
-      this.setState({ isLoading: false }),
-        console.log("making isloading false");
-    }, 4000);
+    // setTimeout(() => {
+    //   this.setState({ isLoading: false }),
+    //     console.log("making isloading false");
+    // }, 4000);
 
     var category = navigation.getParam("txt", "No text");
     if (category == "All") {
@@ -232,7 +236,7 @@ export default class Home extends React.Component {
         }
 
         this.setState({ feeds: arr1 });
-        this.setState({ isLoading: false });
+      //  this.setState({ isLoading: false });
         this.setState({ gettingData: false });
       })
       .catch(error => {});
@@ -333,7 +337,7 @@ export default class Home extends React.Component {
 
         console.log("aaaaaaaa" + arr1);
         this.setState({ feeds: arr1 });
-        this.setState({ isLoading: false });
+       // this.setState({ isLoading: false });
         this.setState({ gettingData: false });
         // Do what you want to do with the data, i.e.
         // append to page or dispatch({ … }) if using redux
@@ -367,7 +371,7 @@ export default class Home extends React.Component {
           setTimeout(() => {
             this.setState({ isLoading: false }),
               console.log("making isloading false");
-          }, 2000);
+          }, 3000);
         });
       });
     } else {
@@ -379,7 +383,7 @@ export default class Home extends React.Component {
             setTimeout(() => {
               this.setState({ isLoading: false }),
                 console.log("making isloading false");
-            }, 2000);
+            }, 3000);
           });
           firebase
             .database()
@@ -495,7 +499,7 @@ export default class Home extends React.Component {
       let name = "";
       let profile = "";
       var isAdmin = false;
-
+      let num = "";
       firebase
         .database()
         .ref("app/" + screenProps.user.CommunityName + "/User/" + val.userId)
@@ -504,10 +508,10 @@ export default class Home extends React.Component {
           profile = data.toJSON().Profile_photo;
           num = data.toJSON().Contact_Number;
           a = num.toString();
-          console.log("num-----"+a)
+          console.log("num-----" + a);
           for (let i = 0; i < this.state.Admins.length; i++) {
             if (this.state.Admins[i].toString() == a) {
-              console.log(this.state.Admins[i])
+              console.log(this.state.Admins[i]);
               console.log("true");
               isAdmin = true;
               return true;
@@ -526,7 +530,6 @@ export default class Home extends React.Component {
             <Feed
               isAdmin={isAdmin}
               Cname={screenProps.user.CommunityName}
-              num={num}
               name={name}
               profile={profile}
               key={key}
@@ -743,17 +746,17 @@ export default class Home extends React.Component {
 							</View>
 						</View>
 					</Modal> */}
-					<View style={{ paddingVertical: 8 }}>
-						<View
-							style={{
-								backgroundColor: "#dddce2"
-							}}
-						>
-							{searchval}
-						</View>
-					</View>
-				</ScrollView>
-			</View>
-		);
-	}
+          <View style={{ paddingVertical: 8 }}>
+            <View
+              style={{
+                backgroundColor: "#dddce2"
+              }}
+            >
+              {searchval}
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
 }

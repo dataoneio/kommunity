@@ -165,7 +165,7 @@ export default class MatrimonialForm extends React.Component {
 
     return (
       <View>
-        <View style={styles.header}>
+         <View style={styles.header}>
           <View>
             <TouchableOpacity
               title=""

@@ -35,7 +35,7 @@ export default class Matrimonial extends React.Component {
   }
   handleChangeState = stateFilters => {
     this.setState({ stateFilter: stateFilters, city: "" }, () => {
-     // console.log("eeee" + this.state.stateFilter), this.findcity();
+     this.findcity();
     });
   };
   findcity() {
@@ -86,6 +86,7 @@ export default class Matrimonial extends React.Component {
         <View style={styles.header}>
           <View>
             <TouchableOpacity
+              title=""
               onPress={() => {
                 this.props.navigation.goBack(null);
               }}
@@ -93,18 +94,15 @@ export default class Matrimonial extends React.Component {
               <Icon name="arrow-back" color="white" size={30} />
             </TouchableOpacity>
           </View>
-
-          <Text style={styles.home}>Matrimonial</Text>
-
-          <View style={{ paddingTop: 1 }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("MatrimonialForm");
-              }}
-            >
-              <Icon name="account-edit" type="material-community" color="white" size={30} />
-            </TouchableOpacity>
+          <View>
+            <Text style={styles.home}>Matrimonial </Text>
           </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }}
+          />
         </View>
         <ScrollView>
           <View style={{ padding: 5 }}>

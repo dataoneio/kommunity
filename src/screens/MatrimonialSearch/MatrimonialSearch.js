@@ -12,6 +12,7 @@ import {
 import firebase from "../../../Firebase";
 import MatrimonialComponent from "../../components/MatrimonialComponent/MatrimonialComponent";
 import { ScrollView } from "react-native-gesture-handler";
+import renderIf from "../../components/ViewFeed/renderIf"
 export default class MatrimonialSearch extends React.Component {
   constructor(props) {
     super(props);
@@ -46,15 +47,24 @@ export default class MatrimonialSearch extends React.Component {
         (f5 = this.state.MinAge),
         (f6 = this.state.MaxAge);
       if (
-        s1.includes(f1) &&
         s2.includes(f2) &&
         s4.includes(f4) &&
         s5.includes(f3)
       ) {
-        if (s3 > f5 && s3 < f6) {
+        if(this.state.Gender=="")
+        {
+        if (s3 >= f5 && s3 <= f6) {
           console.log("yessssssssss");
           return true;
         }
+      }
+      else if(s1 == f1 )
+      {
+        if (s3 >= f5 && s3 <= f6) {
+          console.log("yessssssssss");
+          return true;
+        }
+      }
       }
     });
     this.setState({ MatrimonialMatches: result }, () => {
@@ -184,6 +194,14 @@ export default class MatrimonialSearch extends React.Component {
           >
             {MatrimonialUsers}
           </View>
+          {renderIf(MatrimonialUsers.length ==0)(
+            <Text  style={{
+              padding: 10,
+              fontSize: 16,
+              fontWeight: "bold",
+              textAlign: "center"
+            }}>No users found</Text>
+          )}
         </ScrollView>
       </View>
     );
